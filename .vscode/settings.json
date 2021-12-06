@@ -1,0 +1,13 @@
+{
+  // Validate JSON schemas on the fly.
+  "json.schemas": [
+    {
+      "fileMatch": ["configs/client-side-experiments.json"],
+      "url": "./build-system/json-schemas/configs/client-side-experiments.json"
+    },
+    {
+      "fileMatch": ["configs/versions.json"],
+      "url": "./build-system/json-schemas/configs/versioning.json"
+    }
+  ]
+}
