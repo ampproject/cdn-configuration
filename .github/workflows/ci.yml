@@ -45,10 +45,7 @@ jobs:
         run: echo Check lint
 
       - name: Check configs
-        run: |
-          echo Check configs
-          echo ${{ needs.setup.outputs.diff }}
-          npx ts-node ./ci/check-configs.ts --diff="${{ needs.setup.outputs.diff }}"
+        run: npx ts-node ./ci/check-configs.ts --diff="${{ needs.setup.outputs.diff }}"
 
       - name: Single update
         run: echo Check one update at a time
