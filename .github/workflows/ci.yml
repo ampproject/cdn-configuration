@@ -47,8 +47,8 @@ jobs:
       - name: Check JSON
         run: |
           echo Check json
-          echo ${{ needs.setup.output.diff }}
-          npx ts-node ./test/check-json.ts --diff="${{ needs.setup.output.diff }}"
+          echo ${{ needs.setup.outputs.diff }}
+          npx ts-node ./test/check-json.ts --diff="${{ needs.setup.outputs.diff }}"
 
       - name: Single update
         run: echo Check one update at a time
