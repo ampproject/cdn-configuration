@@ -1,0 +1,46 @@
+# Reusable workflow for promote jobs.
+
+on:
+  workflow_call:
+    inputs:
+      channel-name:
+        description: 'Human readable name of the channel to promote'
+        required: true
+        type: string
+      ts-file:
+        description: 'Machine name of the TS file to execute, under workflows/'
+        required: true
+        type: string
+      amp-version:
+        description: 'AMP version number (13 digits). Not all promote scenarios require an explicit version.'
+        required: false
+        type: number
+
+jobs:
+  promote:
+    if: github.repository == 'ampproject/amphtml'
+    name: Promote ${{ github.event.inputs.channel-name }} Channel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 100
+
+      - name: Set Up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Set Up Environment
+        run: sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: ⭐ Promote ${{ github.event.inputs.channel-name }} Channel ⭐
+        run: ts-node workflows/${{ github.event.inputs.ts-file }}.ts
+        env:
+          AMP_VERSION: ${{ github.event.inputs.amp-version }}
+          GITHUB_TOKEN: ${{ secrets.AMPPROJECTBOT }}

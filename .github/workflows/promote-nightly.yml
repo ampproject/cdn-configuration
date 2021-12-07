@@ -1,0 +1,22 @@
+# Promotes a new build to the Nightly channel on a schedule.
+
+name: Promote Nightly Channel
+
+on:
+  repository_dispatch:
+    types: 'promote-nightly'
+    inputs:
+      amp-version:
+        description: 'AMP version number (13 digits)'
+        required: true
+
+  workflow_dispatch:
+    # TODO(danielrozenberg): temporary, remove after testing is done
+
+jobs:
+  promote-nightly:
+    uses: ./.github/workflows/promote-reusable-workflow.yml@main
+    with:
+      channel-name: 'Nightly'
+      ts-file: 'promote-nightly'
+      amp-version: ${{ github.event.inputs.amp-version }}

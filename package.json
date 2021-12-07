@@ -1,5 +1,7 @@
 {
   "devDependencies": {
+    "@octokit/rest": "18.12.0",
+    "@types/fs-extra": "9.0.13",
     "@types/minimist": "1.2.2",
     "@types/mocha": "9.0.0",
     "@types/node": "16.11.19",
@@ -10,8 +12,11 @@
     "ajv-formats": "2.1.1",
     "eslint": "8.6.0",
     "eslint-config-prettier": "8.3.0",
+    "fs-extra": "10.0.0",
+    "kleur": "4.1.4",
     "minimist": "1.2.5",
     "node-fetch": "2.6.6",
+    "octokit-plugin-create-pull-request": "3.10.0",
     "prettier": "2.5.1",
     "ts-mocha": "8.0.0",
     "ts-node": "10.4.0",
