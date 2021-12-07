@@ -1,13 +1,15 @@
 {
-  "include": ["configs/**/*", "tests/**/*"],
+  "include": ["configs/**/*", "ci/**/*"],
   "compilerOptions": {
     "strict": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "noImplicitReturns": false,
     "resolveJsonModule": true,
-    "module": "ES6",
+    "module": "CommonJS",
     "target": "ES6",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
   },
-  "exclude": ["**/node_modules/**"],
+  "exclude": ["node_modules/**/*"],
 }
