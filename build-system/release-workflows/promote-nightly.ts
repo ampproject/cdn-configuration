@@ -1,13 +1,11 @@
-"use strict";
+/**
+ * Promotes a nightly release.
+ */
 
 import {
   createVersioningUpdatePullRequest,
   runPromoteJob,
 } from "./promote-job";
-
-/**
- * @fileoverview Script that promotes the latest nightly release.
- */
 
 const jobName = "promote-nightly.js";
 const { AMP_VERSION } = process.env;

@@ -1,5 +1,3 @@
-"use strict";
-
 import fs from "fs-extra";
 import { cyan, green, red } from "kleur";
 import { createPullRequest } from "octokit-plugin-create-pull-request";
