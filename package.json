@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "@octokit/rest": "18.12.0",
+    "fs-extra": "10.0.0",
+    "kleur": "4.1.4",
+    "octokit-plugin-create-pull-request": "3.10.0",
+    "ts-node": "10.4.0",
     "typescript": "4.5.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "9.0.13",
+    "@types/node": "16.11.12"
   }
 }
