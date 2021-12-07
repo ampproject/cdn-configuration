@@ -1,4 +1,4 @@
-name: CI
+name: ci
 
 on:
   pull_request:
@@ -44,11 +44,11 @@ jobs:
       - name: Lint
         run: echo Check lint
 
-      - name: Check JSON
+      - name: Check configs
         run: |
-          echo Check json
+          echo Check configs
           echo ${{ needs.setup.outputs.diff }}
-          npx ts-node ./test/check-json.ts --diff="${{ needs.setup.outputs.diff }}"
+          npx ts-node ./ci/check-configs.ts --diff="${{ needs.setup.outputs.diff }}"
 
       - name: Single update
         run: echo Check one update at a time
