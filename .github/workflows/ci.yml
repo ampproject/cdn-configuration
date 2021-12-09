@@ -41,9 +41,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run mocha
-        run: npx ts-mocha ./test/test.ts
-
       - name: Lint
         run: echo Check lint
 
