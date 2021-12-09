@@ -1,6 +1,6 @@
 {
-  "include": ["configs/**/*", "ci/**/*"],
-  "compilerOptions": {
+  "include": ["configs/**/*", "src/**/*", "test/**/*"],
+    "compilerOptions": {
     "strict": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
