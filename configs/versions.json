@@ -4,7 +4,7 @@
   "control": "020000000000000",
   "experimental-opt-in": "000000000000000",
   "experimental-traffic": "000000000000000",
-  "experimentA": "esther",
+  "experimentA": null,
   "experimentB": null,
   "experimentC": null,
   "lts": "010000000000000",
