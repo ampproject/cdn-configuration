@@ -1,5 +1,5 @@
 {
-  "include": ["configs/**/*", "ci/**/*"],
+  "include": ["configs/**/*", "ci/**/*", "test/**/*"],
   "compilerOptions": {
     "strict": true,
     "allowUnreachableCode": false,
