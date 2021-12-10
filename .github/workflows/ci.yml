@@ -46,7 +46,7 @@ jobs:
         run: echo Check lint
 
       - name: Check configs
-        run: npx ts-mocha ./test/check-json-schemas.test.ts
+        run: npx ts-mocha ./test/check-json-schemas.ts
 
       - name: Single update
         run: echo Check one update at a time
