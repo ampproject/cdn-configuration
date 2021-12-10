@@ -1,8 +1,3 @@
 {
-  "experiments": [
-    {
-      "name": "",
-      "percentage": 0
-    }
-  ]
+  "experiments": []
 }
