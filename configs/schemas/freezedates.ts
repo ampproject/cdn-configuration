@@ -1,13 +1,14 @@
 import { JSONSchemaType } from 'ajv';
 
-interface Experiment {
-  name: string,
-  percentage: number,
-  rtvPrefixes: string[],
+interface FreezeDate {
+  type: string,
+  description: string,
+  start: string,
+  end: string
 }
 
 interface Schema {
-  experiments: Experiment[]
+  freezedates: FreezeDate[]
 }
 
 const schema: JSONSchemaType<Schema> = {
@@ -15,33 +16,31 @@ const schema: JSONSchemaType<Schema> = {
   description: 'Client-side (AMP_EXP) experiment definitions',
   type: 'object',
   required: [
-    'experiments'
+    'freezedates'
   ],
   properties: {
-    experiments: {
+    freezedates: {
       type: 'array',
       items: {
         type: 'object',
         required: [
-          'name',
-          'percentage'
+          'start',
+          'end'
         ],
         properties: {
-          name: {
+          type: {
             type: 'string',
-            pattern: '^[A-Za-z][\\w-]*$'
           },
-          percentage: {
-              type: 'number',
-              minimum: 0,
-              maximum: 1
+          description: {
+            type: 'string',
           },
-          rtvPrefixes: {
-            type: 'array',
-            items: {
-              type: 'string',
-              pattern: '^[\\d\\.]+$'
-            }
+          start: {
+            type: 'string',
+            format: 'date'
+          },
+          end: {
+            type: 'string',
+            format: 'date'
           }
         }
       }

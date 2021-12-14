@@ -43,7 +43,7 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: echo Check lint
+        run: npm run lint
 
       - name: Check configs
         run: npx ts-mocha ./test/check-json-schemas.ts
