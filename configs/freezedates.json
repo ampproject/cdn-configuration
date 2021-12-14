@@ -1,0 +1,28 @@
+{
+  "freezedates": [
+    {
+    "type": "holiday",
+    "description": "Christmas and New Years",
+    "start": "2021-12-19",
+    "end": "2022-1-8"
+    },
+    {
+      "type": "holiday",
+      "description": "US Independence Day",
+      "start": "2022-7-3",
+      "end": "2022-7-10"
+    },
+    {
+      "type": "holiday",
+      "description": "US Thanksgiving",
+      "start": "2022-11-20",
+      "end": "2022-11-27"
+    },
+    {
+      "type": "holiday",
+      "description": "Christmas and New Years",
+      "start": "2022-12-18",
+      "end": "2023-1-1"
+    }
+  ]
+}
