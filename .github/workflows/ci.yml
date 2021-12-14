@@ -48,8 +48,8 @@ jobs:
       - name: Check configs
         run: npx ts-mocha ./test/check-json-schemas.ts
 
-      - name: Single update
-        run: echo Check one update at a time
+      - name: Check one update at a time
+        run: npx ts-mocha ./test/check-file-changes.ts --diff=${{needs.setup.outputs.diff}}
 
   release:
     runs-on: ubuntu-latest
