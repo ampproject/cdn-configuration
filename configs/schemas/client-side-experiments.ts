@@ -4,7 +4,7 @@ interface Experiment {
   name: string,
   percentage: number,
   rtvPrefixes: string[],
-};
+}
 
 interface Schema {
   experiments: Experiment[]
