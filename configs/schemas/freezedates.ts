@@ -5,7 +5,7 @@ interface FreezeDate {
   description: string,
   start: string,
   end: string
-};
+}
 
 interface Schema {
   freezedates: FreezeDate[]
