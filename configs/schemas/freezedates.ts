@@ -36,11 +36,11 @@ const schema: JSONSchemaType<Schema> = {
           },
           start: {
             type: 'string',
-            pattern: '\\d{4}-\\d{1,2}-\\d{1,2}'
+            format: 'date'
           },
           end: {
             type: 'string',
-            pattern: '\\d{4}-\\d{1,2}-\\d{1,2}'
+            format: 'date'
           }
         }
       }
