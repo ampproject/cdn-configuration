@@ -1,7 +1,10 @@
 import assert from 'assert';
-import minimist from 'minimist';
+import minimist, { ParsedArgs } from 'minimist';
 
-const {diff} = minimist(process.argv.slice(2));
+interface Args extends ParsedArgs {
+  diff?: string
+}
+const {diff}: Args = minimist(process.argv.slice(2));
 const files: string[] = diff ? diff.split(' ') : [];
 
 describe('check file changes', () => {
