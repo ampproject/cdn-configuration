@@ -1,4 +1,4 @@
-import { JSONSchemaType } from 'ajv';
+import {JSONSchemaType} from 'ajv';
 
 interface Schema {
   [channel: string]: string | null;
@@ -20,7 +20,7 @@ const schema: JSONSchemaType<Schema> = {
     'lts',
     'nightly',
     'nightly-control',
-    'stable'
+    'stable',
   ],
   properties: {
     control: {
@@ -54,18 +54,18 @@ const schema: JSONSchemaType<Schema> = {
   patternProperties: {
     'beta-(opt-in|traffic)': {
       type: 'string',
-      pattern: '03\\d{13}'
+      pattern: '03\\d{13}',
     },
     'experimental-(opt-in|traffic)': {
       type: 'string',
-      pattern: '00\\d{13}'
+      pattern: '00\\d{13}',
     },
     '(stable|lts)': {
       type: 'string',
-      pattern: '01\\d{13}'
-    }
+      pattern: '01\\d{13}',
+    },
   },
-  additionalProperties: false
+  additionalProperties: false,
 };
 
 export default schema;
