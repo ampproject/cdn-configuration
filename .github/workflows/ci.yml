@@ -51,7 +51,7 @@ jobs:
         run: npx ts-mocha ./test/check-json-schemas.ts
 
       - name: Check file changes
-        run: npx ts-mocha ./test/check-file-changes.ts --diff=${{needs.setup.outputs.diff}}
+        run: npx ts-mocha ./test/check-file-changes.ts --diff="${{ needs.setup.outputs.diff }}"
 
   release:
     runs-on: ubuntu-latest
