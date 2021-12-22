@@ -42,14 +42,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint
-        run: npm run lint
+      - name: Run Prettier and ESLint
+        run: |
+          npm run prettier
+          npm run lint
 
       - name: Check configs
         run: npx ts-mocha ./test/check-json-schemas.ts
 
-      - name: Check one update at a time
-        run: npx ts-mocha ./test/check-file-changes.ts --diff=${{needs.setup.outputs.diff}}
+      - name: Check file changes
+        run: npx ts-mocha ./test/check-file-changes.ts --diff="${{ needs.setup.outputs.diff }}"
 
   release:
     runs-on: ubuntu-latest
