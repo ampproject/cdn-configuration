@@ -30,8 +30,6 @@ jobs:
 
     needs: setup
 
-    if: ${{ needs.setup.outputs.diff }}
-
     steps:
       - uses: actions/checkout@v2
 
@@ -53,14 +51,5 @@ jobs:
       - name: Check file changes
         run: npx ts-mocha ./test/check-file-changes.ts --diff="${{ needs.setup.outputs.diff }}"
 
-  release:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Code freeze
-        run: echo Check if code freeze
-
-      - name: Live release
-        run: echo Check if release is live
+      - name: Check releases
+        run: npx ts-mocha ./test/check-live-release.ts --diff="${{ needs.setup.outputs.diff }}"
