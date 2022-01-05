@@ -9,8 +9,7 @@ interface Args extends ParsedArgs {
 const {diff}: Args = minimist(process.argv.slice(2));
 const files: string[] = diff ? diff.split(' ') : [];
 
-// TODO(estherkim): unskip when versions.json is used in prod
-describe.skip('check releases are live before promoting', function () {
+describe('check releases are live before promoting', function () {
   const versionChannels = new Map<string, string[]>();
   for (const [channel, version] of Object.entries(versionsJson)) {
     if (version) {
