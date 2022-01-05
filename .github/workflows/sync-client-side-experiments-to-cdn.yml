@@ -7,6 +7,9 @@ on:
     paths:
       - configs/client-side-experiments.json
 
+  workflow_dispatch:
+    # TODO(danielrozenberg): temporary, remove after testing is done
+
 jobs:
   sync:
     if: github.repository == 'ampproject/cdn-configuration'
