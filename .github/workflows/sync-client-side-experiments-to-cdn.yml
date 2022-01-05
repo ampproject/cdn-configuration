@@ -1,0 +1,32 @@
+name: Sync client-side-experiments.json to CDN
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - configs/client-side-experiments.json
+
+  workflow_dispatch:
+    # TODO(danielrozenberg): temporary, remove after testing is done
+
+jobs:
+  sync:
+    if: github.repository == 'ampproject/cdn-configuration'
+    name: client-side-experiments.json
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Install Dependencies
+        run: npm i -g @cloudflare/wrangler
+
+      - name: ⭐ Sync client-side-experiments.json to the CDN ⭐
+        run: wrangler kv:key put CONFIG "$(cat configs/client-side-experiments.json)" --config .github/workflows/wrangler.toml --binding CONFIG
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
