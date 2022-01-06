@@ -3,7 +3,7 @@ import {createPullRequest} from 'octokit-plugin-create-pull-request';
 import {Octokit} from '@octokit/rest';
 
 const octokit = new (Octokit.plugin(createPullRequest))({
-  auth: process.env.GITHUB_TOKEN,
+  auth: process.env.ACCESS_TOKEN,
 });
 
 const versionsJsonFile = 'configs/versions.json';
@@ -38,6 +38,7 @@ export async function runPromoteJob(
   } catch (err) {
     console.error('Job', jobName, 'failed.');
     console.error('ERROR:', err);
+    process.exitCode = 1;
   }
 }
 
@@ -47,8 +48,8 @@ export async function runPromoteJob(
 export async function createVersionsUpdatePullRequest(
   versionsMutator: (currentVersions: Versions) => VersionMutatorDef
 ): CreatePullRequestResponsePromise {
-  if (!process.env.GITHUB_RUN_ID) {
-    throw new Error('Environment variable GITHUB_RUN_ID is missing');
+  if (!process.env.ACCESS_TOKEN) {
+    throw new Error('Environment variable ACCESS_TOKEN is missing');
   }
 
   const currentVersions = (await fs.readJson(
@@ -82,6 +83,7 @@ export async function createVersionsUpdatePullRequest(
   if (!pullRequestResponse || pullRequestResponse.status !== 201) {
     throw new Error('Failed to create a pull request');
   }
+  console.log('Created pull request', `${pullRequestResponse.data.number}`);
 
   return pullRequestResponse;
 }

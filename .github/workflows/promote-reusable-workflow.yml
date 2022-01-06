@@ -20,7 +20,7 @@ on:
 jobs:
   promote:
     if: github.repository == 'ampproject/cdn-configuration'
-    name: Promote ${{ github.event.inputs.channel-name }} Channel
+    name: Promote ${{ inputs.channel-name }} Channel
     runs-on: ubuntu-latest
 
     steps:
@@ -35,8 +35,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: ⭐ Promote ${{ github.event.inputs.channel-name }} Channel ⭐
-        run: ts-node scripts/${{ github.event.inputs.ts-file }}
+      - name: ⭐ Promote ${{ inputs.channel-name }} Channel ⭐
+        run: npx ts-node scripts/${{ inputs.ts-file }} --amp_version=${{ inputs.amp-version }}
         env:
-          AMP_VERSION: ${{ github.event.inputs.amp-version }} --amp_version=${{ github.event.inputs.amp-version }}
-          GITHUB_TOKEN: ${{ secrets.AMPPROJECTBOT }}
+          ACCESS_TOKEN: ${{ secrets.access-token }}
