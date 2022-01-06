@@ -7,7 +7,7 @@ const Octokit = BaseOctokit.plugin(createPullRequest);
 const octokit = new Octokit({auth: process.env.GITHUB_TOKEN});
 
 const versioningJsonFile = 'configs/versions.json';
-const params = {owner: 'ampproject', repo: 'amphtml'};
+const params = {owner: 'ampproject', repo: 'cdn-configuration'};
 
 // TODO(danielrozenberg): change to @ampproject/release-on-duty after testing is done.
 const releaseOnDuty = '@ampproject/wg-infra';
