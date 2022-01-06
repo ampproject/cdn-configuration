@@ -1,5 +1,5 @@
 {
-  "include": ["configs/**/*", "test/**/*", "workflows/**/*"],
+  "include": ["configs/**/*", "test/**/*", "scripts/**/*"],
   "compilerOptions": {
     "strict": true,
     "allowUnreachableCode": false,
