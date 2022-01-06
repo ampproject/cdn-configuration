@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       ts-file:
-        description: 'Machine name of the TS file to execute, under scripts/'
+        description: 'TypeScript file to execute (with .ts), under scripts/'
         required: true
         type: string
       amp-version:
@@ -37,7 +37,7 @@ jobs:
         run: npm ci
 
       - name: ⭐ Promote ${{ github.event.inputs.channel-name }} Channel ⭐
-        run: ts-node scripts/${{ github.event.inputs.ts-file }}.ts
+        run: ts-node scripts/${{ github.event.inputs.ts-file }}
         env:
           AMP_VERSION: ${{ github.event.inputs.amp-version }}
           GITHUB_TOKEN: ${{ secrets.AMPPROJECTBOT }}
