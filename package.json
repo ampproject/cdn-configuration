@@ -13,7 +13,6 @@
     "eslint": "8.6.0",
     "eslint-config-prettier": "8.3.0",
     "fs-extra": "10.0.0",
-    "kleur": "4.1.4",
     "minimist": "1.2.5",
     "node-fetch": "2.6.6",
     "octokit-plugin-create-pull-request": "3.10.0",

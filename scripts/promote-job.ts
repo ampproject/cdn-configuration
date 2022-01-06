@@ -1,5 +1,4 @@
 import fs from 'fs-extra';
-import {cyan, green, red} from 'kleur';
 import {createPullRequest} from 'octokit-plugin-create-pull-request';
 import {Octokit} from '@octokit/rest';
 
@@ -40,22 +39,23 @@ export async function runPromoteJob(
   workflow: () => Promise<void>
 ): Promise<void> {
   const startTime = Date.now();
-  console.log('Running', cyan(jobName) + '...');
+  console.log('Running', `${jobName}...`);
   try {
     await workflow();
     console.log(
       'Done running',
-      cyan(jobName),
+      `${jobName}.`,
       'Total time:',
-      green(timeExecutionTime_(startTime))
+      timeExecutionTime_(startTime)
     );
   } catch (err) {
     console.error(
-      red('Job'),
-      cyan(jobName) + red('failed after'),
-      green(timeExecutionTime_(startTime))
+      'Job',
+      jobName,
+      'failed after',
+      timeExecutionTime_(startTime)
     );
-    console.error(red('ERROR:'), err);
+    console.error('ERROR:', err);
   }
 }
 
