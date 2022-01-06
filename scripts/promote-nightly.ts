@@ -2,14 +2,19 @@
  * Promotes a nightly release.
  */
 
+import minimist, {ParsedArgs} from 'minimist';
 import {createVersionsUpdatePullRequest, runPromoteJob} from './promote-job';
 
-const jobName = 'promote-nightly.js';
-const {AMP_VERSION} = process.env;
+interface Args extends ParsedArgs {
+  amp_version?: string;
+}
+
+const jobName = 'promote-nightly.ts';
+const {amp_version: AMP_VERSION}: Args = minimist(process.argv.slice(2));
 
 void runPromoteJob(jobName, async () => {
   if (!AMP_VERSION) {
-    throw new Error('Environment variable AMP_VERSION is missing');
+    throw new Error(`${jobName} must be called with --amp_version`);
   }
 
   await createVersionsUpdatePullRequest(() => ({

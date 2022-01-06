@@ -11,10 +11,11 @@ on:
         description: 'TypeScript file to execute (with .ts), under scripts/'
         required: true
         type: string
-      amp-version:
-        description: 'AMP version number (13 digits). Not all promote scenarios require an explicit version.'
+      extra-args:
+        description: 'Extra --arguments to pass to the script'
         required: false
-        type: number
+        default: ''
+        type: string
 
 jobs:
   promote:
@@ -39,5 +40,5 @@ jobs:
       - name: ⭐ Promote ${{ github.event.inputs.channel-name }} Channel ⭐
         run: ts-node scripts/${{ github.event.inputs.ts-file }}
         env:
-          AMP_VERSION: ${{ github.event.inputs.amp-version }}
+          AMP_VERSION: ${{ github.event.inputs.amp-version }} ${{ github.event.inputs.extra-args }}
           GITHUB_TOKEN: ${{ secrets.AMPPROJECTBOT }}
