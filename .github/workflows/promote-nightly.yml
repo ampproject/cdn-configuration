@@ -18,7 +18,7 @@ on:
 
 jobs:
   promote-nightly:
-    uses: ./.github/workflows/promote-reusable-workflow.yml@main
+    uses: ampproject/cdn-configuration/.github/workflows/promote-reusable-workflow.yml@main
     with:
       channel-name: 'Nightly'
       ts-file: 'promote-nightly.ts'
