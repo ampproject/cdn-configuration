@@ -6,19 +6,19 @@ import {Octokit as BaseOctokit} from '@octokit/rest';
 const Octokit = BaseOctokit.plugin(createPullRequest);
 const octokit = new Octokit({auth: process.env.GITHUB_TOKEN});
 
-const versioningJsonFile = 'configs/versions.json';
+const versionsJsonFile = 'configs/versions.json';
 const params = {owner: 'ampproject', repo: 'cdn-configuration'};
 
 // TODO(danielrozenberg): change to @ampproject/release-on-duty after testing is done.
 const releaseOnDuty = '@ampproject/wg-infra';
 
-type Versioning = Record<string, string | null>;
+type Versions = Record<string, string | null>;
 type CreatePullRequestResponsePromise = ReturnType<
   typeof octokit.createPullRequest
 >;
 
 interface VersionMutatorDef {
-  versioningChanges: Versioning;
+  versionsChanges: Versions;
   title: string;
   body: string;
 }
@@ -59,24 +59,24 @@ export async function runPromoteJob(
 }
 
 /**
- * Creates a pull request to update versioning.json.
+ * Creates a pull request to update versions.json.
  */
-export async function createVersioningUpdatePullRequest(
-  versioningMutator: (currentVersioning: Versioning) => VersionMutatorDef
+export async function createVersionsUpdatePullRequest(
+  versionsMutator: (currentVersions: Versions) => VersionMutatorDef
 ): CreatePullRequestResponsePromise {
   if (!process.env.GITHUB_RUN_ID) {
     throw new Error('Environment variable GITHUB_RUN_ID is missing');
   }
 
-  const currentVersioning = (await fs.readJson(
-    versioningJsonFile,
+  const currentVersions = (await fs.readJson(
+    versionsJsonFile,
     'utf8'
-  )) as Versioning;
-  const {body, title, versioningChanges} = versioningMutator(currentVersioning);
+  )) as Versions;
+  const {body, title, versionsChanges} = versionsMutator(currentVersions);
 
-  const newVersioning: Versioning = {
-    ...currentVersioning,
-    ...versioningChanges,
+  const newVersions: Versions = {
+    ...currentVersions,
+    ...versionsChanges,
   };
 
   const pullRequestResponse = await octokit.createPullRequest({
@@ -87,8 +87,7 @@ export async function createVersioningUpdatePullRequest(
     changes: [
       {
         files: {
-          [versioningJsonFile]:
-            JSON.stringify(newVersioning, undefined, 2) + '\n',
+          [versionsJsonFile]: JSON.stringify(newVersions, undefined, 2) + '\n',
         },
         commit: title,
       },
