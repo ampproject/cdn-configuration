@@ -22,4 +22,4 @@ jobs:
     with:
       channel-name: 'Nightly'
       ts-file: 'promote-nightly.ts'
-      extra-args: --amp_version=${{ github.event.inputs.amp-version }}
+      amp-version: ${{ github.event.inputs.amp-version }}
