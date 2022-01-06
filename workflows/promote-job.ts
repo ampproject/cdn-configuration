@@ -1,10 +1,11 @@
 import fs from 'fs-extra';
 import {cyan, green, red} from 'kleur';
 import {createPullRequest} from 'octokit-plugin-create-pull-request';
-import {Octokit as BaseOctokit} from '@octokit/rest';
+import {Octokit} from '@octokit/rest';
 
-const Octokit = BaseOctokit.plugin(createPullRequest);
-const octokit = new Octokit({auth: process.env.GITHUB_TOKEN});
+const octokit = new (Octokit.plugin(createPullRequest))({
+  auth: process.env.GITHUB_TOKEN,
+});
 
 const versionsJsonFile = 'configs/versions.json';
 const params = {owner: 'ampproject', repo: 'cdn-configuration'};
