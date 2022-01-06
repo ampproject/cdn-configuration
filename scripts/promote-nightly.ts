@@ -16,5 +16,6 @@ void runPromoteJob(jobName, async () => {
     versionsChanges: {nightly: `04${AMP_VERSION}`},
     title: `⏫🌙 Promoting release ${AMP_VERSION} to Nightly channel`,
     body: `Promoting release ${AMP_VERSION} to Nightly channel`,
+    branch: `nightly-${AMP_VERSION}`,
   }));
 });

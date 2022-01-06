@@ -21,6 +21,7 @@ interface VersionMutatorDef {
   versionsChanges: Versions;
   title: string;
   body: string;
+  branch: string;
 }
 
 /**
@@ -54,7 +55,8 @@ export async function createVersionsUpdatePullRequest(
     versionsJsonFile,
     'utf8'
   )) as Versions;
-  const {body, title, versionsChanges} = versionsMutator(currentVersions);
+  const {body, title, versionsChanges, branch} =
+    versionsMutator(currentVersions);
 
   const newVersions: Versions = {
     ...currentVersions,
@@ -65,7 +67,7 @@ export async function createVersionsUpdatePullRequest(
     ...params,
     title,
     body: `${body}\n\n${releaseOnDuty}`,
-    head: `promote-job-${process.env.GITHUB_RUN_ID}`,
+    head: `promote-job-${branch}`,
     changes: [
       {
         files: {
