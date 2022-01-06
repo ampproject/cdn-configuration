@@ -23,14 +23,6 @@ interface VersionMutatorDef {
   body: string;
 }
 
-function timeExecutionTime_(startTime: number): string {
-  const endTime = Date.now();
-  const executionTime = endTime - startTime;
-  const mins = Math.floor(executionTime / 60000);
-  const secs = Math.floor((executionTime % 60000) / 1000);
-  return `${mins}m ${secs}s`;
-}
-
 /**
  * Helper used by promote related CI job scripts.
  */
@@ -38,23 +30,12 @@ export async function runPromoteJob(
   jobName: string,
   workflow: () => Promise<void>
 ): Promise<void> {
-  const startTime = Date.now();
   console.log('Running', `${jobName}...`);
   try {
     await workflow();
-    console.log(
-      'Done running',
-      `${jobName}.`,
-      'Total time:',
-      timeExecutionTime_(startTime)
-    );
+    console.log('Done running', `${jobName}.`);
   } catch (err) {
-    console.error(
-      'Job',
-      jobName,
-      'failed after',
-      timeExecutionTime_(startTime)
-    );
+    console.error('Job', jobName, 'failed.');
     console.error('ERROR:', err);
   }
 }
