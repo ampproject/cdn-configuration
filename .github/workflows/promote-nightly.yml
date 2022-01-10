@@ -3,13 +3,6 @@
 name: Promote Nightly Channel
 
 on:
-  repository_dispatch:
-    types: 'promote-nightly'
-    inputs:
-      amp-version:
-        description: 'AMP version number (13 digits)'
-        required: true
-
   workflow_dispatch:
     inputs:
       amp-version:
