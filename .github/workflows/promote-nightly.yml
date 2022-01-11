@@ -8,6 +8,7 @@ on:
       amp-version:
         description: 'AMP version number (13 digits)'
         required: true
+        type: string
 
 jobs:
   promote-nightly:
