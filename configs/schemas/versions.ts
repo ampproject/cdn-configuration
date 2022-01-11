@@ -48,11 +48,11 @@ const schema: JSONSchemaType<Versions> = {
     },
     'experimental-opt-in': {
       type: 'string',
-      pattern: '03\\d{13}',
+      pattern: '00\\d{13}',
     },
     'experimental-traffic': {
       type: 'string',
-      pattern: '03\\d{13}',
+      pattern: '00\\d{13}',
     },
     experimentA: {
       type: 'string',
