@@ -1,7 +1,10 @@
 import fs from 'fs-extra';
 import {createPullRequest} from 'octokit-plugin-create-pull-request';
 import {Octokit} from '@octokit/rest';
+import Ajv from 'ajv';
+import schema, {Versions} from '../configs/schemas/versions';
 
+const ajv = new Ajv();
 const octokit = new (Octokit.plugin(createPullRequest))({
   auth: process.env.ACCESS_TOKEN,
 });
@@ -12,13 +15,12 @@ const params = {owner: 'ampproject', repo: 'cdn-configuration'};
 // TODO(danielrozenberg): change to @ampproject/release-on-duty after testing is done.
 const releaseOnDuty = '@ampproject/wg-infra';
 
-type Versions = Record<string, string | null>;
 type CreatePullRequestResponsePromise = ReturnType<
   typeof octokit.createPullRequest
 >;
 
 interface VersionMutatorDef {
-  versionsChanges: Versions;
+  versionsChanges: Partial<Versions>;
   title: string;
   body: string;
   branch: string;
@@ -52,17 +54,24 @@ export async function createVersionsUpdatePullRequest(
     throw new Error('Environment variable ACCESS_TOKEN is missing');
   }
 
-  const currentVersions = (await fs.readJson(
-    versionsJsonFile,
-    'utf8'
-  )) as Versions;
+  // Initially this file is unknown, but ajv.validate acts as a type guard for Versions.
+  const currentVersions: unknown = await fs.readJson(versionsJsonFile, 'utf8');
+  if (!ajv.validate(schema, currentVersions)) {
+    console.error(ajv.errors);
+    throw new Error('Current versions file is not valid');
+  }
+
   const {body, title, versionsChanges, branch} =
     versionsMutator(currentVersions);
 
-  const newVersions: Versions = {
+  const newVersions = {
     ...currentVersions,
     ...versionsChanges,
   };
+  if (!ajv.validate(schema, newVersions)) {
+    console.error(ajv.errors);
+    throw new Error('Modified versions file is not valid');
+  }
 
   const pullRequestResponse = await octokit.createPullRequest({
     ...params,
