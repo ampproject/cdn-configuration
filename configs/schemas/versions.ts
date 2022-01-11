@@ -1,10 +1,21 @@
 import {JSONSchemaType} from 'ajv';
 
-interface Schema {
-  [channel: string]: string | null;
-}
+export type Versions = {
+  'beta-opt-in': string;
+  'beta-traffic': string;
+  control: string;
+  'experimental-opt-in': string;
+  'experimental-traffic': string;
+  experimentA: string | null;
+  experimentB: string | null;
+  experimentC: string | null;
+  lts: string;
+  nightly: string;
+  'nightly-control': string;
+  stable: string;
+};
 
-const schema: JSONSchemaType<Schema> = {
+const schema: JSONSchemaType<Versions> = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   description: 'Versioning (RTV) information',
   type: 'object',
@@ -23,9 +34,25 @@ const schema: JSONSchemaType<Schema> = {
     'stable',
   ],
   properties: {
+    'beta-opt-in': {
+      type: 'string',
+      pattern: '03\\d{13}',
+    },
+    'beta-traffic': {
+      type: 'string',
+      pattern: '03\\d{13}',
+    },
     control: {
       type: 'string',
       pattern: '02\\d{13}',
+    },
+    'experimental-opt-in': {
+      type: 'string',
+      pattern: '00\\d{13}',
+    },
+    'experimental-traffic': {
+      type: 'string',
+      pattern: '00\\d{13}',
     },
     experimentA: {
       type: 'string',
@@ -42,6 +69,10 @@ const schema: JSONSchemaType<Schema> = {
       pattern: '12\\d{13}',
       nullable: true,
     },
+    lts: {
+      type: 'string',
+      pattern: '01\\d{13}',
+    },
     nightly: {
       type: 'string',
       pattern: '04\\d{13}',
@@ -50,17 +81,7 @@ const schema: JSONSchemaType<Schema> = {
       type: 'string',
       pattern: '05\\d{13}',
     },
-  },
-  patternProperties: {
-    'beta-(opt-in|traffic)': {
-      type: 'string',
-      pattern: '03\\d{13}',
-    },
-    'experimental-(opt-in|traffic)': {
-      type: 'string',
-      pattern: '00\\d{13}',
-    },
-    '(stable|lts)': {
+    stable: {
       type: 'string',
       pattern: '01\\d{13}',
     },
