@@ -1,10 +1,8 @@
-import fs from 'fs-extra';
 import {createPullRequest} from 'octokit-plugin-create-pull-request';
 import {Octokit} from '@octokit/rest';
-import Ajv from 'ajv';
-import schema, {Versions} from '../configs/schemas/versions';
+import {Versions} from '../configs/schemas/versions';
+import currentVersions from '../configs/versions.json';
 
-const ajv = new Ajv();
 const octokit = new (Octokit.plugin(createPullRequest))({
   auth: process.env.ACCESS_TOKEN,
 });
@@ -54,13 +52,6 @@ export async function createVersionsUpdatePullRequest(
     throw new Error('Environment variable ACCESS_TOKEN is missing');
   }
 
-  // Initially this file is unknown, but ajv.validate acts as a type guard for Versions.
-  const currentVersions: unknown = await fs.readJson(versionsJsonFile, 'utf8');
-  if (!ajv.validate(schema, currentVersions)) {
-    console.error(ajv.errors);
-    throw new Error('Current versions file is not valid');
-  }
-
   const {body, title, versionsChanges, branch} =
     versionsMutator(currentVersions);
 
@@ -68,10 +59,6 @@ export async function createVersionsUpdatePullRequest(
     ...currentVersions,
     ...versionsChanges,
   };
-  if (!ajv.validate(schema, newVersions)) {
-    console.error(ajv.errors);
-    throw new Error('Modified versions file is not valid');
-  }
 
   const pullRequestResponse = await octokit.createPullRequest({
     ...params,
