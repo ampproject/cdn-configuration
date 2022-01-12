@@ -29,8 +29,6 @@ void runPromoteJob(jobName, async () => {
     return {
       versionsChanges: {
         lts: `01${ampVersion}`,
-        control: `02${ampVersion}`,
-        'nightly-control': `05${ampVersion}`,
       },
       title: `⏫ Promoting release ${ampVersion} to LTS channel`,
       body: `Promoting release ${ampVersion} from Stable channel to LTS channel`,
