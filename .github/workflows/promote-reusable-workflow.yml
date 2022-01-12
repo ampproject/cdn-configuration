@@ -16,6 +16,10 @@ on:
         required: false
         default: ''
         type: string
+    secrets:
+      access-token:
+        description: 'Personal access token for the bot that will create the pull requests'
+        required: true
 
 jobs:
   promote:
