@@ -17,3 +17,5 @@ jobs:
       channel-name: 'Nightly'
       ts-file: 'promote-nightly.ts'
       amp-version: ${{ github.event.inputs.amp-version }}
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}
