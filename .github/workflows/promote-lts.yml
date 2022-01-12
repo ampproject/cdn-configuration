@@ -23,3 +23,5 @@ jobs:
       channel-name: 'LTS'
       ts-file: 'promote-lts.ts'
       amp-version: ${{ github.event.inputs.amp-version }}
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}

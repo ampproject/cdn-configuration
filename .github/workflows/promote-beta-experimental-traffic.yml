@@ -22,3 +22,5 @@ jobs:
       channel-name: 'Beta/Experimental traffic'
       ts-file: 'promote-beta-experimental-traffic.ts'
       amp-version: ${{ github.event.inputs.amp-version }}
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}

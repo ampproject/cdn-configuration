@@ -22,3 +22,5 @@ jobs:
       channel-name: 'Stable'
       ts-file: 'promote-stable.ts'
       amp-version: ${{ github.event.inputs.amp-version }}
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}
