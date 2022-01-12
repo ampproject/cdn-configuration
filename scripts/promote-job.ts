@@ -13,7 +13,7 @@ const versionsJsonFile = 'configs/versions.json';
 const params = {owner: 'ampproject', repo: 'cdn-configuration'};
 
 // TODO(danielrozenberg): change to @ampproject/release-on-duty after testing is done.
-const releaseOnDuty = '@ampproject/wg-infra';
+const releaseOnDuty = '@danielrozenberg';
 
 type CreatePullRequestResponsePromise = ReturnType<
   typeof octokit.createPullRequest
