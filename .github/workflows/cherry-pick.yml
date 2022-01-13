@@ -1,0 +1,42 @@
+name: Cherry-pick a release
+
+on:
+  workflow_dispatch:
+    inputs:
+      amp-version:
+        description: AMP version (13 digits)
+        required: true
+        type: string
+      shas:
+        description: commit sha(s) to cherry-pick with (i.e. abcdef1 abcdef2)
+        required: true
+        type: string
+
+jobs:
+  cherry-pick:
+    runs-on: ubuntu-latest
+
+    environment: cherry-pick
+
+    steps:
+      - name: Checkout ampproject/amphtml
+        uses: actions/checkout@v2
+        with:
+          repository: ampproject/amphtml
+          fetch-depth: 0
+          token: ${{ secrets.AMPPROJECTBOT }}
+
+      - name: Set git config
+        run: |
+          NAME=$(git --no-pager log --format=format:'%an' -n 1)
+          EMAIL="$(git --no-pager log --format=format:'%ae' -n 1)"
+          git config --global user.name $NAME
+          git config --global user.email $EMAIL
+
+      - name: Cherry-pick ${{ github.event.inputs.amp-version }} with ${{ github.event.inputs.shas }}
+        run: |
+          git checkout -b cherry-pick-${{ github.event.inputs.amp-version }} ${{ github.event.inputs.amp-version }}
+          git cherry-pick -x ${{ github.event.inputs.shas }}
+          git push --set-upstream https://github.com/ampproject/amphtml.git cherry-pick-${{ github.event.inputs.amp-version }}
+
+      # TODO(estherkim): tie to promote workflow
