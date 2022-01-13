@@ -24,7 +24,7 @@ void runPromoteJob(jobName, async () => {
   }
 
   await createVersionsUpdatePullRequest((currentVersions) => {
-    const ampVersion = AMP_VERSION ?? currentVersions.stable.slice(2);
+    const ampVersion = AMP_VERSION || currentVersions.stable.slice(2);
 
     return {
       versionsChanges: {
