@@ -1,0 +1,26 @@
+# Promotes the current Beta/Experimental opt-in channels to traffic channels on a schedule.
+
+name: Promote Beta/Experimental traffic Channels
+
+on:
+  schedule:
+    # 1:30 a.m. PST / 12:30 a.m. PDT, Tuesdays.
+    - cron: '30 1 * * 2'
+
+  workflow_dispatch:
+    inputs:
+      amp-version:
+        description: 'AMP version number (13 digits)'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  promote-beta-experimental-traffic:
+    uses: ampproject/cdn-configuration/.github/workflows/promote-reusable-workflow.yml@main
+    with:
+      channel-name: 'Beta/Experimental traffic'
+      ts-file: 'promote-beta-experimental-traffic.ts'
+      amp-version: ${{ github.event.inputs.amp-version }}
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}

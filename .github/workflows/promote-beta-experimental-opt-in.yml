@@ -1,0 +1,26 @@
+# Promotes the current Nightly channel to Beta/Experimental opt-in on a schedule.
+
+name: Promote Beta/Experimental opt-in Channels
+
+on:
+  schedule:
+    # 1:30 a.m. PST / 12:30 a.m. PDT, Tuesdays.
+    - cron: '30 1 * * 2'
+
+  workflow_dispatch:
+    inputs:
+      amp-version:
+        description: 'AMP version number (13 digits)'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  promote-beta-experimental-opt-in:
+    uses: ampproject/cdn-configuration/.github/workflows/promote-reusable-workflow.yml@main
+    with:
+      channel-name: 'Beta/Experimental opt-in'
+      ts-file: 'promote-beta-experimental-opt-in.ts'
+      amp-version: ${{ github.event.inputs.amp-version }}
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}

@@ -3,7 +3,7 @@ import {Octokit} from '@octokit/rest';
 import {Versions} from '../configs/schemas/versions';
 import currentVersions from '../configs/versions.json';
 
-const octokit = new (Octokit.plugin(createPullRequest))({
+export const octokit = new (Octokit.plugin(createPullRequest))({
   auth: process.env.ACCESS_TOKEN,
 });
 
@@ -13,6 +13,7 @@ const params = {owner: 'ampproject', repo: 'cdn-configuration'};
 // TODO(danielrozenberg): change to @ampproject/release-on-duty after testing is done.
 const releaseOnDuty = '@danielrozenberg';
 
+type Awaitable<T> = T | Promise<T>; // https://github.com/microsoft/TypeScript/issues/31394
 type CreatePullRequestResponsePromise = ReturnType<
   typeof octokit.createPullRequest
 >;
@@ -46,14 +47,15 @@ export async function runPromoteJob(
  * Creates a pull request to update versions.json.
  */
 export async function createVersionsUpdatePullRequest(
-  versionsMutator: (currentVersions: Versions) => VersionMutatorDef
+  versionsMutator: (currentVersions: Versions) => Awaitable<VersionMutatorDef>
 ): CreatePullRequestResponsePromise {
   if (!process.env.ACCESS_TOKEN) {
     throw new Error('Environment variable ACCESS_TOKEN is missing');
   }
 
-  const {body, title, versionsChanges, branch} =
-    versionsMutator(currentVersions);
+  const {body, title, versionsChanges, branch} = await versionsMutator(
+    currentVersions
+  );
 
   const newVersions = {
     ...currentVersions,

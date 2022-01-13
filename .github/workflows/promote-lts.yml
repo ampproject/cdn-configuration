@@ -1,0 +1,27 @@
+# Promotes the current Stable channel to LTS on a schedule.
+name: Promote LTS Channel
+
+on:
+  schedule:
+    # 1:30 a.m. PST / 12:30 a.m. PDT, Mondays.
+    # Note that the job itself ensures it is running on the 2nd Monday of the
+    # month, since crontab does not support this condition.
+    - cron: '30 1 * * 1'
+
+  workflow_dispatch:
+    inputs:
+      amp-version:
+        description: 'AMP version number (13 digits)'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  promote-lts:
+    uses: ampproject/cdn-configuration/.github/workflows/promote-reusable-workflow.yml@main
+    with:
+      channel-name: 'LTS'
+      ts-file: 'promote-lts.ts'
+      amp-version: ${{ github.event.inputs.amp-version }}
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}
