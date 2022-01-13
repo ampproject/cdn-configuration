@@ -48,13 +48,13 @@ async function fetchActiveExperiments(
 }
 
 function maybeRtv(experiment: ExperimentConfig, rtv: string): string | null {
-  return experiment.define_experiment_constant ?? rtv;
+  return experiment.define_experiment_constant ? rtv : null;
 }
 
 void runPromoteJob(jobName, async () => {
   await createVersionsUpdatePullRequest(async (currentVersions) => {
     // We assume that the AMP version number is the same for beta-opt-in and experimental-opt-in, and only differ in their RTV prefix.
-    const ampVersion = AMP_VERSION ?? currentVersions['beta-opt-in'].slice(2);
+    const ampVersion = AMP_VERSION || currentVersions['beta-opt-in'].slice(2);
 
     const activeExperiments = await fetchActiveExperiments(ampVersion);
 
