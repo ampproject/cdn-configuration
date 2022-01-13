@@ -39,4 +39,54 @@ jobs:
           git cherry-pick -x ${{ github.event.inputs.shas }}
           git push --set-upstream https://github.com/ampproject/amphtml.git cherry-pick-${{ github.event.inputs.amp-version }}
 
-      # TODO(estherkim): tie to promote workflow
+  get-channels-to-promote:
+    needs: cherry-pick
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      channels: ${{ steps.get-channels.outputs.channels }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get channels with ${{ github.event.inputs.amp-version }}
+        id: get-channels
+        run: |
+          CHANNELS=$(npx ts-node ./scripts/get-channels --amp_version=${{ github.event.inputs.amp-version }})
+          echo "::set-output name=channels::"$CHANNELS""
+
+  promote-beta-opt-in:
+    needs: get-channels-to-promote
+    if: contains(needs.get-channels-to-promote.outputs.channels, 'beta-opt-in')
+    uses: ampproject/cdn-configuration/.github/workflows/promote-beta-experimental-opt-in.yml@main
+    with:
+      amp-version: ${{ github.event.inputs.amp-version }}
+
+  promote-beta-traffic:
+    needs: get-channels-to-promote
+    if: contains(needs.get-channels-to-promote.outputs.channels, 'beta-traffic')
+    uses: ampproject/cdn-configuration/.github/workflows/promote-beta-experimental-traffic.yml@main
+    with:
+      amp-version: ${{ github.event.inputs.amp-version }}
+
+  promote-stable:
+    needs: get-channels-to-promote
+    if: contains(needs.get-channels-to-promote.outputs.channels, 'stable')
+    uses: ampproject/cdn-configuration/.github/workflows/promote-stable.yml@main
+    with:
+      amp-version: ${{ github.event.inputs.amp-version }}
+
+  promote-lts:
+    needs: get-channels-to-promote
+    if: contains(needs.get-channels-to-promote.outputs.channels, 'lts')
+    uses: ampproject/cdn-configuration/.github/workflows/promote-lts.yml@main
+    with:
+      amp-version: ${{ github.event.inputs.amp-version }}
