@@ -3,7 +3,7 @@ import {Octokit} from '@octokit/rest';
 import {Versions} from '../configs/schemas/versions';
 import currentVersions from '../configs/versions.json';
 
-const octokit = new (Octokit.plugin(createPullRequest))({
+export const octokit = new (Octokit.plugin(createPullRequest))({
   auth: process.env.ACCESS_TOKEN,
 });
 
