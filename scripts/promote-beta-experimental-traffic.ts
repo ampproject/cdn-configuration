@@ -14,7 +14,8 @@ interface Args extends ParsedArgs {
 }
 
 type ExperimentConfig = {
-  // ExperimentConfig has other fields, but here we only care about one:
+  // ExperimentConfig has other fields, but here we only care about the following:
+  expiration_date_utc?: string;
   define_experiment_constant?: string;
 };
 
@@ -48,7 +49,23 @@ async function fetchActiveExperiments(
 }
 
 function maybeRtv(experiment: ExperimentConfig, rtv: string): string | null {
-  return experiment.define_experiment_constant ? rtv : null;
+  const {define_experiment_constant, expiration_date_utc} = experiment;
+  if (!define_experiment_constant || !expiration_date_utc) {
+    return null;
+  }
+
+  // Regardless of when this job was run, experiments should still be available
+  // if the base (pre any cherry-picks) AMP version was generated from a commit
+  // on or before that experiment's expiration date. This is to prevent a
+  // situation where an experiment suddenly gets turned off by a cherry-pick
+  // that affects the traffic channels.
+  const rtvDateStr = rtv.slice(2, 8);
+  const expirationDateStr = expiration_date_utc.slice(2).replace(/-/g, '');
+  if (expirationDateStr < rtvDateStr) {
+    return null;
+  }
+
+  return rtv;
 }
 
 void runPromoteJob(jobName, async () => {
