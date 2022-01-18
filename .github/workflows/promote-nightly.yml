@@ -9,6 +9,11 @@ on:
         description: 'AMP version number (13 digits)'
         required: true
         type: string
+      auto-merge:
+        description: 'Enable PR auto-marge'
+        required: true
+        default: true
+        type: boolean
 
 jobs:
   promote-nightly:
@@ -17,5 +22,6 @@ jobs:
       channel-name: 'Nightly'
       ts-file: 'promote-nightly.ts'
       amp-version: ${{ github.event.inputs.amp-version }}
+      auto-merge: ${{ github.event.inputs.auto-merge }}
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}

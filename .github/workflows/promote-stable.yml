@@ -14,6 +14,10 @@ on:
         required: false
         default: ''
         type: string
+      auto-merge:
+        description: 'Enable PR auto-marge'
+        required: false
+        type: boolean
 
 jobs:
   promote-stable:
@@ -22,5 +26,6 @@ jobs:
       channel-name: 'Stable'
       ts-file: 'promote-stable.ts'
       amp-version: ${{ github.event.inputs.amp-version }}
+      auto-merge: ${{ github.event.inputs.auto-merge }}
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
