@@ -12,7 +12,7 @@
     "eslint": "8.7.0",
     "eslint-config-prettier": "8.3.0",
     "minimist": "1.2.5",
-    "node-fetch": "2.6.6",
+    "node-fetch": "2.6.7",
     "octokit-plugin-create-pull-request": "3.10.0",
     "prettier": "2.5.1",
     "ts-mocha": "9.0.2",
