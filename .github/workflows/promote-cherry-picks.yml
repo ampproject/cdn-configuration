@@ -9,7 +9,6 @@ on:
       amp-version:
         description: 'AMP version number (13 digits)'
         required: true
-        default: ''
         type: string
 
 jobs:
