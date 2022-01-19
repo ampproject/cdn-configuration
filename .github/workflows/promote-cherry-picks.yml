@@ -1,0 +1,22 @@
+# Promotes the cherry-picked release into all related channels
+# Triggered by circleci job on amphtml
+
+name: Promote Cherry-Picks
+
+on:
+  workflow_dispatch:
+    inputs:
+      amp-version:
+        description: 'AMP version number (13 digits)'
+        required: true
+        type: string
+
+jobs:
+  promote-cherry-picks:
+    uses: ampproject/cdn-configuration/.github/workflows/promote-reusable-workflow.yml@main
+    with:
+      channel-name: 'Cherry-pick'
+      ts-file: 'promote-cherry-picks.ts'
+      amp-version: ${{ github.event.inputs.amp-version }}
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}
