@@ -15,6 +15,21 @@ export type Versions = {
   stable: string;
 };
 
+export const Prefixes: {[channel: string]: string} = {
+  'beta-opt-in': '03',
+  'beta-traffic': '03',
+  control: '02',
+  'experimental-opt-in': '00',
+  'experimental-traffic': '00',
+  experimentA: '10',
+  experimentB: '11',
+  experimentC: '12',
+  lts: '01',
+  nightly: '04',
+  'nightly-control': '05',
+  stable: '01',
+};
+
 const schema: JSONSchemaType<Versions> = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   description: 'Versioning (RTV) information',
