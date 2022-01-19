@@ -48,6 +48,7 @@ const schema: JSONSchemaType<Versions> = {
     'nightly-control',
     'stable',
   ],
+  // TODO: generate properties using Versions and Prefixes
   properties: {
     'beta-opt-in': {
       type: 'string',

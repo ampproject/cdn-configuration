@@ -17,20 +17,23 @@ const {amp_version: ampVersion}: Args = yargs(process.argv.slice(2))
 
 const jobName = 'promote-cherry-pick.ts';
 
-function getOldAmpVersion(
+function getAmpVersionToCherrypick(
   ampVersion: string,
   currentVersions: Versions
 ): string {
-  const firstTen = ampVersion.slice(0, 10);
-  const oldVersion = Object.values(currentVersions).find(
-    (version) => version?.slice(2, 12) == firstTen
+  const cherryPicksCount = ampVersion.slice(-3);
+  const ampVersionWithoutCherryPicksCounter = ampVersion.slice(0, 10);
+  const ampVersionToCherrypick = Object.values(currentVersions).find(
+    (version) =>
+      version?.slice(2, 12) == ampVersionWithoutCherryPicksCounter &&
+      version?.slice(0, 2) < cherryPicksCount
   );
-  if (!oldVersion) {
+  if (!ampVersionToCherrypick) {
     throw Error(
       `Could not find a live AMP version to be cherry-picked with ${ampVersion}`
     );
   }
-  return oldVersion.slice(-13);
+  return ampVersionToCherrypick.slice(-13);
 }
 
 function getChannels(ampVersion: string, currentVersions: Versions): string[] {
@@ -45,23 +48,26 @@ function getChannels(ampVersion: string, currentVersions: Versions): string[] {
 
 void runPromoteJob(jobName, async () => {
   await createVersionsUpdatePullRequest((currentVersions) => {
-    const oldAmpVersion = getOldAmpVersion(ampVersion, currentVersions);
-    const channels = getChannels(oldAmpVersion, currentVersions);
+    const currentAmpVersion = getAmpVersionToCherrypick(
+      ampVersion,
+      currentVersions
+    );
+    const channels = getChannels(currentAmpVersion, currentVersions);
     const versionsChanges: {[channel: string]: string} = {};
     for (const channel of channels) {
       versionsChanges[channel] = `${Prefixes[channel]}${ampVersion}`;
     }
+    const ampVersionWithoutCherryPicksCounter = ampVersion.slice(0, 10);
+    const currentCherryPicksCount = currentAmpVersion.slice(-3);
+    const cherryPicksCount = ampVersion.slice(-3);
 
     return {
       versionsChanges,
-      title: `🌸 Promoting all ${oldAmpVersion.slice(
-        0,
-        10
-      )}[${oldAmpVersion.slice(-3)}→${ampVersion.slice(-3)}] channels`,
+      title: `🌸 Promoting all ${ampVersionWithoutCherryPicksCounter}[${currentCherryPicksCount}→${cherryPicksCount}] channels`,
       body: `Promoting release ${ampVersion} to channels: ${channels.join(
         ', '
       )}`,
-      branch: `cherry-pick-${oldAmpVersion}-to-${ampVersion}`,
+      branch: `cherry-pick-${currentAmpVersion}-to-${ampVersion}`,
     };
   });
 });
