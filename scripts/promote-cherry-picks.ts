@@ -16,13 +16,13 @@ const {amp_version: ampVersion}: Args = yargs(process.argv.slice(2))
   .parseSync();
 
 const jobName = 'promote-cherry-pick.ts';
+const ampVersionWithoutCherryPicksCounter = ampVersion.slice(0, 10);
+const cherryPicksCount = ampVersion.slice(-3);
 
 function getAmpVersionToCherrypick(
   ampVersion: string,
   currentVersions: Versions
 ): string {
-  const cherryPicksCount = ampVersion.slice(-3);
-  const ampVersionWithoutCherryPicksCounter = ampVersion.slice(0, 10);
   const ampVersionToCherrypick = Object.values(currentVersions).find(
     (version) =>
       version?.slice(2, 12) == ampVersionWithoutCherryPicksCounter &&
@@ -52,14 +52,12 @@ void runPromoteJob(jobName, async () => {
       ampVersion,
       currentVersions
     );
+    const currentCherryPicksCount = currentAmpVersion.slice(-3);
     const channels = getChannels(currentAmpVersion, currentVersions);
     const versionsChanges: {[channel: string]: string} = {};
     for (const channel of channels) {
       versionsChanges[channel] = `${Prefixes[channel]}${ampVersion}`;
     }
-    const ampVersionWithoutCherryPicksCounter = ampVersion.slice(0, 10);
-    const currentCherryPicksCount = currentAmpVersion.slice(-3);
-    const cherryPicksCount = ampVersion.slice(-3);
 
     return {
       versionsChanges,
