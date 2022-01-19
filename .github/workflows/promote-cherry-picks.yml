@@ -13,7 +13,7 @@ on:
 
 jobs:
   promote-cherry-picks:
-    uses: estherkim/cdn-configuration/.github/workflows/promote-reusable-workflow.yml@main
+    uses: ampproject/cdn-configuration/.github/workflows/promote-reusable-workflow.yml@main
     with:
       channel-name: 'Cherry-pick'
       ts-file: 'promote-cherry-picks.ts'
