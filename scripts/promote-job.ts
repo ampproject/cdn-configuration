@@ -2,6 +2,7 @@ import {createPullRequest} from 'octokit-plugin-create-pull-request';
 import {Octokit} from '@octokit/rest';
 import {Versions} from '../configs/schemas/versions';
 import currentVersions from '../configs/versions.json';
+import yargs from 'yargs/yargs';
 
 export const octokit = new (Octokit.plugin(createPullRequest))({
   auth: process.env.ACCESS_TOKEN,
@@ -24,6 +25,20 @@ interface VersionMutatorDef {
   body: string;
   branch: string;
 }
+
+interface EnablePullRequestAutoMergeResponse {
+  enablePullRequestAutoMerge: {
+    pullRequest: {
+      autoMergeRequest: {
+        enabledAt: string;
+      };
+    };
+  };
+}
+
+const {auto_merge: autoMerge} = yargs(process.argv.slice(2))
+  .options({auto_merge: {type: 'boolean', demandOption: true}})
+  .parseSync();
 
 /**
  * Helper used by promote related CI job scripts.
@@ -81,7 +96,42 @@ export async function createVersionsUpdatePullRequest(
   if (!pullRequestResponse || pullRequestResponse.status !== 201) {
     throw new Error('Failed to create a pull request');
   }
-  console.log('Created pull request', `${pullRequestResponse.data.number}`);
+  console.log('Created pull request', pullRequestResponse.data.number);
+
+  if (autoMerge) {
+    const enableAutoMergeResponse =
+      await octokit.graphql<EnablePullRequestAutoMergeResponse>(
+        `
+      mutation(
+        $pullRequestId: ID!,
+        $mergeMethod: PullRequestMergeMethod!
+      ) {
+        enablePullRequestAutoMerge(input: {
+          pullRequestId: $pullRequestId,
+          mergeMethod: $mergeMethod
+        }) {
+          pullRequest {
+            autoMergeRequest {
+              enabledAt
+            }
+          }
+        }
+      }`,
+        {
+          pullRequestId: pullRequestResponse.data.node_id,
+          mergeMethod: 'SQUASH',
+        }
+      );
+    if (
+      enableAutoMergeResponse.enablePullRequestAutoMerge.pullRequest
+        .autoMergeRequest.enabledAt
+    ) {
+      console.log(
+        'Enabled auto-merge on pull request',
+        pullRequestResponse.data.number
+      );
+    }
+  }
 
   return pullRequestResponse;
 }

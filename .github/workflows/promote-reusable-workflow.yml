@@ -16,6 +16,12 @@ on:
         required: false
         default: ''
         type: string
+      auto-merge:
+        description: 'Leave this box checked to enable the PR to auto-merge when all checks have passed.'
+        required: true
+        # This really should be boolean but GitHub Actions struggles with passing a boolean to a reusable workflow.
+        default: 'false'
+        type: string
     secrets:
       access-token:
         description: 'Personal access token for the bot that will create the pull requests'
@@ -40,6 +46,6 @@ jobs:
         run: npm ci
 
       - name: ⭐ Promote ${{ inputs.channel-name }} Channel ⭐
-        run: npx ts-node scripts/${{ inputs.ts-file }} --amp_version=${{ inputs.amp-version }}
+        run: npx ts-node scripts/${{ inputs.ts-file }} --amp_version=${{ inputs.amp-version }} --auto_merge=${{ inputs.auto-merge }}
         env:
           ACCESS_TOKEN: ${{ secrets.access-token }}
