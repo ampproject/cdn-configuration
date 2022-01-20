@@ -2,15 +2,13 @@
  * Promotes a Stable release.
  */
 
-import minimist, {ParsedArgs} from 'minimist';
+import yargs from 'yargs/yargs';
 import {createVersionsUpdatePullRequest, runPromoteJob} from './promote-job';
 
-interface Args extends ParsedArgs {
-  amp_version?: string;
-}
-
 const jobName = 'promote-stable.ts';
-const {amp_version: AMP_VERSION}: Args = minimist(process.argv.slice(2));
+const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
+  .options({amp_version: {type: 'string'}})
+  .parseSync();
 
 void runPromoteJob(jobName, async () => {
   await createVersionsUpdatePullRequest((currentVersions) => {

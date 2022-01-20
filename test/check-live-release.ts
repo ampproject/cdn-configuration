@@ -1,13 +1,12 @@
 import assert from 'assert';
-import minimist, {ParsedArgs} from 'minimist';
+import yargs from 'yargs/yargs';
 import versionsJson from '../configs/versions.json';
 import fetch from 'node-fetch';
 
-interface Args extends ParsedArgs {
-  diff?: string;
-}
-const {diff}: Args = minimist(process.argv.slice(2));
-const files: string[] = diff ? diff.split(' ') : [];
+const {diff} = yargs(process.argv.slice(2))
+  .options({diff: {type: 'string', demandOption: true}})
+  .parseSync();
+const files = diff.split(' ');
 
 // TODO(estherkim): unskip when versions.json is used in prod
 describe.skip('check releases are live before promoting', function () {

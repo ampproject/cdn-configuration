@@ -1,12 +1,11 @@
 import assert from 'assert';
-import minimist, {ParsedArgs} from 'minimist';
+import yargs from 'yargs/yargs';
 import freezedatesJson from '../configs/freezedates.json';
 
-interface Args extends ParsedArgs {
-  diff?: string;
-}
-const {diff}: Args = minimist(process.argv.slice(2));
-const files: string[] = diff ? diff.split(' ') : [];
+const {diff} = yargs(process.argv.slice(2))
+  .options({diff: {type: 'string', demandOption: true}})
+  .parseSync();
+const files = diff.split(' ');
 
 describe('check file changes', () => {
   it('should not update more than one config at a time', () => {
