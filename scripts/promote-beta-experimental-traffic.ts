@@ -2,16 +2,12 @@
  * Promotes a Beta/Experimental traffic release.
  */
 
-import minimist, {ParsedArgs} from 'minimist';
+import yargs from 'yargs/yargs';
 import {
   createVersionsUpdatePullRequest,
   octokit,
   runPromoteJob,
 } from './promote-job';
-
-interface Args extends ParsedArgs {
-  amp_version?: string;
-}
 
 type ExperimentConfig = {
   // ExperimentConfig has other fields, but here we only care about the following:
@@ -26,7 +22,9 @@ type ExperimentsConfig = {
 };
 
 const jobName = 'promote-beta-experimental-traffic.ts';
-const {amp_version: AMP_VERSION}: Args = minimist(process.argv.slice(2));
+const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
+  .options({amp_version: {type: 'string'}})
+  .parseSync();
 
 async function fetchActiveExperiments(
   ampVersion: string
