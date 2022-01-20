@@ -2,7 +2,7 @@
   "devDependencies": {
     "@octokit/rest": "18.12.0",
     "@types/minimist": "1.2.2",
-    "@types/mocha": "9.0.0",
+    "@types/mocha": "9.1.0",
     "@types/node": "16.11.21",
     "@types/node-fetch": "2.5.12",
     "@types/yargs": "17.0.8",
