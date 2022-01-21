@@ -33,7 +33,7 @@ jobs:
           SHAS_COUNT=${#SHAS_ARRAY[@]}
           CURRENT_CP_COUNT=${AMP_VERSION:10:13}
           NEW_CP_COUNT=00$(expr $CURRENT_CP_COUNT + $SHAS_COUNT)
-          CHERRY_PICK_BRANCH=amp-release-${AMP_VERSION:0:10}${PADDED_CP_COUNT: -3}
+          CHERRY_PICK_BRANCH=amp-release-${AMP_VERSION:0:10}${NEW_CP_COUNT: -3}
           echo $CHERRY_PICK_BRANCH
 
       - name: Set git config
@@ -48,5 +48,3 @@ jobs:
           git cherry-pick -x ${{ github.event.inputs.shas }}
           git checkout -b $CHERRY_PICK_BRANCH ${{ github.event.inputs.amp-version }}
           git push --set-upstream https://github.com/ampproject/amphtml.git $CHERRY_PICK_BRANCH
-
-      # TODO(estherkim): tie to promote workflow
