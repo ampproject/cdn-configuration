@@ -28,11 +28,23 @@ jobs:
 
       - name: Generate cherry-pick branch name
         run: |
+          # get amp version to be cherry-picked
           AMP_VERSION=${{ github.event.inputs.amp-version }}
+
+          # get number of commits to cherry-pick
           read -r -a SHAS_ARRAY <<< "${{ github.event.inputs.shas }}"
           SHAS_COUNT=${#SHAS_ARRAY[@]}
+
+          # get number of current cherry-picks by taking the last 3 digits
           CURRENT_CP_COUNT=${AMP_VERSION:10:13}
+
+          # add commits to cherry-pick to current cherry-picks, and then pad with 00
+          # i.e. if there are 10 cherry-picks total, NEW_CP_COUNT would be 0010
           NEW_CP_COUNT=00$(expr $CURRENT_CP_COUNT + $SHAS_COUNT)
+
+          # set the cherry-picked amp version to be the first 10 digits of the current amp version,
+          # then the last 3 digits of the total cherry-picks
+          # i.e. if there are 10 cherry-picks total, the last 3 digits would be 010
           CHERRY_PICK_BRANCH=amp-release-${AMP_VERSION:0:10}${NEW_CP_COUNT: -3}
           echo $CHERRY_PICK_BRANCH
 
