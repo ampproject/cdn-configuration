@@ -57,6 +57,6 @@ jobs:
 
       - name: Cherry-pick ${{ github.event.inputs.amp-version }} with ${{ github.event.inputs.shas }}
         run: |
-          git cherry-pick -x ${{ github.event.inputs.shas }}
           git checkout -b $CHERRY_PICK_BRANCH ${{ github.event.inputs.amp-version }}
+          git cherry-pick -x ${{ github.event.inputs.shas }}
           git push --set-upstream https://github.com/ampproject/amphtml.git $CHERRY_PICK_BRANCH
