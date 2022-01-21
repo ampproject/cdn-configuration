@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: hmarr/auto-approve-action@v2
-        if: github.actor == 'ampprojectbot' && (startsWith(github.head_ref, 'promote-') || startsWith(github.head_ref, 'cherry-pick-'))
+        if: github.actor == 'ampprojectbot' && startsWith(github.head_ref, 'promote-job-')
         with:
           github-token: '${{ github.token }}'
