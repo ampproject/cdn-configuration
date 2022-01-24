@@ -15,7 +15,7 @@ on:
         default: ''
         type: string
       auto-merge:
-        description: 'Enable PR auto-marge'
+        description: 'Enable PR auto-merge'
         required: false
         type: boolean
 

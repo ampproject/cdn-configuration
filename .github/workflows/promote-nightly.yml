@@ -10,7 +10,7 @@ on:
         required: true
         type: string
       auto-merge:
-        description: 'Enable PR auto-marge'
+        description: 'Enable PR auto-merge'
         required: true
         default: true
         type: boolean
