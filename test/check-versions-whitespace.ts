@@ -14,6 +14,10 @@ describe('check versions.json whitespace', () => {
         ',\n\n'
       ) + '\n';
 
-    assert.equal(versionsJsonString, expectedVersionsJsonString);
+    assert.equal(
+      versionsJsonString,
+      expectedVersionsJsonString,
+      'The format of versions.json is incorrect, see resulting diff for expected format. The format is strictly enforced to prevent Git merge conflicts in multiple parallel auto-generated PRs that modify disparate channels.'
+    );
   });
 });
