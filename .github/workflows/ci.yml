@@ -37,6 +37,9 @@ jobs:
       - name: Check configs
         run: npx ts-mocha ./test/check-json-schemas.ts
 
+      - name: Check versions.json whitespace
+        run: npx ts-mocha ./test/check-versions-whitespace.ts
+
       - name: Check file changes
         run: npx ts-mocha ./test/check-file-changes.ts --diff="${{ steps.get-diff.outputs.diff }}"
 
