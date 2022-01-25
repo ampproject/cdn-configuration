@@ -11,5 +11,8 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "prettier"
-  ]
+  ],
+  "rules": {
+    "@typescript-eslint/no-floating-promises": [2, {"ignoreVoid": false}]
+  }
 }

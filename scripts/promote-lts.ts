@@ -33,4 +33,6 @@ void runPromoteJob(jobName, async () => {
       branch: `lts-${ampVersion}`,
     };
   });
+}).catch((error) => {
+  throw error;
 });

@@ -24,4 +24,6 @@ void runPromoteJob(jobName, async () => {
       branch: `beta-experimental-opt-in-${ampVersion}`,
     };
   });
+}).catch((error) => {
+  throw error;
 });

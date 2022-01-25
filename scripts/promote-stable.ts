@@ -26,4 +26,6 @@ void runPromoteJob(jobName, async () => {
       branch: `stable-${ampVersion}`,
     };
   });
+}).catch((error) => {
+  throw error;
 });

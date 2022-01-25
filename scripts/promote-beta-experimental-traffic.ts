@@ -86,4 +86,6 @@ void runPromoteJob(jobName, async () => {
       branch: `beta-experimental-traffic-${ampVersion}`,
     };
   });
+}).catch((error) => {
+  throw error;
 });

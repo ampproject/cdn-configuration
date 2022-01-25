@@ -68,4 +68,6 @@ void runPromoteJob(jobName, async () => {
       branch: `cherry-pick-${currentAmpVersion}-to-${ampVersion}`,
     };
   });
+}).catch((error) => {
+  throw error;
 });

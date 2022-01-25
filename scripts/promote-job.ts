@@ -77,23 +77,26 @@ export async function createVersionsUpdatePullRequest(
     ...versionsChanges,
   };
 
-  const pullRequestResponse = await octokit.createPullRequest({
-    ...params,
-    title,
-    body: `${body}\n\n${releaseOnDuty}`,
-    head: `promote-job-${branch}`,
-    changes: [
-      {
-        files: {
-          [versionsJsonFile]: JSON.stringify(newVersions, undefined, 2) + '\n',
+  const pullRequestResponse = await octokit
+    .createPullRequest({
+      ...params,
+      title,
+      body: `${body}\n\n${releaseOnDuty}`,
+      head: `promote-job-${branch}`,
+      changes: [
+        {
+          files: {
+            [versionsJsonFile]:
+              JSON.stringify(newVersions, undefined, 2) + '\n',
+          },
+          commit: title,
         },
-        commit: title,
-      },
-    ],
-    createWhenEmpty: false,
-  }).catch((error: Error) => {
-    throw error;
-  });
+      ],
+      createWhenEmpty: false,
+    })
+    .catch((error: Error) => {
+      throw error;
+    });
 
   if (!pullRequestResponse || pullRequestResponse.status !== 201) {
     throw new Error('Failed to create a pull request');

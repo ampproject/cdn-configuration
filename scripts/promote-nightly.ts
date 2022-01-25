@@ -17,4 +17,6 @@ void runPromoteJob(jobName, async () => {
     body: `Promoting release ${AMP_VERSION} to Nightly channel`,
     branch: `nightly-${AMP_VERSION}`,
   }));
+}).catch((error) => {
+  throw error;
 });
