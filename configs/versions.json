@@ -1,7 +1,7 @@
 {
   "beta-opt-in": "032201141909000",
   "beta-traffic": "032201141909000",
-  "control": "022201122239000",
+  "control": "022201141909000",
   "experimental-opt-in": "002201141909000",
   "experimental-traffic": "002201141909000",
   "experimentA": null,
@@ -9,6 +9,6 @@
   "experimentC": null,
   "lts": "012201122239000",
   "nightly": "042201212122000",
-  "nightly-control": "052201122239000",
-  "stable": "012201122239000"
+  "nightly-control": "052201141909000",
+  "stable": "012201141909000"
 }
