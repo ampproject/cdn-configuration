@@ -91,6 +91,8 @@ export async function createVersionsUpdatePullRequest(
       },
     ],
     createWhenEmpty: false,
+  }).catch((error: Error) => {
+    throw error;
   });
 
   if (!pullRequestResponse || pullRequestResponse.status !== 201) {
