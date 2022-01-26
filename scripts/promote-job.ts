@@ -77,6 +77,12 @@ export async function createVersionsUpdatePullRequest(
     ...versionsChanges,
   };
 
+  // Ensure that there is an empty line between each channel, so that multiple
+  // auto-generated PRs that modify different channels will not result in a
+  // merge conflict.
+  const newVersionsJsonString =
+    JSON.stringify(newVersions, undefined, 2).replace(/,\n/g, ',\n\n') + '\n';
+
   const pullRequestResponse = await octokit.createPullRequest({
     ...params,
     title,
@@ -85,7 +91,7 @@ export async function createVersionsUpdatePullRequest(
     changes: [
       {
         files: {
-          [versionsJsonFile]: JSON.stringify(newVersions, undefined, 2) + '\n',
+          [versionsJsonFile]: newVersionsJsonString,
         },
         commit: title,
       },
