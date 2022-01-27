@@ -30,3 +30,10 @@ jobs:
         env:
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+
+  create-issue-on-error:
+    needs: sync
+    if: failure()
+    uses: ampproject/cdn-configuration/.github/workflows/create-issue-on-error.yml@main
+    with:
+      mention: '@ampproject/build-on-duty'

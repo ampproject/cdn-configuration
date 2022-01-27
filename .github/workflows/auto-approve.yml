@@ -15,3 +15,10 @@ jobs:
         if: github.actor == 'ampprojectbot' && startsWith(github.head_ref, 'promote-job-')
         with:
           github-token: '${{ github.token }}'
+
+  create-issue-on-error:
+    needs: auto-approve
+    if: failure()
+    uses: ampproject/cdn-configuration/.github/workflows/create-issue-on-error.yml@main
+    with:
+      mention: '@ampproject/wg-infra'
