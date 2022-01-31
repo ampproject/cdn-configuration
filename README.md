@@ -2,13 +2,11 @@
 
 ## Overview
 
-This README contains instructions for the releases on-duty engineer. To learn more about AMP releases, please see release documation at https://github.com/ampproject/amphtml/tree/main/docs.
-
-## About this repo
-
-This repo stores the AMP versions that are being served by AMP CDNs in `configs/versions.json`. It also hosts the deployment and patching workflows for the release on-duty engineer.
+https://github.com/ampproject/cdn-configuration stores the AMP versions that are being served by AMP CDNs in `configs/versions.json`. It also hosts the deployment and patching workflows for the release on-duty engineer.
 
 These workflows replace the actions on the internal release dashboard. It does not, however, replace the error monitoring systems. Please check the internal doc for links to monitor errors and performance.
+
+This README contains instructions for the releases on-duty engineer. To learn more about AMP releases, please see release documation at https://github.com/ampproject/amphtml/tree/main/docs.
 
 ## Deploying and promoting a release
 
@@ -20,11 +18,11 @@ Once merged, the CDNs will pick up the new versions. It should take between 30 t
 
 As a summary, promotions run on a weekly schedule:
 
-- Monday: nightly, lts\*
-- Tuesday: nightly, stable, beta/experimental opt-in
-- Wednesday: nightly, beta/experimental traffic
-- Thursday: nightly
-- Friday: nightly
+- Monday: `nightly`, `lts`\*
+- Tuesday: `nightly`, `stable`, `beta/experimental opt-in`
+- Wednesday: `nightly`, `beta/experimental traffic`
+- Thursday: `nightly`
+- Friday: `nightly`
 - Saturday: none
 - Sunday: none
 
@@ -32,7 +30,7 @@ _\*lts promotions occur every 2nd Monday of the month._
 
 For more information about schedules and channels, see https://github.com/ampproject/amphtml/blob/main/docs/release-schedule.md.
 
-## Patching a release (cherry-pick)
+## Cherry-picking a release
 
 To cherry-pick a release, run the `Cherry-pick a release` workflow. It asks for the AMP version to fix, as well as the commit shas to cherry-pick. For multiple commits, separate the shas with a space.
 
@@ -43,8 +41,10 @@ It takes about 30 minutes from triggering the cherry-pick to creating a promote 
 To resolve merge conflicts, cherry-pick the release locally:
 
 1. check out the tag: `git checkout ${amp_version}`
-2. switch to a new branch: `git switch -c amp-release-${amp_version}-fix` \n(Make sure that the branch starts with `amp-release-`)
-3. cherry-pick the fix: `git cherry-pick -x ${shas}` \n(make sure to include the `-x` flag)
+2. switch to a new branch: `git switch -c amp-release-${amp_version}-fix`  
+   (Make sure that the branch starts with `amp-release-`)
+3. cherry-pick the fix: `git cherry-pick -x ${shas}`  
+   (make sure to include the `-x` flag)
 4. resolve any merge conflicts
 5. push branch to remote: `git push https://github.com/ampproject/amphtml.git`
 
