@@ -42,7 +42,7 @@ To resolve merge conflicts, cherry-pick the release locally:
 
 1. check out the tag: `git checkout ${amp_version}`
 2. switch to a new branch: `git switch -c amp-release-${amp_version}-fix`  
-   (Make sure that the branch starts with `amp-release-`)
+   (make sure that the branch starts with `amp-release-`)
 3. cherry-pick the fix: `git cherry-pick -x ${shas}`  
    (make sure to include the `-x` flag)
 4. resolve any merge conflicts
