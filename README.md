@@ -23,15 +23,17 @@ Once merged, the CDNs will pick up the new versions. It takes about 15-30 minute
 
 As a summary, promotions run on a weekly schedule:
 
-- Monday: `nightly`, `lts`\*
-- Tuesday: `nightly`, `stable`, `beta/experimental opt-in`
-- Wednesday: `nightly`, `beta/experimental traffic`
-- Thursday: `nightly`
-- Friday: `nightly`
-- Saturday: none
-- Sunday: none
+|           | `nightly` | `beta/experimental` | `stable` | `lts` |
+| --------- | :-------: | :-----------------: | :------: | :---: |
+| Monday    |    🌙     |                     |          | 🚀 \* |
+| Tueday    |    🌙     |     🚀 `opt-in`     |    🚀    |       |
+| Wednesday |    🌙     |    🚀 `traffic`     |          |       |
+| Thursday  |    🌙     |                     |          |       |
+| Friday    |    🌙     |                     |          |       |
+| Saturday  |           |                     |          |       |
+| Sunday    |           |                     |          |       |
 
-_\*lts promotions occur every 2nd Monday of the month._
+_\* lts promotions occur every 2nd Monday of the month._
 
 For more information about schedules and channels, see https://github.com/ampproject/amphtml/blob/main/docs/release-schedule.md.
 
