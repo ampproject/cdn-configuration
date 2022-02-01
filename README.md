@@ -11,7 +11,7 @@ The following AMP CDNs are managed by this repository:
 
 This README contains instructions for the releases on-duty engineer. To learn more about AMP releases, please see release documation at https://github.com/ampproject/amphtml/tree/main/docs.
 
-[^note]: These workflows replace the actions on the internal release dashboard. It does not, however, replace the error monitoring systems. Please check the internal doc for links to monitor errors and performance.
+[^note]: These workflows replace the actions on the internal release dashboard as part of the transition to open source.
 
 ## Deploying and promoting a release
 
