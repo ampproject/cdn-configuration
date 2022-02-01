@@ -4,8 +4,8 @@ name: Promote Beta/Experimental traffic Channels
 
 on:
   schedule:
-    # 1:30 a.m. PST / 12:30 a.m. PDT, Tuesdays.
-    - cron: '30 1 * * 2'
+    # 1:30 a.m. PST / 12:30 a.m. PDT, Wednesdays.
+    - cron: '30 1 * * 3'
 
   workflow_dispatch:
     inputs:
@@ -29,3 +29,10 @@ jobs:
       auto-merge: ${{ github.event.inputs.auto-merge }}
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
+
+  create-issue-on-error:
+    needs: promote-beta-experimental-traffic
+    if: failure()
+    uses: ampproject/cdn-configuration/.github/workflows/create-issue-on-error.yml@main
+    with:
+      mention: '@ampproject/release-on-duty'

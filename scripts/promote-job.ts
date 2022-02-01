@@ -11,8 +11,7 @@ export const octokit = new (Octokit.plugin(createPullRequest))({
 const versionsJsonFile = 'configs/versions.json';
 const params = {owner: 'ampproject', repo: 'cdn-configuration'};
 
-// TODO(danielrozenberg): change to @ampproject/release-on-duty after testing is done.
-const releaseOnDuty = '@danielrozenberg';
+const releaseOnDuty = '@ampproject/release-on-duty';
 
 type Awaitable<T> = T | Promise<T>; // https://github.com/microsoft/TypeScript/issues/31394
 type CreatePullRequestResponsePromise = ReturnType<
