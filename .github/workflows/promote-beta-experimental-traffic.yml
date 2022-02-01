@@ -4,8 +4,8 @@ name: Promote Beta/Experimental traffic Channels
 
 on:
   schedule:
-    # 1:30 a.m. PST / 12:30 a.m. PDT, Tuesdays.
-    - cron: '30 1 * * 2'
+    # 1:30 a.m. PST / 12:30 a.m. PDT, Wednesdays.
+    - cron: '30 1 * * 3'
 
   workflow_dispatch:
     inputs:
