@@ -24,7 +24,7 @@ jobs:
         with:
           repository: ampproject/amphtml
           fetch-depth: 0
-          token: ${{ secrets.AMPPROJECTBOT }}
+          token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Generate cherry-pick branch name
         run: |
