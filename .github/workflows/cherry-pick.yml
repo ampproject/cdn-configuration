@@ -27,6 +27,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Generate cherry-pick branch name
+        id: get-branch
         run: |
           # get amp version to be cherry-picked
           AMP_VERSION=${{ github.event.inputs.amp-version }}
@@ -46,7 +47,7 @@ jobs:
           # then the last 3 digits of the total cherry-picks
           # i.e. if there are 10 cherry-picks total, the last 3 digits would be 010
           CHERRY_PICK_BRANCH=amp-release-${AMP_VERSION:0:10}${NEW_CP_COUNT: -3}
-          echo $CHERRY_PICK_BRANCH
+          echo "::set-output name=branch::${CHERRY_PICK_BRANCH}"
 
       - name: Set git config
         run: |
@@ -57,9 +58,9 @@ jobs:
 
       - name: Cherry-pick ${{ github.event.inputs.amp-version }} with ${{ github.event.inputs.shas }}
         run: |
-          git checkout -b $CHERRY_PICK_BRANCH ${{ github.event.inputs.amp-version }}
+          git checkout -b ${{ steps.get-branch.outputs.branch }} ${{ github.event.inputs.amp-version }}
           git cherry-pick -x ${{ github.event.inputs.shas }}
-          git push --set-upstream https://github.com/ampproject/amphtml.git $CHERRY_PICK_BRANCH
+          git push --set-upstream https://github.com/ampproject/amphtml.git ${{ steps.get-branch.outputs.branch }}
 
   create-issue-on-error:
     needs: cherry-pick
