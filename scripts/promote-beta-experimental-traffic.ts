@@ -82,7 +82,7 @@ void runPromoteJob(jobName, async () => {
         experimentC: maybeRtv(activeExperiments.experimentC, `12${ampVersion}`),
       },
       title: `⏫ Promoting release ${ampVersion} to Beta/Experimental traffic channel`,
-      body: `Promoting release ${ampVersion} from Nightly channel to Beta/Experimental traffic channel`,
+      body: `Promoting release ${ampVersion} from Beta/Experimental opt-in to traffic`,
       branch: `beta-experimental-traffic-${ampVersion}`,
     };
   });
