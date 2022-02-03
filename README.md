@@ -39,7 +39,12 @@ For more information about schedules and channels, see https://github.com/amppro
 
 ## Cherry-picking a release
 
-To cherry-pick a release, run the [`Cherry-pick a release`](https://github.com/ampproject/cdn-configuration/actions/workflows/cherry-pick.yml) workflow. It asks for the AMP version to fix, as well as the commit shas to cherry-pick. For multiple commits, separate the shas with a space.
+To cherry-pick a release, run the [`Cherry-pick a release`](https://github.com/ampproject/cdn-configuration/actions/workflows/cherry-pick.yml) workflow. It asks for one or more AMP versions to fix, as well as the commit shas to cherry-pick. For multiple AMP versions and/or commits shas, separate the shas with a space.
+
+> _Each_ of the listed AMP version will cherry-picked with _all_ of the listed commit shas. e.g., by listing AMP versions `2111242025001 2202022130000` and commit shas `abcdef1 abcdef2`, the workflow will:
+>
+> - Cherry pick `abcdef1` on top of `2111242025001`, then `abcdef2` on top of the result, and
+> - Cherry pick `abcdef1` on top of `2202022130000`, then `abcdef2` on top of the result
 
 How it works: the workflow pushes a new branch to amphtml. CircleCI will pick up that branch and build the release. Once built and uploaded to [`ampjs.org`](https://ampjs.org), the CircleCI job will trigger the promote workflow.
 
