@@ -35,6 +35,12 @@ jobs:
     environment: cherry-pick
 
     strategy:
+      # Do not fail other cherry-picks just because another one fails. It is
+      # possible that only one cherry-pick out of many will fail because of a
+      # merge conflict that doesn't exist in the other release branches. The
+      # release-on-duty should investigate and fix the failed CPs manually.
+      fail-fast: false
+
       matrix:
         amp-version: ${{ fromJSON(needs.generate-matrix.outputs.amp-versions) }}
 
