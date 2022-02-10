@@ -23,6 +23,7 @@ jobs:
       channel-name: 'Cherry-pick'
       ts-file: 'promote-cherry-picks.ts'
       amp-version: ${{ github.event.inputs.amp-version }}
+      auto-merge: ${{ github.event.inputs.auto-merge }}
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
 
