@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@octokit/openapi-types": "11.2.0",
     "@octokit/rest": "18.12.0",
     "@octokit/types": "6.34.0",
     "@types/mocha": "9.1.0",

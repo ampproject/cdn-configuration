@@ -1,11 +1,14 @@
 import {Octokit} from '@octokit/rest';
+import {components} from '@octokit/openapi-types';
+
+type Commit = components['schemas']['commit'];
 const params = {owner: 'ampproject', repo: 'amphtml'};
 
 export async function getMissingCommits(
   octokit: Octokit,
   ampVersion: string,
   releases: Set<string>
-) {
+): Promise<string[]> {
   const missingShas: string[] = [];
 
   // get distinct shas that were cherry-picked
@@ -24,7 +27,8 @@ export async function getMissingCommits(
 
   // get cherry-picked shas that aren't in commit tree
   for (const mainSha of mainShas) {
-    if (!(await isMissing(octokit, ampVersion, mainSha))) continue;
+    const commitIsMissing = await isMissing(octokit, ampVersion, mainSha);
+    if (!commitIsMissing) continue;
 
     missingShas.push(mainSha);
   }
@@ -32,9 +36,12 @@ export async function getMissingCommits(
   return missingShas;
 }
 
-async function getCherryPickCommits(octokit: Octokit, release: string) {
+async function getCherryPickCommits(
+  octokit: Octokit,
+  release: string
+): Promise<Commit[] | undefined> {
   if (release.endsWith('000')) return;
-  const base = release.slice(0, 10) + '000';
+  const base = release.slice(0, -3) + '000';
   const response = await octokit.rest.repos.compareCommitsWithBasehead({
     ...params,
     basehead: `${base}...${release}`,
@@ -42,12 +49,18 @@ async function getCherryPickCommits(octokit: Octokit, release: string) {
   return response.data.commits;
 }
 
-function getMainBranchShaFromCommitMessage(message: string) {
+function getMainBranchShaFromCommitMessage(
+  message: string
+): string | undefined {
   const match = message.match(/cherry picked from commit ([0-9a-f]{40})/);
-  return match ? match[1] : null;
+  return match?.[1];
 }
 
-async function isMissing(octokit: Octokit, ampVersion: string, sha: string) {
+async function isMissing(
+  octokit: Octokit,
+  ampVersion: string,
+  sha: string
+): Promise<boolean> {
   const response = await octokit.rest.repos.compareCommitsWithBasehead({
     ...params,
     basehead: `${ampVersion}...${sha}`,
