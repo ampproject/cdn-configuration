@@ -2,11 +2,11 @@ import {Octokit} from '@octokit/rest';
 const params = {owner: 'ampproject', repo: 'amphtml'};
 
 export async function getMissingCommits(
+  octokit: Octokit,
   ampVersion: string,
   releases: Set<string>
 ) {
   const missingShas: string[] = [];
-  const octokit = new Octokit();
 
   // get distinct shas that were cherry-picked
   const mainShas = new Set<string>();
