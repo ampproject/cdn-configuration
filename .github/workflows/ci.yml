@@ -38,6 +38,9 @@ jobs:
           npm run prettier
           npm run lint
 
+      - name: Run unit tests
+        run: npx ts-mocha ./test/scripts/*.ts
+
       - name: Check configs
         run: npx ts-mocha ./test/check-json-schemas.ts
 
