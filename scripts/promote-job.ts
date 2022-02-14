@@ -75,8 +75,8 @@ export async function createVersionsUpdatePullRequest(
   } = await versionsMutator(currentVersions);
 
   const body = autoMerge
-    ? `${bodyStart}\n\n${releaseOnDuty} — please approve and merge this PR`
-    : `${bodyStart}\n\n// cc: ${releaseOnDuty} — FYI`;
+    ? `${bodyStart}\n\n// cc: ${releaseOnDuty} — FYI`
+    : `${bodyStart}\n\n${releaseOnDuty} — please approve and merge this PR`;
 
   const newVersions = {
     ...currentVersions,
