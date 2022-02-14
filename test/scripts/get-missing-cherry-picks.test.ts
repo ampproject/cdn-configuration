@@ -1,15 +1,19 @@
 import assert from 'assert';
-import {Octokit} from '@octokit/rest';
-import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
+import {Octokit, RestEndpointMethodTypes} from '@octokit/rest';
 import {spy, when, deepEqual, resetCalls, reset} from 'ts-mockito';
 import {getMissingCommits} from '../../scripts/get-missing-cherry-picks-utils';
 
 describe('get missing cherry-picks tests', () => {
-  const octokit = new Octokit();
+  type CompareResponse =
+    RestEndpointMethodTypes['repos']['compareCommitsWithBasehead']['response'];
+  const octokit = {
+    rest: {
+      repos: {
+        compareCommitsWithBasehead: () => null,
+      },
+    },
+  } as unknown as Octokit;
   const spiedRepos = spy(octokit.rest.repos);
-  type CompareResponse = GetResponseTypeFromEndpointMethod<
-    typeof octokit.rest.repos.compareCommitsWithBasehead
-  >;
 
   afterEach(() => {
     resetCalls(spiedRepos);
