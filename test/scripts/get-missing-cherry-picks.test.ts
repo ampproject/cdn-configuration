@@ -3,9 +3,10 @@ import {Octokit, RestEndpointMethodTypes} from '@octokit/rest';
 import {spy, when, deepEqual, resetCalls, reset} from 'ts-mockito';
 import {getMissingCommits} from '../../scripts/get-missing-cherry-picks-utils';
 
+type CompareResponse =
+  RestEndpointMethodTypes['repos']['compareCommitsWithBasehead']['response'];
+
 describe('get missing cherry-picks tests', () => {
-  type CompareResponse =
-    RestEndpointMethodTypes['repos']['compareCommitsWithBasehead']['response'];
   const octokit = {
     rest: {
       repos: {
