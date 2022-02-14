@@ -3,7 +3,7 @@
     "@octokit/openapi-types": "11.2.0",
     "@octokit/rest": "18.12.0",
     "@types/mocha": "9.1.0",
-    "@types/node": "16.11.24",
+    "@types/node": "16.11.25",
     "@types/node-fetch": "2.5.12",
     "@types/yargs": "17.0.8",
     "@typescript-eslint/eslint-plugin": "5.12.0",
