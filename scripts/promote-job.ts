@@ -67,9 +67,16 @@ export async function createVersionsUpdatePullRequest(
     throw new Error('Environment variable ACCESS_TOKEN is missing');
   }
 
-  const {body, title, versionsChanges, branch} = await versionsMutator(
-    currentVersions
-  );
+  const {
+    body: bodyStart,
+    title,
+    versionsChanges,
+    branch,
+  } = await versionsMutator(currentVersions);
+
+  const body = autoMerge
+    ? `${bodyStart}\n\n// cc: ${releaseOnDuty} — FYI`
+    : `${bodyStart}\n\n${releaseOnDuty} — please approve and merge this PR`;
 
   const newVersions = {
     ...currentVersions,
@@ -85,7 +92,7 @@ export async function createVersionsUpdatePullRequest(
   const pullRequestResponse = await octokit.createPullRequest({
     ...params,
     title,
-    body: `${body}\n\n${releaseOnDuty}`,
+    body,
     head: `promote-job-${branch}`,
     changes: [
       {
