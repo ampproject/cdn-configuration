@@ -1,6 +1,16 @@
 name: Cherry-pick a release
 
 on:
+  workflow_call:
+    inputs:
+      amp-version:
+        description: AMP version (13 digits)
+        required: true
+        type: string
+      shas:
+        description: commit sha(s) to cherry-pick with (i.e. abcdef1 abcdef2)
+        required: true
+        type: string
   workflow_dispatch:
     inputs:
       amp-version:

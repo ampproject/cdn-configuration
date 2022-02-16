@@ -30,8 +30,37 @@ jobs:
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
 
+  get-missing-cherry-picks:
+    runs-on: ubuntu-latest
+    outputs:
+      fixes: ${{ steps.get-fixes.outputs.fixes }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get fixes
+        id: get-fixes
+        run: |
+          FIXES=$(npx ts-node ./scripts/get-missing-cherry-picks-job.ts --amp_version="${{ github.event.inputs.amp-version }}")
+          echo "::set-output name=fixes::${FIXES}"
+
+  cherry-pick-if-missing:
+    runs-on: ubuntu-latest
+    needs: get-missing-cherry-picks
+    if: needs.get-missing-cherry-picks.outputs.fixes
+    uses: ampproject/cdn-configuration/.github/workflows/cherry-pick.yml@main
+    with:
+      amp-version: ${{ github.event.inputs.amp-version }}
+      shas: ${{ needs.get-missing-cherry-picks.outputs.fixes }}
+
   create-issue-on-error:
-    needs: promote-beta-experimental-opt-in
+    needs: [promote-beta-experimental-opt-in, get-missing-cherry-picks]
     if: failure()
     uses: ampproject/cdn-configuration/.github/workflows/create-issue-on-error.yml@main
     with:
