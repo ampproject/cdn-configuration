@@ -72,9 +72,10 @@ jobs:
           git cherry-pick -x ${{ github.event.inputs.shas }}
           git push --set-upstream https://github.com/ampproject/amphtml.git ${{ steps.get-branch.outputs.branch }}
 
-  create-issue-on-error:
-    needs: cherry-pick
-    if: failure()
-    uses: ampproject/cdn-configuration/.github/workflows/create-issue-on-error.yml@main
-    with:
-      mention: '@ampproject/release-on-duty'
+# TODO: figure out how to reuse without hitting workflow depth limit of 2
+#   create-issue-on-error:
+#     needs: cherry-pick
+#     if: failure()
+#     uses: ampproject/cdn-configuration/.github/workflows/create-issue-on-error.yml@main
+#     with:
+#       mention: '@ampproject/release-on-duty'
