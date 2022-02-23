@@ -29,10 +29,3 @@ jobs:
       auto-merge: ${{ github.event.inputs.auto-merge }}
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
-
-  create-issue-on-error:
-    needs: promote-stable
-    if: failure()
-    uses: ampproject/cdn-configuration/.github/workflows/create-issue-on-error.yml@main
-    with:
-      mention: '@ampproject/release-on-duty'
