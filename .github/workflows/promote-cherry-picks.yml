@@ -26,3 +26,42 @@ jobs:
       auto-merge: ${{ github.event.inputs.auto-merge }}
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
+
+  get-channels:
+    needs: promote-cherry-picks
+    runs-on: ubuntu-latest
+    outputs:
+      channels: ${{ steps.get-channels-step.outputs.channels }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set Up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: lts/*
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Get channels
+        id: get-channels-step
+        run: |
+          CHANNELS=$(npx ts-node ./scripts/get-channels-job.ts --amp_version="${{ github.event.inputs.amp-version }}")
+          echo "::set-output name=channels::${CHANNELS}"
+
+  npm-publish-latest:
+    needs: get-channels
+    if: contains(needs.get-channels.outputs.channels, 'stable')
+    uses: ampproject/amphtml/.github/workflows/publish-npm-packages.yml@main
+    with:
+      amp-version: ${{ github.event.inputs.amp-version }}
+      tag: 'latest'
+
+  npm-publish-nightly:
+    needs: get-channels
+    if: contains(needs.get-channels.outputs.channels, 'nightly')
+    uses: ampproject/amphtml/.github/workflows/publish-npm-packages.yml@main
+    with:
+      amp-version: ${{ github.event.inputs.amp-version }}
+      tag: 'nightly'
