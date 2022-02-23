@@ -5,6 +5,7 @@
 import yargs from 'yargs/yargs';
 import {Prefixes, Versions} from '../configs/schemas/versions';
 import {createVersionsUpdatePullRequest, runPromoteJob} from './promote-job';
+import {getChannels} from './get-channels-utils'
 
 interface Args {
   amp_version: string;
@@ -36,16 +37,6 @@ function getAmpVersionToCherrypick(
   return ampVersionToCherrypick.slice(-13);
 }
 
-function getChannels(ampVersion: string, currentVersions: Versions): string[] {
-  const channels = [];
-  for (const [channel, version] of Object.entries(currentVersions)) {
-    if (version && version.slice(-13) == ampVersion) {
-      channels.push(channel);
-    }
-  }
-  return channels;
-}
-
 void runPromoteJob(jobName, async () => {
   await createVersionsUpdatePullRequest((currentVersions) => {
     const currentAmpVersion = getAmpVersionToCherrypick(
@@ -53,7 +44,7 @@ void runPromoteJob(jobName, async () => {
       currentVersions
     );
     const currentCherryPicksCount = currentAmpVersion.slice(-3);
-    const channels = getChannels(currentAmpVersion, currentVersions);
+    const channels = getChannels(currentAmpVersion, currentVersions).join(', ');
     const versionsChanges: {[channel: string]: string} = {};
     for (const channel of channels) {
       versionsChanges[channel] = `${Prefixes[channel]}${ampVersion}`;
@@ -62,9 +53,7 @@ void runPromoteJob(jobName, async () => {
     return {
       versionsChanges,
       title: `🌸 Promoting all ${ampVersionWithoutCherryPicksCounter}[${currentCherryPicksCount}→${cherryPicksCount}] channels`,
-      body: `Promoting release ${ampVersion} to channels: ${channels.join(
-        ', '
-      )}`,
+      body: `Promoting release ${ampVersion} to channels: ${channels}`,
       branch: `cherry-pick-${currentAmpVersion}-to-${ampVersion}`,
     };
   });
