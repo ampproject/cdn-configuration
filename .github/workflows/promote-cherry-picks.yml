@@ -51,16 +51,16 @@ jobs:
           echo "::set-output name=channels::${CHANNELS}"
 
   npm-publish-latest:
-    if: contains(needs.get-channels.outputs.channels, 'stable')
     needs: get-channels
+    if: contains(needs.get-channels.outputs.channels, 'stable')
     uses: ampproject/amphtml/.github/workflows/publish-npm-packages.yml@main
     with:
       amp-version: ${{ github.event.inputs.amp-version }}
       tag: 'latest'
 
   npm-publish-nightly:
-    if: contains(needs.get-channels.outputs.channels, 'nightly')
     needs: get-channels
+    if: contains(needs.get-channels.outputs.channels, 'nightly')
     uses: ampproject/amphtml/.github/workflows/publish-npm-packages.yml@main
     with:
       amp-version: ${{ github.event.inputs.amp-version }}
