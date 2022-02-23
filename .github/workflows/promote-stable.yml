@@ -29,3 +29,10 @@ jobs:
       auto-merge: ${{ github.event.inputs.auto-merge }}
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
+
+  npm-publish-latest:
+    needs: promote-stable
+    uses: ampproject/amphtml/.github/workflows/publish-npm-packages.yml@main
+    with:
+      amp-version: ${{ github.event.inputs.amp-version }}
+      tag: 'latest'
