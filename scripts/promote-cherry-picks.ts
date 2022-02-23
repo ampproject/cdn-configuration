@@ -5,7 +5,7 @@
 import yargs from 'yargs/yargs';
 import {Prefixes, Versions} from '../configs/schemas/versions';
 import {createVersionsUpdatePullRequest, runPromoteJob} from './promote-job';
-import {getChannels} from './get-channels-utils'
+import {getChannels} from './get-channels-utils';
 
 interface Args {
   amp_version: string;
