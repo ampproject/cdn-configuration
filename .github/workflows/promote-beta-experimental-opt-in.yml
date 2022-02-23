@@ -50,18 +50,6 @@ jobs:
           FIXES=$(npx ts-node ./scripts/get-missing-cherry-picks-job.ts --amp_version="${{ github.event.inputs.amp-version }}")
           echo "::set-output name=fixes::${FIXES}"
 
-      - name: Create issue on error
-        if: ${{ failure() }}
-        uses: JasonEtco/create-an-issue@v2
-        with:
-          filename: .github/create_issue_on_error.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.access-token }}
-          WORKFLOW_NAME: ${{ github.workflow }}
-          MENTION: '@ampproject/release-on-duty'
-          REPO_SLUG: ${{ github.repository }}
-          RUN_ID: ${{ github.run_id }}
-
   cherry-pick-if-missing:
     runs-on: ubuntu-latest
     needs: get-missing-cherry-picks
@@ -70,3 +58,10 @@ jobs:
     with:
       amp-version: ${{ github.event.inputs.amp-version }}
       shas: ${{ needs.get-missing-cherry-picks.outputs.fixes }}
+
+  create-issue-on-error:
+    needs: [promote-beta-experimental-opt-in, get-missing-cherry-picks]
+    if: failure()
+    uses: ampproject/cdn-configuration/.github/workflows/create-issue-on-error.yml@main
+    with:
+      mention: '@ampproject/release-on-duty'

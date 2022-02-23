@@ -72,14 +72,10 @@ jobs:
           git cherry-pick -x ${{ github.event.inputs.shas }}
           git push --set-upstream https://github.com/ampproject/amphtml.git ${{ steps.get-branch.outputs.branch }}
 
-      - name: Create issue on error
-        if: ${{ failure() }}
-        uses: JasonEtco/create-an-issue@v2
-        with:
-          filename: .github/create_issue_on_error.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.access-token }}
-          WORKFLOW_NAME: ${{ github.workflow }}
-          MENTION: '@ampproject/release-on-duty'
-          REPO_SLUG: ${{ github.repository }}
-          RUN_ID: ${{ github.run_id }}
+# TODO: figure out how to reuse without hitting workflow depth limit of 2
+#   create-issue-on-error:
+#     needs: cherry-pick
+#     if: failure()
+#     uses: ampproject/cdn-configuration/.github/workflows/create-issue-on-error.yml@main
+#     with:
+#       mention: '@ampproject/release-on-duty'
