@@ -1,4 +1,4 @@
 # QA approval
 # Required via branch protection rules for 1% and stable promotions
 # Not required for main
-configs/versions.json    @JuliaTrubchyk
+configs/versions.json    @ampproject/amp-qa
