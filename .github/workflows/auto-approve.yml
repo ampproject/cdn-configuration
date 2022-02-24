@@ -19,6 +19,17 @@ jobs:
   create-issue-on-error:
     needs: auto-approve
     if: failure()
-    uses: ampproject/cdn-configuration/.github/workflows/create-issue-on-error.yml@main
-    with:
-      mention: '@ampproject/wg-infra'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create issue on error
+        uses: JasonEtco/create-an-issue@v2
+        with:
+          filename: .github/create_issue_on_error.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+          MENTION: '@ampproject/infra'
+          REPO_SLUG: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
