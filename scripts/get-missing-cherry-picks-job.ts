@@ -3,11 +3,13 @@ import {Octokit} from '@octokit/rest';
 import currentVersions from '../configs/versions.json';
 import {getMissingCommits} from './get-missing-cherry-picks-utils';
 
-const {amp_version: ampVersion} = yargs(process.argv.slice(2))
-  .options({amp_version: {type: 'string', demandOption: true}})
+const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
+  .options({amp_version: {type: 'string'}})
   .parseSync();
 
 async function setOutput() {
+  const ampVersion = AMP_VERSION || currentVersions.nightly.slice(2);
+
   const releases = new Set(
     [
       currentVersions.lts,
