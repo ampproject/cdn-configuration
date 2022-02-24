@@ -4,7 +4,7 @@
     "@octokit/rest": "18.12.0",
     "@types/mocha": "9.1.0",
     "@types/node": "16.11.26",
-    "@types/node-fetch": "2.5.12",
+    "@types/node-fetch": "2.6.1",
     "@types/yargs": "17.0.8",
     "@typescript-eslint/eslint-plugin": "5.12.1",
     "@typescript-eslint/parser": "5.12.1",
