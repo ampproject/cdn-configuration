@@ -28,7 +28,11 @@ jobs:
 
   npm-publish-nightly:
     needs: promote-nightly
-    uses: ampproject/amphtml/.github/workflows/publish-npm-packages.yml@main
-    with:
-      amp-version: ${{ github.event.inputs.amp-version }}
-      tag: 'nightly'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send workflow dispatch event
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: 'https://api.github.com/repos/ampproject/amhtml/actions/workflows/publish-npm-packages.yml/dispatches'
+          data: '{ "ref": "main", "inputs": { "amp-version": "${{ github.event.inputs.amp-version }}", "tag": "nightly" }}'
+          bearerToken: ${{ secrets.ACCESS_TOKEN }}
