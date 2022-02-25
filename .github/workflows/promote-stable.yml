@@ -32,7 +32,11 @@ jobs:
 
   npm-publish-latest:
     needs: promote-stable
-    uses: ampproject/amphtml/.github/workflows/publish-npm-packages.yml@main
-    with:
-      amp-version: ${{ github.event.inputs.amp-version }}
-      tag: 'latest'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger publish-npm-packages workflow on amphtml
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: 'https://api.github.com/repos/ampproject/amhtml/actions/workflows/publish-npm-packages.yml/dispatches'
+          data: '{"ref": "main", "inputs": {"amp-version": "${{ github.event.inputs.amp-version }}", "tag": "latest"}}'
+          bearerToken: ${{ secrets.ACCESS_TOKEN }}
