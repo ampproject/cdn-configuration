@@ -4,8 +4,13 @@
 
 import yargs from 'yargs/yargs';
 import {Prefixes, Versions} from '../configs/schemas/versions';
-import {createVersionsUpdatePullRequest, runPromoteJob} from './promote-job';
+import {
+  createVersionsUpdatePullRequest,
+  octokit,
+  runPromoteJob,
+} from './promote-job';
 import {getChannels} from './get-channels-utils';
+import {components} from '@octokit/openapi-types';
 
 interface Args {
   amp_version: string;
@@ -37,8 +42,52 @@ function getAmpVersionToCherrypick(
   return ampVersionToCherrypick.slice(-13);
 }
 
+async function getCherryPickedPRs(
+  ampVersion: string,
+  numberOfCherryPickedCommits: number
+): Promise<string[]> {
+  try {
+    const {data} = await octokit.rest.repos.listCommits({
+      owner: 'ampproject',
+      repo: 'amphtml',
+      sha: ampVersion,
+      per_page: numberOfCherryPickedCommits,
+    });
+    return data.map(({commit}) => {
+      const [firstLine] = commit.message.split('\n');
+      const pullNumber = firstLine?.match(/\(#(?<pullNumber>\d+)\)$/)?.groups
+        ?.pullNumber;
+      if (pullNumber) {
+        return `* https://github.com/ampproject/amphtml/pull/${pullNumber}`;
+      }
+      // Ugh Octokit's typing is horrendous.
+      const {html_url: htmlUrl} =
+        commit as unknown as components['schemas']['commit'];
+      return `* ${htmlUrl}`;
+    });
+  } catch (err) {
+    console.warn('Could not fetch the list of cherry picked PRs, skipping...');
+    console.warn('Exception thrown:', err);
+    return [];
+  }
+}
+
+function generateBody(
+  ampVersion: string,
+  channels: string,
+  cherryPickedPRs: string[]
+): string {
+  let body = `Promoting release ${ampVersion} to channels: ${channels}`;
+  if (cherryPickedPRs.length) {
+    body += '\n\nPRs included in this cherry pick:\n';
+    body += cherryPickedPRs.join('\n');
+  }
+  body += `\n\nCommits on release branch: [amp-release-${ampVersion}](https://github.com/ampproject/amphtml/commits/amp-release-${ampVersion})`;
+  return body;
+}
+
 void runPromoteJob(jobName, async () => {
-  await createVersionsUpdatePullRequest((currentVersions) => {
+  await createVersionsUpdatePullRequest(async (currentVersions) => {
     const currentAmpVersion = getAmpVersionToCherrypick(
       ampVersion,
       currentVersions
@@ -50,10 +99,15 @@ void runPromoteJob(jobName, async () => {
       versionsChanges[channel] = `${Prefixes[channel]}${ampVersion}`;
     }
 
+    const cherryPickedPRs = await getCherryPickedPRs(
+      ampVersion,
+      Number(cherryPicksCount) - Number(currentCherryPicksCount)
+    );
+
     return {
       versionsChanges,
       title: `🌸 Promoting all ${ampVersionWithoutCherryPicksCounter}[${currentCherryPicksCount}→${cherryPicksCount}] channels`,
-      body: `Promoting release ${ampVersion} to channels: ${channels}`,
+      body: generateBody(ampVersion, channels, cherryPickedPRs),
       branch: `cherry-pick-${currentAmpVersion}-to-${ampVersion}`,
     };
   });
