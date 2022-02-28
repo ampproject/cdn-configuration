@@ -10,6 +10,7 @@ import {
   runPromoteJob,
 } from './promote-job';
 import {getChannels} from './get-channels-utils';
+import {components} from '@octokit/openapi-types';
 
 interface Args {
   amp_version: string;
@@ -23,10 +24,6 @@ const {amp_version: ampVersion}: Args = yargs(process.argv.slice(2))
 const jobName = 'promote-cherry-pick.ts';
 const ampVersionWithoutCherryPicksCounter = ampVersion.slice(0, 10);
 const cherryPicksCount = ampVersion.slice(-3);
-
-function defined<T>(value: T): value is NonNullable<T> {
-  return value !== undefined;
-}
 
 function getAmpVersionToCherrypick(
   ampVersion: string,
@@ -56,13 +53,16 @@ async function getCherryPickedPRs(
       sha: ampVersion,
       per_page: numberOfCherryPickedCommits,
     });
-    return data
-      .map(({commit}) => {
-        const [firstLine] = commit.message.split('\n');
-        const matches = firstLine?.match(/\(#(?<pullNumber>\d+)\)$/);
-        return matches?.groups?.pullNumber;
-      })
-      .filter(defined);
+    return data.map(({commit}) => {
+      const [firstLine] = commit.message.split('\n');
+      const pullNumber = firstLine?.match(/\(#(?<pullNumber>\d+)\)$/)?.groups
+        ?.pullNumber;
+      if (pullNumber) {
+        return `* https://github.com/ampproject/amphtml/pull/${pullNumber}`;
+      }
+      // Ugh Octokit's typing is horrendous.
+      return (commit as unknown as components['schemas']['commit']).html_url;
+    });
   } catch (err) {
     console.warn('Could not fetch the list of cherry picked PRs, skipping...');
     console.warn('Exception thrown:', err);
@@ -78,12 +78,7 @@ function generateBody(
   let body = `Promoting release ${ampVersion} to channels: ${channels}`;
   if (cherryPickedPRs.length) {
     body += '\n\nPRs included in this cherry pick:\n';
-    body += cherryPickedPRs
-      .map(
-        (pullNumber) =>
-          `* https://github.com/ampproject/amphtml/pull/${pullNumber}`
-      )
-      .join('\n');
+    body += cherryPickedPRs.join('\n');
   }
   body += `\n\nCommits on release branch: [amp-release-${ampVersion}](https://github.com/ampproject/amphtml/commits/amp-release-${ampVersion})`;
   return body;
