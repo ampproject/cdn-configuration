@@ -85,7 +85,7 @@ function generateBody(
       )
       .join('\n');
   }
-  body += `\n\n[Release branch commits](https://github.com/ampproject/amphtml/commits/amp-release-${ampVersion})`;
+  body += `\n\nCommits on release branch: [amp-release-${ampVersion}](https://github.com/ampproject/amphtml/commits/amp-release-${ampVersion})`;
   return body;
 }
 
