@@ -61,7 +61,9 @@ async function getCherryPickedPRs(
         return `* https://github.com/ampproject/amphtml/pull/${pullNumber}`;
       }
       // Ugh Octokit's typing is horrendous.
-      return (commit as unknown as components['schemas']['commit']).html_url;
+      const {html_url: htmlUrl} =
+        commit as unknown as components['schemas']['commit'];
+      return `* ${htmlUrl}`;
     });
   } catch (err) {
     console.warn('Could not fetch the list of cherry picked PRs, skipping...');
