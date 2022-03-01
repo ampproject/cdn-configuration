@@ -81,7 +81,9 @@ export async function createVersionsUpdatePullRequest(
   if (qa) {
     footers.push(`${qaTeam} — please approve this PR for QA`);
   }
-  if (!autoMerge) {
+  if (autoMerge) {
+    footers.push(`${releaseOnDuty} — FYI`);
+  } else {
     footers.push(`${releaseOnDuty} — please approve and merge this PR`);
   }
   const body = `${bodyStart}\n\n${footers.join('\n')}`;
