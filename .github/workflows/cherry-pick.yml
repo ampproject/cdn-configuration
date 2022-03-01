@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout ampproject/amphtml
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: ampproject/amphtml
           fetch-depth: 0
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Create issue on error
         uses: JasonEtco/create-an-issue@v2
         with:
