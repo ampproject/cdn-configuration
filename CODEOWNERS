@@ -1,4 +1,2 @@
-# QA approval
-# Required via branch protection rules for 1% and stable promotions
-# Not required for main
-configs/versions.json    @ampproject/amp-qa
+# Assign on-duty as reviewer for version changes
+configs/versions.json    @ampproject/release-on-duty
