@@ -76,7 +76,7 @@ export async function createVersionsUpdatePullRequest(
     branch,
     qa,
   } = await versionsMutator(currentVersions);
-  
+
   const footers = [];
   if (qa) {
     footers.push(`${qaTeam} — please approve this PR for QA`);
@@ -84,7 +84,7 @@ export async function createVersionsUpdatePullRequest(
   if (!autoMerge) {
     footers.push(`${releaseOnDuty} — please approve and merge this PR`);
   }
-  const body = `${bodyStart}\n\n${footers.join('\n')}`
+  const body = `${bodyStart}\n\n${footers.join('\n')}`;
 
   const newVersions = {
     ...currentVersions,
