@@ -12,6 +12,7 @@ const versionsJsonFile = 'configs/versions.json';
 const params = {owner: 'ampproject', repo: 'cdn-configuration'};
 
 const releaseOnDuty = '@ampproject/release-on-duty';
+const qaTeam = '@ampproject/amp-qa';
 
 type Awaitable<T> = T | Promise<T>; // https://github.com/microsoft/TypeScript/issues/31394
 type CreatePullRequestResponsePromise = ReturnType<
@@ -23,6 +24,7 @@ interface VersionMutatorDef {
   title: string;
   body: string;
   branch: string;
+  qa: boolean | undefined;
 }
 
 interface EnablePullRequestAutoMergeResponse {
@@ -72,11 +74,19 @@ export async function createVersionsUpdatePullRequest(
     title,
     versionsChanges,
     branch,
+    qa,
   } = await versionsMutator(currentVersions);
 
-  const body = autoMerge
-    ? `${bodyStart}\n\n// cc: ${releaseOnDuty} — FYI`
-    : `${bodyStart}\n\n${releaseOnDuty} — please approve and merge this PR`;
+  const footers = [];
+  if (qa) {
+    footers.push(`${qaTeam} — please approve this PR for QA`);
+  }
+  if (autoMerge) {
+    footers.push(`${releaseOnDuty} — FYI`);
+  } else {
+    footers.push(`${releaseOnDuty} — please approve and merge this PR`);
+  }
+  const body = `${bodyStart}\n\n${footers.join('\n')}`;
 
   const newVersions = {
     ...currentVersions,

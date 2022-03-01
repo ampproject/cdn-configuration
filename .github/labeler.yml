@@ -1,0 +1,2 @@
+'needs QA':
+  - configs/versions.json

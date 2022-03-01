@@ -84,6 +84,7 @@ void runPromoteJob(jobName, async () => {
       title: `⏫ Promoting release ${ampVersion} to Beta/Experimental traffic channel`,
       body: `Promoting release ${ampVersion} from Beta/Experimental opt-in to traffic`,
       branch: `beta-experimental-traffic-${ampVersion}`,
+      qa: true,
     };
   });
 });
