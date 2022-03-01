@@ -36,7 +36,7 @@ jobs:
     outputs:
       fixes: ${{ steps.get-fixes.outputs.fixes }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
         with:
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Create issue on error
         uses: JasonEtco/create-an-issue@v2
         with:
