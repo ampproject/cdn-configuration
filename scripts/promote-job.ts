@@ -24,7 +24,7 @@ interface VersionMutatorDef {
   title: string;
   body: string;
   branch: string;
-  qa: boolean | undefined;
+  qa?: boolean;
 }
 
 interface EnablePullRequestAutoMergeResponse {
