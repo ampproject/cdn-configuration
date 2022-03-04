@@ -15,11 +15,9 @@ const releaseOnDuty = '@ampproject/release-on-duty';
 const qaTeam = '@ampproject/amp-qa';
 
 type Awaitable<T> = T | Promise<T>; // https://github.com/microsoft/TypeScript/issues/31394
-type CreatePullRequestResponsePromise = ReturnType<
-  typeof octokit.createPullRequest
->;
 
 interface VersionMutatorDef {
+  ampVersion: string;
   versionsChanges: Partial<Versions>;
   title: string;
   body: string;
@@ -46,12 +44,13 @@ const {auto_merge: autoMerge} = yargs(process.argv.slice(2))
  */
 export async function runPromoteJob(
   jobName: string,
-  workflow: () => Promise<void>
+  workflow: () => Promise<string>
 ): Promise<void> {
   console.log('Running', `${jobName}...`);
   try {
-    await workflow();
+    const ampVersion = await workflow();
     console.log('Done running', `${jobName}.`);
+    process.env.AMP_VERSION = ampVersion;
   } catch (err) {
     console.error('Job', jobName, 'failed.');
     console.error('ERROR:', err);
@@ -64,12 +63,12 @@ export async function runPromoteJob(
  */
 export async function createVersionsUpdatePullRequest(
   versionsMutator: (currentVersions: Versions) => Awaitable<VersionMutatorDef>
-): CreatePullRequestResponsePromise {
+): Promise<string> {
   if (!process.env.ACCESS_TOKEN) {
     throw new Error('Environment variable ACCESS_TOKEN is missing');
   }
-
   const {
+    ampVersion,
     body: bodyStart,
     title,
     versionsChanges,
@@ -155,5 +154,5 @@ export async function createVersionsUpdatePullRequest(
     }
   }
 
-  return pullRequestResponse;
+  return ampVersion;
 }

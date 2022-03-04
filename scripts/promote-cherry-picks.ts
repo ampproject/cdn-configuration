@@ -87,7 +87,7 @@ function generateBody(
 }
 
 void runPromoteJob(jobName, async () => {
-  await createVersionsUpdatePullRequest(async (currentVersions) => {
+  return createVersionsUpdatePullRequest(async (currentVersions) => {
     const currentAmpVersion = getAmpVersionToCherrypick(
       ampVersion,
       currentVersions
@@ -105,6 +105,7 @@ void runPromoteJob(jobName, async () => {
     );
 
     return {
+      ampVersion,
       versionsChanges,
       title: `🌸 Promoting all ${ampVersionWithoutCherryPicksCounter}[${currentCherryPicksCount}→${cherryPicksCount}] channels`,
       body: generateBody(ampVersion, channels, cherryPickedPRs),

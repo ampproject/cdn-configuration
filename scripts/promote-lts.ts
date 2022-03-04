@@ -10,7 +10,7 @@ const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
   .options({amp_version: {type: 'string'}})
   .parseSync();
 
-void runPromoteJob(jobName, async () => {
+void runPromoteJob(jobName, () => {
   const dayOfMonth = new Date().getUTCDate();
   if (!AMP_VERSION && !(8 <= dayOfMonth && dayOfMonth <= 14)) {
     // Skip this job if today is not the 2nd Monday of the month. The 2nd Monday
@@ -18,13 +18,14 @@ void runPromoteJob(jobName, async () => {
     console.log(
       'Automated LTS promote only occur on the 2nd Monday of each month. Skipping...'
     );
-    return;
+    return Promise.resolve('');
   }
 
-  await createVersionsUpdatePullRequest((currentVersions) => {
+  return createVersionsUpdatePullRequest((currentVersions) => {
     const ampVersion = AMP_VERSION || currentVersions.stable.slice(2);
 
     return {
+      ampVersion,
       versionsChanges: {
         lts: `01${ampVersion}`,
       },

@@ -10,11 +10,12 @@ const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
   .options({amp_version: {type: 'string'}})
   .parseSync();
 
-void runPromoteJob(jobName, async () => {
-  await createVersionsUpdatePullRequest((currentVersions) => {
+void runPromoteJob(jobName, () => {
+  return createVersionsUpdatePullRequest((currentVersions) => {
     const ampVersion = AMP_VERSION || currentVersions.nightly.slice(2);
 
     return {
+      ampVersion,
       versionsChanges: {
         'beta-opt-in': `03${ampVersion}`,
         'experimental-opt-in': `00${ampVersion}`,

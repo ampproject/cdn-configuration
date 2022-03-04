@@ -6,15 +6,16 @@ import yargs from 'yargs/yargs';
 import {createVersionsUpdatePullRequest, runPromoteJob} from './promote-job';
 
 const jobName = 'promote-nightly.ts';
-const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
+const {amp_version: ampVersion} = yargs(process.argv.slice(2))
   .options({amp_version: {type: 'string', demandOption: true}})
   .parseSync();
 
-void runPromoteJob(jobName, async () => {
-  await createVersionsUpdatePullRequest(() => ({
-    versionsChanges: {nightly: `04${AMP_VERSION}`},
-    title: `⏫🌙 Promoting release ${AMP_VERSION} to Nightly channel`,
-    body: `Promoting release ${AMP_VERSION} to Nightly channel`,
-    branch: `nightly-${AMP_VERSION}`,
+void runPromoteJob(jobName, () => {
+  return createVersionsUpdatePullRequest(() => ({
+    ampVersion,
+    versionsChanges: {nightly: `04${ampVersion}`},
+    title: `⏫🌙 Promoting release ${ampVersion} to Nightly channel`,
+    body: `Promoting release ${ampVersion} to Nightly channel`,
+    branch: `nightly-${ampVersion}`,
   }));
 });

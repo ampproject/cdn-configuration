@@ -67,13 +67,14 @@ function maybeRtv(experiment: ExperimentConfig, rtv: string): string | null {
 }
 
 void runPromoteJob(jobName, async () => {
-  await createVersionsUpdatePullRequest(async (currentVersions) => {
+  return createVersionsUpdatePullRequest(async (currentVersions) => {
     // We assume that the AMP version number is the same for beta-opt-in and experimental-opt-in, and only differ in their RTV prefix.
     const ampVersion = AMP_VERSION || currentVersions['beta-opt-in'].slice(2);
 
     const activeExperiments = await fetchActiveExperiments(ampVersion);
 
     return {
+      ampVersion,
       versionsChanges: {
         'beta-traffic': `03${ampVersion}`,
         'experimental-traffic': `00${ampVersion}`,

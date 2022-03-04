@@ -22,6 +22,10 @@ on:
         # This really should be boolean but GitHub Actions struggles with passing a boolean to a reusable workflow.
         default: 'false'
         type: string
+    outputs:
+      amp-version:
+        description: 'Promoted AMP version, which is either the given input or taken from configs/versions.json'
+        value: ${{ jobs.promote.outputs.amp-version }}
     secrets:
       access-token:
         description: 'Personal access token for the bot that will create the pull requests'
@@ -32,6 +36,8 @@ jobs:
     if: github.repository == 'ampproject/cdn-configuration'
     name: Promote ${{ inputs.channel-name }} Channel
     runs-on: ubuntu-latest
+    outputs:
+      amp-version: ${{ steps.promote-step.outputs.amp-version }}
 
     steps:
       - name: Checkout Repo
@@ -46,8 +52,12 @@ jobs:
         run: npm ci
 
       - name: ⭐ Promote ${{ inputs.channel-name }} Channel ⭐
-        run: npx ts-node scripts/${{ inputs.ts-file }} --amp_version=${{ inputs.amp-version }} --auto_merge=${{ inputs.auto-merge }}
+        id: promote-step
+        run: |
+          npx ts-node scripts/${{ inputs.ts-file }} --amp_version=${{ inputs.amp-version }} --auto_merge=${{ inputs.auto-merge }}
+          echo "::set-output name=amp-version::${{ env.AMP_VERSION }}"
         env:
+          AMP_VERSION: ${{ inputs.amp-version }}
           ACCESS_TOKEN: ${{ secrets.access-token }}
 
   create-issue-on-error:
