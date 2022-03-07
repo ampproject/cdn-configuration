@@ -21,7 +21,19 @@ on:
         type: boolean
 
 jobs:
+  get-day:
+    runs-on: ubuntu-latest
+    outputs:
+      day: ${{ steps.day.outputs.day }}
+    steps:
+      - name: Get day of the month
+        id: day
+        run: echo "::set-output name=day::$(date +%d)"
+
   promote-lts:
+    needs: get-day
+    # The 2nd Monday always falls between the 8th to the 14th of the month (inclusive).
+    if: github.event.inputs.amp-version || (8 <= needs.get-day.outputs.day && needs.get-day.outputs.day <= 14)
     uses: ampproject/cdn-configuration/.github/workflows/promote-reusable-workflow.yml@main
     with:
       channel-name: 'LTS'
