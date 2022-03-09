@@ -1,0 +1,39 @@
+name: Require QA Approval
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  is-approved:
+    if: startsWith(github.event.pull_request.head.ref, 'test-promote-1') || startsWith(github.event.pull_request.head.ref, 'test-promote-2')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if not approved
+        if: ${{ github.event.review.state != 'approved' }}
+        run: |
+          echo "Stable and Beta 1% promotions require QA approval"
+          exit 1
+
+  approver-is-qa:
+    needs: is-approved
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fail if approver is not QA
+        run: |
+          IS_QA=$(npx ts-node ./scripts/check-team-membership.ts --org="ampproject" --team="amp-qa" --user=${{ github.event.review.user.login }})
+          if [ $IS_QA = false ]; then
+            echo "${{ github.event.review.user.login }} is not a member of @ampproject/amp-qa"
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.READ_ORG }}
