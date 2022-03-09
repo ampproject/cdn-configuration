@@ -14,7 +14,7 @@ const {
   .parseSync();
 
 const octokit = new Octokit({
-  auth: process.env.READ_ORG,
+  auth: process.env.GITHUB_TOKEN,
 });
 
 async function checkTeamMembership() {
