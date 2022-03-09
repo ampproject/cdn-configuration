@@ -8,8 +8,9 @@ const {head, base} = yargs(process.argv.slice(2))
   })
   .parseSync();
 
-//TODO(estherkim): add calendar, release tagger tasks
+//TODO(estherkim): add release tagger tasks
 interface PostPromoteTask {
+  'calendar-channel': string;
   'npm-tag'?: string;
 }
 
@@ -19,11 +20,19 @@ interface VersionTask extends PostPromoteTask {
 
 const POST_PROMOTE_TASKS: {[channel: string]: PostPromoteTask} = {
   nightly: {
+    'calendar-channel': 'nightly',
     'npm-tag': 'nightly',
   },
+  'beta-traffic': {
+    'calendar-channel': 'beta',
+  },
   stable: {
+    'calendar-channel': 'stable',   
     'npm-tag': 'latest',
   },
+  lts: {
+    'calendar-channel': 'lts',
+  }
 };
 
 async function setOutput() {

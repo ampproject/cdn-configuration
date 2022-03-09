@@ -36,8 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson(needs.setup.outputs.tasks) }}
+      fail-fast: false
     steps:
       - name: Trigger publish-npm-packages workflow on amphtml
+        if: ${{ matrix.npm-tag }}
         uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.github.com/repos/ampproject/amphtml/actions/workflows/publish-npm-packages.yml/dispatches'
@@ -51,6 +53,28 @@ jobs:
                 "tag": "${{ matrix.npm-tag }}",
               }
             }
+
+      - name: Create event on release calendar
+        # run this step even if previous step fails
+        if: ${{ always() }} && ${{ matrix.calendar-channel }}
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: '${{ secrets.CALENDAR_URI }}'
+          bearerToken: ${{ secrets.CALENDAR_TOKEN }}
+          data: >-
+            {
+              "release":
+              {
+                "name": "${{ matrix.amp-version }}"
+              },
+              "promotion":
+              {
+                "releaseName": "${{ matrix.amp-version }}",
+                "time": "$(date +'%Y-%m-%d %H:%M:%S %Z')",
+                "channel": "${{ matrix.calendar-channel }}"
+              }
+            }
+
   create-issue-on-error:
     if: failure()
     needs: [setup, tasks]
