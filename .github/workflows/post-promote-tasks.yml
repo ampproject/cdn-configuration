@@ -58,7 +58,7 @@ jobs:
         with:
           filename: .github/create_issue_on_error.md
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           WORKFLOW_NAME: ${{ github.workflow }}
           MENTION: '@estherkim' #TODO(estherkim): switch to infra team once debug complete
           REPO_SLUG: ${{ github.repository }}
