@@ -17,10 +17,10 @@ export async function getVersionDiff(
     `https://raw.githubusercontent.com/ampproject/cdn-configuration/${sha}/configs/versions.json`;
 
   const headResponse = await fetch(url(head));
-  const headVersions = await headResponse.json() as IndexableVersions;
+  const headVersions = (await headResponse.json()) as IndexableVersions;
 
   const baseResponse = await fetch(url(base));
-  const baseVersions = await baseResponse.json() as IndexableVersions;
+  const baseVersions = (await baseResponse.json()) as IndexableVersions;
 
   const results: VersionDiff[] = [];
   for (const [channel, version] of Object.entries(headVersions)) {
