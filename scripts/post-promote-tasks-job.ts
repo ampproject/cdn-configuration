@@ -27,12 +27,12 @@ const POST_PROMOTE_TASKS: {[channel: string]: PostPromoteTask} = {
     'calendar-channel': 'beta',
   },
   stable: {
-    'calendar-channel': 'stable',   
+    'calendar-channel': 'stable',
     'npm-tag': 'latest',
   },
   lts: {
     'calendar-channel': 'lts',
-  }
+  },
 };
 
 async function setOutput() {
