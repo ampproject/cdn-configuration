@@ -9,12 +9,6 @@ jobs:
     if: startsWith(github.event.pull_request.head.ref, 'promote-job-stable') || startsWith(github.event.pull_request.head.ref, 'promote-job-beta-experimental-traffic')
     runs-on: ubuntu-latest
     steps:
-      - name: Fail if not approved
-        if: ${{ github.event.review.state != 'approved' }}
-        run: |
-          echo "Stable and Beta 1% promotions require QA approval"
-          exit 1
-
       - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
@@ -24,11 +18,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Fail if approver is not QA
+      - name: Fail if QA did not approve
         run: |
-          IS_QA=$(npx ts-node ./scripts/check-team-membership.ts --org="ampproject" --team="amp-qa" --user=${{ github.event.review.user.login }})
-          if [ $IS_QA = false ]; then
-            echo "${{ github.event.review.user.login }} is not a member of @ampproject/amp-qa"
+          QA_APPROVED=$(npx ts-node ./scripts/check-qa-approval.ts --pull_number=${{ github.event.pull_request.number }}
+          if [ $QA_APPROVED != true ]; then
+            echo "Stable and Beta 1% promotions require approval by a member of @ampproject/amp-qa"
             exit 1
           fi
         env:
