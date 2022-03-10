@@ -8,45 +8,42 @@ const {head, base} = yargs(process.argv.slice(2))
   })
   .parseSync();
 
+interface TaskConfig {
+  [channel: string]: string;
+}
+
 //TODO(estherkim): add release tagger tasks
-interface PostPromoteTask {
-  'calendar-channel': string;
-  'npm-tag'?: string;
-}
+const PUBLISH_NPM: TaskConfig = {
+  nightly: 'nightly',
+  stable: 'latest',
+};
 
-interface VersionTask extends PostPromoteTask {
-  'amp-version': string;
-}
-
-const POST_PROMOTE_TASKS: {[channel: string]: PostPromoteTask} = {
-  nightly: {
-    'calendar-channel': 'nightly',
-    'npm-tag': 'nightly',
-  },
-  'beta-traffic': {
-    'calendar-channel': 'beta',
-  },
-  stable: {
-    'calendar-channel': 'stable',
-    'npm-tag': 'latest',
-  },
-  lts: {
-    'calendar-channel': 'lts',
-  },
+const RELEASE_CALENDAR: TaskConfig = {
+  nightly: 'nightly',
+  'beta-traffic': 'beta',
+  stable: 'stable',
+  lts: 'lts',
 };
 
 async function setOutput() {
-  const tasks: VersionTask[] = [];
   const versionDiff = await getVersionDiff(head, base);
+  const npm: {'amp-version': string; tag: string}[] = [];
+  const calendar: {'amp-version': string; channel: string}[] = [];
 
-  versionDiff.forEach((diff) => {
-    const task = POST_PROMOTE_TASKS[diff.channel];
-    if (task) {
-      tasks.push({'amp-version': diff['amp-version'], ...task});
+  versionDiff.forEach(({channel, version}) => {
+    if (PUBLISH_NPM[channel]) {
+      npm.push({'amp-version': version, tag: PUBLISH_NPM[channel]});
+    }
+
+    if (RELEASE_CALENDAR[channel]) {
+      calendar.push({
+        'amp-version': version,
+        channel: RELEASE_CALENDAR[channel],
+      });
     }
   });
 
-  process.stdout.write(JSON.stringify(tasks));
+  process.stdout.write(JSON.stringify({npm, calendar}));
 }
 
 void setOutput();
