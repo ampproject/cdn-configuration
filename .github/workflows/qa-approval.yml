@@ -6,7 +6,7 @@ on:
 
 jobs:
   is-approved-by-qa:
-    if: startsWith(github.event.pull_request.head.ref, 'test-promote-1') || startsWith(github.event.pull_request.head.ref, 'test-promote-2')
+    if: startsWith(github.event.pull_request.head.ref, 'promote-job-stable') || startsWith(github.event.pull_request.head.ref, 'promote-job-beta-experimental-traffic')
     runs-on: ubuntu-latest
     steps:
       - name: Fail if not approved
