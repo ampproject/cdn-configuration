@@ -7,7 +7,7 @@ on:
     branches:
       - 'main'
     paths:
-      - 'configs/version.json'
+      - 'configs/versions.json'
 
 jobs:
   setup:
