@@ -39,8 +39,7 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        tag: ${{ fromJson(needs.setup.outputs.npm-tags) }}
+      matrix: ${{ fromJson(needs.setup.outputs.npm-tags) }}
       fail-fast: false
     steps:
       - name: Trigger publish-npm-packages workflow on amphtml
@@ -62,8 +61,7 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        tag: ${{ fromJson(needs.setup.outputs.calendar-channels) }}
+      matrix: ${{ fromJson(needs.setup.outputs.calendar-channels) }}
       fail-fast: false
     steps:
       - name: Create event on release calendar
