@@ -35,7 +35,7 @@ async function checkQaTeamMembership(approvers: string[]): Promise<boolean> {
   return members.some((member) => approvers.includes(member.login));
 }
 
-async function setOutput() {
+async function setOutput(): Promise<void> {
   const approvers = await getApprovers();
   if (approvers.length < 1) {
     return;
