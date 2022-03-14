@@ -47,15 +47,7 @@ jobs:
         with:
           url: 'https://api.github.com/repos/ampproject/amphtml/actions/workflows/publish-npm-packages.yml/dispatches'
           bearerToken: ${{ secrets.ACCESS_TOKEN }}
-          data: >-
-            {
-              "ref": "main",
-              "inputs":
-              {
-                "amp-version": "${{ matrix.amp-version }}",
-                "tag": "${{ matrix.tag }}",
-              }
-            }
+          data: '{"ref": "main", "inputs": {"amp-version": "${{ matrix.amp-version }}", "tag": "${{ matrix.tag }}"}}'
 
   release-calendar:
     needs: setup
