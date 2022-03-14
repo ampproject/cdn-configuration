@@ -7,14 +7,15 @@ on:
     branches:
       - 'main'
     paths:
-      - 'configs/version.json'
+      - 'configs/versions.json'
 
 jobs:
   setup:
     if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     outputs:
-      tasks: ${{ steps.get-tasks.outputs.tasks }}
+      npm-tags: ${{ steps.get-tasks.outputs.npm-tags }}
+      calendar-channels: ${{ steps.get-tasks.outputs.calendar-channels }}
     steps:
       - uses: actions/checkout@v3
 
@@ -28,32 +29,63 @@ jobs:
       - name: Get tasks
         id: get-tasks
         run: |
-          TASKS=$(npx ts-node ./scripts/post-promote-tasks-job.ts --head="${{ github.event.pull_request.merge_commit_sha }}" --base="${{ github.event.pull_request.base.sha }}")
-          echo "::set-output name=tasks::{\"include\":${TASKS}}"
+          MATRIX=$(npx ts-node ./scripts/post-promote-tasks-job.ts --head="${{ github.event.pull_request.merge_commit_sha }}" --base="${{ github.event.pull_request.base.sha }}")
+          NPM="$(echo $MATRIX | jq '.npm')"
+          CALENDAR="$(echo $MATRIX | jq '.calendar')"
+          echo "::set-output name=npm-tags::{"include":"${NPM}"}"
+          echo "::set-output name=calendar-channels::{"include":"${CALENDAR}"}"
 
-  tasks:
+  npm-publish:
     needs: setup
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.setup.outputs.tasks) }}
+      matrix: ${{ fromJson(needs.setup.outputs.npm-tags) }}
+      fail-fast: false
     steps:
       - name: Trigger publish-npm-packages workflow on amphtml
         uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.github.com/repos/ampproject/amphtml/actions/workflows/publish-npm-packages.yml/dispatches'
           bearerToken: ${{ secrets.ACCESS_TOKEN }}
-          data: >-
+          data: >
             {
               "ref": "main",
               "inputs":
               {
                 "amp-version": "${{ matrix.amp-version }}",
-                "tag": "${{ matrix.npm-tag }}",
+                "tag": "${{ matrix.tag }}"
               }
             }
+
+  release-calendar:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.setup.outputs.calendar-channels) }}
+      fail-fast: false
+    steps:
+      - name: Create event on release calendar
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: '${{ secrets.CALENDAR_URI }}'
+          bearerToken: ${{ secrets.CALENDAR_TOKEN }}
+          data: >
+            {
+              "release":
+              {
+                "name": "${{ matrix.amp-version }}"
+              },
+              "promotion":
+              {
+                "releaseName": "${{ matrix.amp-version }}",
+                "time": "$(date +'%Y-%m-%d %H:%M:%S %Z')",
+                "channel": "${{ matrix.channel }}"
+              }
+            }
+
   create-issue-on-error:
     if: failure()
-    needs: [setup, tasks]
+    needs: [setup, npm-publish, release-calendar]
     permissions:
       contents: read
       issues: write

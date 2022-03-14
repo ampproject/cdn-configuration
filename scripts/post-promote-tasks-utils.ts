@@ -6,7 +6,7 @@ interface IndexableVersions {
 
 interface VersionDiff {
   channel: string;
-  'amp-version': string;
+  version: string;
 }
 
 export async function getVersionDiff(
@@ -23,9 +23,9 @@ export async function getVersionDiff(
   const baseVersions = (await baseResponse.json()) as IndexableVersions;
 
   const results: VersionDiff[] = [];
-  for (const [channel, version] of Object.entries(headVersions)) {
-    if (version !== baseVersions[channel]) {
-      results.push({channel, 'amp-version': version.slice(-13)});
+  for (const [channel, rtv] of Object.entries(headVersions)) {
+    if (rtv !== baseVersions[channel]) {
+      results.push({channel, version: rtv.slice(-13)});
     }
   }
 
