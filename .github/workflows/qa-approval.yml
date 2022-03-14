@@ -1,0 +1,29 @@
+name: Require QA Approval
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  is-approved-by-qa:
+    if: startsWith(github.event.pull_request.head.ref, 'promote-job-stable') || startsWith(github.event.pull_request.head.ref, 'promote-job-beta-experimental-traffic')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fail if QA did not approve
+        run: |
+          QA_APPROVED=$(npx ts-node ./scripts/check-qa-approval.ts --pull_number=${{ github.event.pull_request.number }}
+          if [ $QA_APPROVED != true ]; then
+            echo "Stable and Beta 1% promotions require approval by a member of @ampproject/amp-qa"
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.READ_ORG }}
