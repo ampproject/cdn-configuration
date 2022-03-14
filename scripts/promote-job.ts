@@ -1,6 +1,7 @@
 import {createPullRequest} from 'octokit-plugin-create-pull-request';
 import {Octokit} from '@octokit/rest';
 import {Versions} from '../configs/schemas/versions';
+import * as core from '@actions/core';
 import currentVersions from '../configs/versions.json';
 import yargs from 'yargs/yargs';
 
@@ -50,7 +51,7 @@ export async function runPromoteJob(
   try {
     const ampVersion = await workflow();
     console.log('Done running', `${jobName}.`);
-    process.env.AMP_VERSION = ampVersion;
+    core.exportVariable('AMP_VERSION', ampVersion);
   } catch (err) {
     console.error('Job', jobName, 'failed.');
     console.error('ERROR:', err);
