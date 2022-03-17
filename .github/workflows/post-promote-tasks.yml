@@ -29,7 +29,7 @@ jobs:
       - name: Get tasks
         id: get-tasks
         run: |
-          MATRIX=$(npx ts-node ./scripts/post-promote-tasks-job.ts --head="${{ github.event.pull_request.merge_commit_sha }}" --base="${{ github.event.pull_request.base.sha }}")
+          MATRIX=$(npx ts-node ./scripts/post-promote-tasks-job.ts --head="${{ github.event.pull_request.merge_commit_sha }}" --base="${{ github.sha }}")
           NPM="$(echo $MATRIX | jq '.npm')"
           CALENDAR="$(echo $MATRIX | jq '.calendar')"
           echo "::set-output name=npm-tags::{"include":"${NPM}"}"
