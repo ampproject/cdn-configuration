@@ -6,7 +6,7 @@
     "@types/mocha": "9.1.0",
     "@types/node": "16.11.26",
     "@types/node-fetch": "2.6.1",
-    "@types/yargs": "17.0.9",
+    "@types/yargs": "17.0.10",
     "@typescript-eslint/eslint-plugin": "5.15.0",
     "@typescript-eslint/parser": "5.15.0",
     "ajv": "8.10.0",
