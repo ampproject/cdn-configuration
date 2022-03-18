@@ -33,17 +33,14 @@ jobs:
         run: |
           HEAD=${{ github.event.pull_request.merge_commit_sha }}
           BASE=$(git rev-parse $HEAD^)
-          MATRIX=$(npx ts-node ./scripts/post-promote-tasks-job.ts --head="$HEAD" --base="$BASE")
-          NPM="$(echo $MATRIX | jq '.npm')"
-          CALENDAR="$(echo $MATRIX | jq '.calendar')"
-          echo "::set-output name=npm-tags::{"include":"${NPM}"}"
-          echo "::set-output name=calendar-channels::{"include":"${CALENDAR}"}"
+          npx ts-node ./scripts/post-promote-tasks-job.ts --head="$HEAD" --base="$BASE"
 
   npm-publish:
     needs: setup
+    if: needs.setup.outputs.npm
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.setup.outputs.npm-tags) }}
+      matrix: ${{ fromJson(needs.setup.outputs.npm) }}
       fail-fast: false
     steps:
       - name: Trigger publish-npm-packages workflow on amphtml
@@ -56,16 +53,17 @@ jobs:
               "ref": "main",
               "inputs":
               {
-                "amp-version": "${{ matrix.amp-version }}",
-                "tag": "${{ matrix.tag }}"
+                "amp-version": "${{ matrix.includes.amp-version }}",
+                "tag": "${{ matrix.includes.tag }}"
               }
             }
 
   release-calendar:
     needs: setup
+    if: needs.setup.outputs.calendar
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.setup.outputs.calendar-channels) }}
+      matrix: ${{ fromJson(needs.setup.outputs.calendar) }}
       fail-fast: false
     steps:
       - name: Create event on release calendar
@@ -77,13 +75,13 @@ jobs:
             {
               "release":
               {
-                "name": "${{ matrix.amp-version }}"
+                "name": "${{ matrix.includes.amp-version }}"
               },
               "promotion":
               {
-                "releaseName": "${{ matrix.amp-version }}",
+                "releaseName": "${{ matrix.includes.amp-version }}",
                 "time": "$(date +'%Y-%m-%d %H:%M:%S %Z')",
-                "channel": "${{ matrix.channel }}"
+                "channel": "${{ matrix.includes.channel }}"
               }
             }
 
