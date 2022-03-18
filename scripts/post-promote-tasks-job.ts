@@ -1,3 +1,4 @@
+import * as core from '@actions/core';
 import yargs from 'yargs/yargs';
 import {getVersionDiff} from './post-promote-tasks-utils';
 
@@ -43,7 +44,8 @@ async function setOutput() {
     }
   });
 
-  process.stdout.write(JSON.stringify({npm, calendar}));
+  core.setOutput('npm', npm.length > 0 ? {includes: npm} : null);
+  core.setOutput('calendar', calendar.length > 0 ? {includes: calendar} : null);
 }
 
 void setOutput();
