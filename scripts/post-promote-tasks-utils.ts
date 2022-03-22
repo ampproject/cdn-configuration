@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import {Octokit} from '@octokit/rest';
 
 interface IndexableVersions {
   [channel: string]: string;
@@ -9,18 +10,19 @@ interface VersionDiff {
   version: string;
 }
 
+async function getVersions(sha: string): Promise<IndexableVersions> {
+  const response = await fetch(
+    `https://raw.githubusercontent.com/ampproject/cdn-configuration/${sha}/configs/versions.json`
+  );
+  return (await response.json()) as IndexableVersions;
+}
+
 export async function getVersionDiff(
   head: string,
   base: string
 ): Promise<VersionDiff[]> {
-  const url = (sha: string) =>
-    `https://raw.githubusercontent.com/ampproject/cdn-configuration/${sha}/configs/versions.json`;
-
-  const headResponse = await fetch(url(head));
-  const headVersions = (await headResponse.json()) as IndexableVersions;
-
-  const baseResponse = await fetch(url(base));
-  const baseVersions = (await baseResponse.json()) as IndexableVersions;
+  const headVersions = await getVersions(head);
+  const baseVersions = await getVersions(base);
 
   const results: VersionDiff[] = [];
   for (const [channel, rtv] of Object.entries(headVersions)) {
@@ -30,4 +32,25 @@ export async function getVersionDiff(
   }
 
   return results;
+}
+
+export async function getBaseAmpVersion(
+  headAmpVersion: string,
+  baseChannel: string
+): Promise<string | void> {
+  const octokit = new Octokit();
+  const {data: commits} = await octokit.rest.repos.listCommits({
+    owner: 'ampproject',
+    repo: 'cdn-configuration',
+    path: 'configs/versions.json',
+    per_page: 100,
+  });
+
+  for await (const commit of commits) {
+    const versions = await getVersions(commit.sha);
+    const baseAmpVersion = versions[baseChannel].slice(-13);
+    if (baseAmpVersion != headAmpVersion) {
+      return baseAmpVersion;
+    }
+  }
 }
