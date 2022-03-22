@@ -11,9 +11,9 @@ interface VersionDiff {
 }
 
 async function getVersions(sha: string): Promise<IndexableVersions> {
-  const url = (sha: string) =>
-    `https://raw.githubusercontent.com/ampproject/cdn-configuration/${sha}/configs/versions.json`;
-  const response = await fetch(url(sha));
+  const response = await fetch(
+    `https://raw.githubusercontent.com/ampproject/cdn-configuration/${sha}/configs/versions.json`
+  );
   return (await response.json()) as IndexableVersions;
 }
 
