@@ -34,6 +34,29 @@ export async function getVersionDiff(
   return results;
 }
 
+export async function getSha(ampVersion: string): Promise<string | void> {
+  const octokit = new Octokit();
+  const {data: release} = await octokit.rest.repos.getReleaseByTag({
+    owner: 'ampproject',
+    repo: 'amphtml',
+    tag: ampVersion,
+  });
+
+  if (release) {
+    return release.target_commitish;
+  }
+
+  const {data: branch} = await octokit.rest.repos.getBranch({
+    owner: 'ampproject',
+    repo: 'amphtml',
+    branch: `amp-release-${ampVersion}`,
+  });
+
+  if (branch) {
+    return branch.commit.sha;
+  }
+}
+
 export async function getBaseAmpVersion(
   headAmpVersion: string,
   baseChannel: string

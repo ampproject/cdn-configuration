@@ -106,7 +106,8 @@ jobs:
                 "action": "${{ matrix.includes.action }}",
                 "head": "${{ matrix.includes.head }}",
                 "base": "${{ matrix.includes.base }}",
-                "channel": "${{ matrix.includes.channel }}""
+                "channel": "${{ matrix.includes.channel }}",
+                "sha": "${{ matrix.includes.sha }}"
               }
             }
 
