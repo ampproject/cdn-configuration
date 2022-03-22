@@ -1,6 +1,10 @@
 import * as core from '@actions/core';
 import yargs from 'yargs/yargs';
-import {getVersionDiff, getBaseAmpVersion} from './post-promote-tasks-utils';
+import {
+  getVersionDiff,
+  getBaseAmpVersion,
+  getSha,
+} from './post-promote-tasks-utils';
 
 const {head, base} = yargs(process.argv.slice(2))
   .options({
@@ -49,6 +53,7 @@ async function setOutput() {
     head: string;
     base: string;
     channel: string;
+    sha: string;
   }[] = [];
 
   for (const {channel, version} of versionDiff) {
@@ -66,12 +71,14 @@ async function setOutput() {
     if (RELEASE_TAGGER[channel]) {
       const {headChannel, baseChannel} = RELEASE_TAGGER[channel];
       const baseAmpVersion = await getBaseAmpVersion(version, baseChannel);
-      if (baseAmpVersion) {
+      const sha = await getSha(version);
+      if (baseAmpVersion && sha) {
         tagger.push({
           action: 'promote', // TODO(estherkim): support rollbacks
           head: version,
           base: baseAmpVersion,
           channel: headChannel,
+          sha,
         });
       }
     }
