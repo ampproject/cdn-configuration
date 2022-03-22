@@ -51,7 +51,7 @@ async function setOutput() {
     channel: string;
   }[] = [];
 
-  for await (const {channel, version} of versionDiff) {
+  for (const {channel, version} of versionDiff) {
     if (PUBLISH_NPM[channel]) {
       npm.push({'amp-version': version, tag: PUBLISH_NPM[channel]});
     }
