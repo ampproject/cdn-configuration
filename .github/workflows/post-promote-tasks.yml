@@ -34,7 +34,7 @@ jobs:
         run: |
           HEAD=${{ github.event.pull_request.merge_commit_sha }}
           BASE=$(git rev-parse $HEAD^)
-          npx ts-node ./scripts/post-promote-tasks-job.ts --head="$HEAD" --base="$BASE"
+          npx ts-node ./scripts/post-promote-tasks-job.ts --head="$HEAD" --base="$BASE" --title="${{ github.event.pull_request.title }}"
 
   npm-publish:
     needs: setup
