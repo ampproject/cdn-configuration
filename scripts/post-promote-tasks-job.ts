@@ -6,10 +6,11 @@ import {
   getSha,
 } from './post-promote-tasks-utils';
 
-const {head, base} = yargs(process.argv.slice(2))
+const {head, base, title} = yargs(process.argv.slice(2))
   .options({
     head: {type: 'string', demandOption: true},
     base: {type: 'string', demandOption: true},
+    title: {type: 'string', demandOption: true},
   })
   .parseSync();
 
@@ -70,11 +71,15 @@ async function setOutput() {
 
     if (RELEASE_TAGGER[channel]) {
       const {headChannel, baseChannel} = RELEASE_TAGGER[channel];
+      const action =
+        title.startsWith('Revert') && title.includes(version)
+          ? 'rollback'
+          : 'promote';
       const baseAmpVersion = await getBaseAmpVersion(version, baseChannel);
       const sha = await getSha(version);
       if (baseAmpVersion && sha) {
         tagger.push({
-          action: 'promote', // TODO(estherkim): support rollbacks
+          action,
           head: version,
           base: baseAmpVersion,
           channel: headChannel,
