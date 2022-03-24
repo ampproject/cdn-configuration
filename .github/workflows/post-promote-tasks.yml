@@ -8,10 +8,14 @@ on:
       - 'main'
     paths:
       - 'configs/versions.json'
+  workflow_dispatch:
+    inputs:
+      pull_number:
+        type: number
 
 jobs:
   setup:
-    if: github.event.pull_request.merged
+    if: github.event.pull_request.merged || github.event.inputs.pull_number
     runs-on: ubuntu-latest
     outputs:
       npm: ${{ steps.get-tasks.outputs.npm }}
@@ -31,10 +35,7 @@ jobs:
 
       - name: Get tasks
         id: get-tasks
-        run: |
-          HEAD=${{ github.event.pull_request.merge_commit_sha }}
-          BASE=$(git rev-parse $HEAD^)
-          npx ts-node ./scripts/post-promote-tasks-job.ts --head="$HEAD" --base="$BASE" --title="${{ github.event.pull_request.title }}"
+        run: npx ts-node ./scripts/post-promote-tasks-job.ts --pull_number="${{ github.event.pull_request.number }}" --override_pull_number="${{ github.event.inputs.pull_number }}"
 
   npm-publish:
     needs: setup
@@ -81,7 +82,7 @@ jobs:
               "promotion":
               {
                 "releaseName": "${{ matrix.includes.amp-version }}",
-                "time": "$(date +'%Y-%m-%d %H:%M:%S %Z')",
+                "time": "${{ matrix.includes.time }}",
                 "channel": "${{ matrix.includes.channel }}"
               }
             }
@@ -114,7 +115,7 @@ jobs:
 
   create-issue-on-error:
     if: failure()
-    needs: [setup, npm-publish, release-calendar]
+    needs: [setup, npm-publish, release-calendar, release-tagger]
     permissions:
       contents: read
       issues: write

@@ -10,6 +10,13 @@ interface VersionDiff {
   version: string;
 }
 
+interface PullRequestDetails {
+  head: string;
+  base: string;
+  title: string;
+  time: string;
+}
+
 async function getVersions(sha: string): Promise<IndexableVersions> {
   const response = await fetch(
     `https://raw.githubusercontent.com/ampproject/cdn-configuration/${sha}/configs/versions.json`
@@ -79,4 +86,30 @@ export async function getBaseAmpVersion(
       return baseAmpVersion;
     }
   }
+}
+
+export async function getPullRequestDetails(
+  pullNumber: number
+): Promise<PullRequestDetails | void> {
+  const octokit = new Octokit();
+  const {data: pr} = await octokit.rest.pulls.get({
+    owner: 'ampproject',
+    repo: 'cdn-configuration',
+    pull_number: pullNumber,
+  });
+
+  if (!pr.merge_commit_sha || !pr.merged_at) return;
+
+  const {data: commit} = await octokit.rest.repos.getCommit({
+    owner: 'ampproject',
+    repo: 'cdn-configuration',
+    ref: pr.merge_commit_sha,
+  });
+
+  return {
+    head: pr.merge_commit_sha,
+    base: commit.parents[0].sha,
+    title: pr.title,
+    time: pr.merged_at,
+  };
 }

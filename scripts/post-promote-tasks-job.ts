@@ -4,13 +4,13 @@ import {
   getVersionDiff,
   getBaseAmpVersion,
   getSha,
+  getPullRequestDetails,
 } from './post-promote-tasks-utils';
 
-const {head, base, title} = yargs(process.argv.slice(2))
+const {pull_number, override_pull_number} = yargs(process.argv.slice(2))
   .options({
-    head: {type: 'string', demandOption: true},
-    base: {type: 'string', demandOption: true},
-    title: {type: 'string', demandOption: true},
+    pull_number: {type: 'number'},
+    override_pull_number: {type: 'number'},
   })
   .parseSync();
 
@@ -44,18 +44,45 @@ const RELEASE_TAGGER: {[channel: string]: Record<string, string>} = {
     baseChannel: 'lts',
   },
 };
+interface OutputNpm {
+  'amp-version': string;
+  tag: string;
+}
+
+interface OutputCalendar {
+  'amp-version': string;
+  channel: string;
+  time: string;
+}
+
+interface OutputTagger {
+  action: string;
+  head: string;
+  base: string;
+  channel: string;
+  sha: string;
+}
 
 async function setOutput() {
+  const pullNumber = override_pull_number ?? pull_number;
+  if (!pullNumber) {
+    return core.setFailed(
+      `A pull request number is required. Given: pull_number: ${pull_number}; override_pull_number: ${override_pull_number}.`
+    );
+  }
+
+  const details = await getPullRequestDetails(pullNumber);
+  if (!details) {
+    return core.setFailed(
+      `Error getting merge_commit_sha and/or merged_at of PR #${pullNumber}. Check that this PR was merged.`
+    );
+  }
+
+  const {head, base, title, time} = details;
   const versionDiff = await getVersionDiff(head, base);
-  const npm: {'amp-version': string; tag: string}[] = [];
-  const calendar: {'amp-version': string; channel: string}[] = [];
-  const tagger: {
-    action: string;
-    head: string;
-    base: string;
-    channel: string;
-    sha: string;
-  }[] = [];
+  const npm: OutputNpm[] = [];
+  const calendar: OutputCalendar[] = [];
+  const tagger: OutputTagger[] = [];
 
   for (const {channel, version} of versionDiff) {
     if (PUBLISH_NPM[channel]) {
@@ -66,6 +93,7 @@ async function setOutput() {
       calendar.push({
         'amp-version': version,
         channel: RELEASE_CALENDAR[channel],
+        time,
       });
     }
 
