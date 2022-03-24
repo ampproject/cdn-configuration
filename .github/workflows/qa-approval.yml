@@ -20,7 +20,7 @@ jobs:
 
       - name: Fail if QA did not approve
         run: |
-          QA_APPROVED=$(npx ts-node ./scripts/check-qa-approval.ts --pull_number=${{ github.event.pull_request.number }}
+          QA_APPROVED=$(npx ts-node ./scripts/check-qa-approval.ts --pull_number=${{ github.event.pull_request.number }})
           if [ $QA_APPROVED != true ]; then
             echo "Stable and Beta 1% promotions require approval by a member of @ampproject/amp-qa"
             exit 1
