@@ -82,7 +82,7 @@ jobs:
               "promotion":
               {
                 "releaseName": "${{ matrix.includes.amp-version }}",
-                "time": "${{ matrix.includes.time }}",
+                "time": "$(date -d ${{ matrix.includes.time }} +'%Y-%m-%d %H:%M:%S %Z')",
                 "channel": "${{ matrix.includes.channel }}"
               }
             }
