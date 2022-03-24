@@ -64,7 +64,7 @@ interface OutputTagger {
 }
 
 async function setOutput() {
-  const pullNumber = override_pull_number ? override_pull_number : pull_number;
+  const pullNumber = override_pull_number ?? pull_number;
   if (!pullNumber) {
     return core.setFailed(
       `A pull request number is required. Given: pull_number: ${pull_number}; override_pull_number: ${override_pull_number}.`
