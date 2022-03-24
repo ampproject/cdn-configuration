@@ -43,7 +43,7 @@ export async function getSha(ampVersion: string): Promise<string | void> {
       repo: 'amphtml',
       ref: `tags/${ampVersion}`,
     });
-  
+
     if (ref) {
       return ref.object.sha;
     }
@@ -53,7 +53,7 @@ export async function getSha(ampVersion: string): Promise<string | void> {
       repo: 'amphtml',
       branch: `amp-release-${ampVersion}`,
     });
-  
+
     if (branch) {
       return branch.commit.sha;
     }
