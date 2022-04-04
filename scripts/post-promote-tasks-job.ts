@@ -9,8 +9,8 @@ import {
 
 const {pull_number, override_pull_number} = yargs(process.argv.slice(2))
   .options({
-    pull_number: {type: 'number'},
-    override_pull_number: {type: 'number'},
+    pull_number: {type: 'number', demandOption: true},
+    override_pull_number: {type: 'number', demandOption: true},
   })
   .parseSync();
 
@@ -64,7 +64,8 @@ interface OutputTagger {
 }
 
 async function setOutput() {
-  const pullNumber = override_pull_number ?? pull_number;
+  const pullNumber =
+    override_pull_number > 0 ? override_pull_number : pull_number;
   if (!pullNumber) {
     return core.setFailed(
       `A pull request number is required. Given: pull_number: ${pull_number}; override_pull_number: ${override_pull_number}.`
