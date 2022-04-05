@@ -53,7 +53,8 @@ export async function runPromoteJob(
     console.log('Done running', `${jobName}.`);
     core.setOutput('amp-version', ampVersion);
   } catch (err) {
-    core.setFailed(`Job ${jobName} failed. ERROR: ${err}`);
+    core.error(`Job ${jobName} failed.`);
+    core.setFailed(err as Error);
   }
 }
 
