@@ -29,4 +29,3 @@ jobs:
       auto-merge: ${{ github.event.inputs.auto-merge }}
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
-
