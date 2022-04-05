@@ -1,5 +1,6 @@
 import yargs from 'yargs/yargs';
 import {Octokit} from '@octokit/rest';
+import * as core from '@actions/core';
 
 const {pull_number} = yargs(process.argv.slice(2))
   .options({pull_number: {type: 'number', demandOption: true}})
@@ -42,7 +43,11 @@ async function setOutput(): Promise<void> {
   }
 
   const isQa = await checkQaTeamMembership(approvers);
-  process.stdout.write(`${isQa}`);
+  if (!isQa) {
+    core.setFailed(
+      'Stable and Beta 1% promotions require approval by a member of @ampproject/amp-qa'
+    );
+  }
 }
 
 void setOutput();

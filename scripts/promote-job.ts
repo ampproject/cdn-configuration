@@ -51,11 +51,10 @@ export async function runPromoteJob(
   try {
     const ampVersion = await workflow();
     console.log('Done running', `${jobName}.`);
-    core.exportVariable('AMP_VERSION', ampVersion);
+    core.setOutput('amp-version', ampVersion);
   } catch (err) {
-    console.error('Job', jobName, 'failed.');
-    console.error('ERROR:', err);
-    process.exitCode = 1;
+    core.error(`Job ${jobName} failed.`);
+    core.setFailed(err as Error);
   }
 }
 

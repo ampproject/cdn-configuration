@@ -47,9 +47,7 @@ jobs:
 
       - name: Get fixes
         id: get-fixes
-        run: |
-          FIXES=$(npx ts-node ./scripts/get-missing-cherry-picks-job.ts --amp_version="${{ github.event.inputs.amp-version }}")
-          echo "::set-output name=fixes::${FIXES}"
+        run: npx ts-node ./scripts/get-missing-cherry-picks-job.ts --amp_version="${{ github.event.inputs.amp-version }}"
 
   cherry-pick-if-missing:
     needs: get-missing-cherry-picks
