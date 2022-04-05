@@ -2,6 +2,7 @@ import yargs from 'yargs/yargs';
 import {Octokit} from '@octokit/rest';
 import currentVersions from '../configs/versions.json';
 import {getMissingCommits} from './get-missing-cherry-picks-utils';
+import * as core from '@actions/core';
 
 const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
   .options({amp_version: {type: 'string'}})
@@ -20,7 +21,7 @@ async function setOutput() {
 
   const commits = await getMissingCommits(new Octokit(), ampVersion, releases);
   if (commits.length > 0) {
-    process.stdout.write(commits.join(' '));
+    core.setOutput('fixes', commits.join(' '));
   }
 }
 
