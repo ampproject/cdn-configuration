@@ -42,9 +42,11 @@ async function setOutput(): Promise<void> {
     return;
   }
 
-  const isQa = await checkQaTeamMembership(approvers);  
+  const isQa = await checkQaTeamMembership(approvers);
   if (!isQa) {
-    core.setFailed('Stable and Beta 1% promotions require approval by a member of @ampproject/amp-qa');
+    core.setFailed(
+      'Stable and Beta 1% promotions require approval by a member of @ampproject/amp-qa'
+    );
   }
 }
 
