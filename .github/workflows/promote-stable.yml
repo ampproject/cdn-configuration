@@ -29,14 +29,3 @@ jobs:
       auto-merge: ${{ github.event.inputs.auto-merge }}
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
-
-  npm-publish-latest:
-    needs: promote-stable
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger publish-npm-packages workflow on amphtml
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'https://api.github.com/repos/ampproject/amphtml/actions/workflows/publish-npm-packages.yml/dispatches'
-          data: '{"ref": "main", "inputs": {"amp-version": "${{ needs.promote-stable.outputs.amp-version }}", "tag": "latest"}}'
-          bearerToken: ${{ secrets.ACCESS_TOKEN }}
