@@ -19,7 +19,7 @@ async function getApprovers(): Promise<string[]> {
 
   const approvers: string[] = [];
   reviews.forEach((review) => {
-    if (review.state == 'approved' && review.user) {
+    if (review.state.toUpperCase() == 'APPROVED' && review.user) {
       approvers.push(review.user.login);
     }
   });
