@@ -29,7 +29,11 @@ describe('check releases are live before promoting', function () {
     it(`${version} (${channels.sort().join(', ')})`, async () => {
       const url = `https://ampjs.org/rtv/${version}/v0.js`;
       const response = await fetch(url, {method: 'GET'});
-      assert.equal(response.status, 200, response.statusText);
+      assert.equal(
+        response.status,
+        200,
+        `Error fetching ${url}: ${response.statusText}`
+      );
     });
   });
 });
