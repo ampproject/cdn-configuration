@@ -13,7 +13,7 @@
     "ajv-formats": "2.1.1",
     "eslint": "8.14.0",
     "eslint-config-prettier": "8.5.0",
-    "node-fetch": "2.6.7",
+    "node-fetch": "3.2.4",
     "octokit-plugin-create-pull-request": "3.11.0",
     "prettier": "2.6.2",
     "ts-mocha": "9.0.2",
