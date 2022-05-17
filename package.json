@@ -5,7 +5,6 @@
     "@octokit/rest": "18.12.0",
     "@types/mocha": "9.1.1",
     "@types/node": "16.11.35",
-    "@types/node-fetch": "2.6.1",
     "@types/yargs": "17.0.10",
     "@typescript-eslint/eslint-plugin": "5.23.0",
     "@typescript-eslint/parser": "5.23.0",
@@ -13,13 +12,13 @@
     "ajv-formats": "2.1.1",
     "eslint": "8.15.0",
     "eslint-config-prettier": "8.5.0",
-    "node-fetch": "2.6.7",
     "octokit-plugin-create-pull-request": "3.11.0",
     "prettier": "2.6.2",
     "ts-mocha": "10.0.0",
     "ts-mockito": "2.6.1",
     "ts-node": "10.7.0",
     "typescript": "4.6.4",
+    "undici": "5.2.0",
     "yargs": "17.5.1"
   },
   "scripts": {
