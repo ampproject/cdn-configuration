@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import {fetch} from 'undici';
 import {Octokit} from '@octokit/rest';
 
 interface IndexableVersions {
