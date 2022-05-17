@@ -27,6 +27,10 @@
     {
       "name": "amp-geo-ssr",
       "percentage": 1
+    },
+    {
+      "name": "story-remote-localization",
+      "percentage": 0.1
     }
   ]
 }
