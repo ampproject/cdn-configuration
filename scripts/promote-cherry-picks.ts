@@ -93,7 +93,7 @@ void runPromoteJob(jobName, async () => {
       currentVersions
     );
     const currentCherryPicksCount = currentAmpVersion.slice(-3);
-    const channels = getChannels(currentAmpVersion, currentVersions).join(', ');
+    const channels = getChannels(currentAmpVersion, currentVersions);
     const versionsChanges: {[channel: string]: string} = {};
     for (const channel of channels) {
       versionsChanges[channel] = `${Prefixes[channel]}${ampVersion}`;
@@ -108,7 +108,7 @@ void runPromoteJob(jobName, async () => {
       ampVersion,
       versionsChanges,
       title: `🌸 Promoting all ${ampVersionWithoutCherryPicksCounter}[${currentCherryPicksCount}→${cherryPicksCount}] channels`,
-      body: generateBody(ampVersion, channels, cherryPickedPRs),
+      body: generateBody(ampVersion, channels.join(', '), cherryPickedPRs),
       branch: `cherry-pick-${currentAmpVersion}-to-${ampVersion}`,
     };
   });
