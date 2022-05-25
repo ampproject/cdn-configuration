@@ -12,8 +12,8 @@ export const octokit = new (Octokit.plugin(createPullRequest))({
 const versionsJsonFile = 'configs/versions.json';
 const params = {owner: 'ampproject', repo: 'cdn-configuration'};
 
-const releaseOnDuty = '@ampproject/release-on-duty';
-const qaTeam = '@ampproject/amp-qa';
+const releaseOnDuty = 'ampproject/release-on-duty';
+const qaTeam = 'ampproject/amp-qa';
 
 type Awaitable<T> = T | Promise<T>; // https://github.com/microsoft/TypeScript/issues/31394
 
@@ -78,12 +78,12 @@ export async function createVersionsUpdatePullRequest(
 
   const footers = [];
   if (qa) {
-    footers.push(`${qaTeam} — please approve this PR for QA`);
+    footers.push(`@${qaTeam} — please approve this PR for QA`);
   }
   if (autoMerge) {
-    footers.push(`${releaseOnDuty} — FYI`);
+    footers.push(`@${releaseOnDuty} — FYI`);
   } else {
-    footers.push(`${releaseOnDuty} — please approve and merge this PR`);
+    footers.push(`@${releaseOnDuty} — please approve and merge this PR`);
   }
   const body = `${bodyStart}\n\n${footers.join('\n')}`;
 
@@ -151,6 +151,18 @@ export async function createVersionsUpdatePullRequest(
         'Enabled auto-merge on pull request',
         pullRequestResponse.data.number
       );
+    }
+  }
+
+  if (qa) {
+    const requestReviewersResponse = await octokit.rest.pulls.requestReviewers({
+      ...params,
+      pull_number: pullRequestResponse.data.number,
+      team_reviewers: [qaTeam.split('/')[1]], // api only accepts team name
+    });
+
+    if (requestReviewersResponse.status == 201) {
+      console.log(`Requested ${qaTeam} as QA reviewer`);
     }
   }
 
