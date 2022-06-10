@@ -32,7 +32,7 @@ function getAmpVersionToCherrypick(
   const ampVersionToCherrypick = Object.values(currentVersions).find(
     (version) =>
       version?.slice(2, 12) == ampVersionWithoutCherryPicksCounter &&
-      version?.slice(0, 2) < cherryPicksCount
+      version?.slice(-3) < cherryPicksCount
   );
   if (!ampVersionToCherrypick) {
     throw Error(
