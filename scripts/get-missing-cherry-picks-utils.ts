@@ -1,7 +1,10 @@
 import {Octokit} from '@octokit/rest';
-import {components} from '@octokit/openapi-types';
+import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
-type Commit = components['schemas']['commit'];
+type Commits = GetResponseTypeFromEndpointMethod<
+  Octokit['repos']['compareCommitsWithBasehead']
+>['data']['commits'];
+
 const params = {owner: 'ampproject', repo: 'amphtml'};
 
 export async function getMissingCommits(
@@ -39,13 +42,14 @@ export async function getMissingCommits(
 async function getCherryPickCommits(
   octokit: Octokit,
   release: string
-): Promise<Commit[] | undefined> {
+): Promise<Commits | undefined> {
   if (release.endsWith('000')) return;
   const base = release.slice(0, -3) + '000';
   const response = await octokit.rest.repos.compareCommitsWithBasehead({
     ...params,
     basehead: `${base}...${release}`,
   });
+
   return response.data.commits;
 }
 
