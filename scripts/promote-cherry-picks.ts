@@ -10,7 +10,6 @@ import {
   runPromoteJob,
 } from './promote-job';
 import {getChannels} from './get-channels-utils';
-import {components} from '@octokit/openapi-types';
 
 interface Args {
   amp_version: string;
@@ -60,10 +59,8 @@ async function getCherryPickedPRs(
       if (pullNumber) {
         return `* https://github.com/ampproject/amphtml/pull/${pullNumber}`;
       }
-      // Ugh Octokit's typing is horrendous.
-      const {html_url: htmlUrl} =
-        commit as unknown as components['schemas']['commit'];
-      return `* ${htmlUrl}`;
+
+      return `* ${commit.url}`;
     });
   } catch (err) {
     console.warn('Could not fetch the list of cherry picked PRs, skipping...');
