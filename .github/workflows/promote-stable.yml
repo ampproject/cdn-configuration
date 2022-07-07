@@ -27,5 +27,6 @@ jobs:
       ts-file: 'promote-stable.ts'
       amp-version: ${{ github.event.inputs.amp-version }}
       auto-merge: ${{ github.event.inputs.auto-merge }}
+      check-freeze: true
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
