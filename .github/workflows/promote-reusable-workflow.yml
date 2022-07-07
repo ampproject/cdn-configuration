@@ -22,6 +22,11 @@ on:
         # This really should be boolean but GitHub Actions struggles with passing a boolean to a reusable workflow.
         default: 'false'
         type: string
+      check-freeze:
+        description: 'Skip promote during release freezes. This should be set to true for Stable and LTS channels, with the exception of P0 cherry-picks'
+        required: false
+        default: false
+        type: boolean
     secrets:
       access-token:
         description: 'Personal access token for the bot that will create the pull requests'
@@ -45,7 +50,13 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Check for a release freeze
+        id: check-freeze
+        if: ${{ inputs.check-freeze }}
+        run: npx ts-node scripts/check-release-freeze.ts
+
       - name: ⭐ Promote ${{ inputs.channel-name }} Channel ⭐
+        if: ${{ !inputs.check-freeze || !steps.check-freeze.outputs.freeze }}
         run: npx ts-node scripts/${{ inputs.ts-file }} --amp_version=${{ inputs.amp-version }} --auto_merge=${{ inputs.auto-merge }}
         env:
           ACCESS_TOKEN: ${{ secrets.access-token }}
