@@ -56,7 +56,7 @@ jobs:
         run: npx ts-node scripts/check-release-freeze.ts
 
       - name: ⭐ Promote ${{ inputs.channel-name }} Channel ⭐
-        if: ${{ !inputs.check-freeze || !steps.check-freeze.outputs.freeze }}
+        if: ${{ !inputs.check-freeze || steps.check-freeze.outputs.freeze == 'false' }}
         run: npx ts-node scripts/${{ inputs.ts-file }} --amp_version=${{ inputs.amp-version }} --auto_merge=${{ inputs.auto-merge }}
         env:
           ACCESS_TOKEN: ${{ secrets.access-token }}
