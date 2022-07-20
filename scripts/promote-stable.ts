@@ -3,7 +3,11 @@
  */
 
 import yargs from 'yargs/yargs';
-import {createVersionsUpdatePullRequest, runPromoteJob} from './promote-job';
+import {
+  createVersionsUpdatePullRequest,
+  isForwardPromote,
+  runPromoteJob,
+} from './promote-job';
 
 const jobName = 'promote-stable.ts';
 const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
@@ -14,6 +18,20 @@ void runPromoteJob(jobName, () => {
   return createVersionsUpdatePullRequest((currentVersions) => {
     // We assume that the AMP version number is the same for beta-traffic and experimental-traffic, and only differ in their RTV prefix.
     const ampVersion = AMP_VERSION || currentVersions['beta-traffic'].slice(2);
+
+    // for scheduled promotions, check that the new version is a forward promote
+    if (!AMP_VERSION) {
+      if (
+        !isForwardPromote(ampVersion, [
+          currentVersions.stable,
+          currentVersions.lts,
+        ])
+      ) {
+        throw new Error(
+          'The scheduled promotion is older than current versions. This is most likely due to a stale nightly branch.'
+        );
+      }
+    }
 
     return {
       ampVersion,

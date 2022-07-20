@@ -45,7 +45,7 @@ const {auto_merge: autoMerge} = yargs(process.argv.slice(2))
  */
 export async function runPromoteJob(
   jobName: string,
-  workflow: () => Promise<string>
+  workflow: () => Promise<string | undefined>
 ): Promise<void> {
   console.log('Running', `${jobName}...`);
   try {
@@ -167,4 +167,17 @@ export async function createVersionsUpdatePullRequest(
   }
 
   return ampVersion;
+}
+
+export function isForwardPromote(
+  newVersion: string,
+  currentRtvs: string[]
+): boolean {
+  for (const rtv of currentRtvs) {
+    if (rtv.slice(-13) >= newVersion) {
+      return false;
+    }
+  }
+
+  return true;
 }
