@@ -5,7 +5,7 @@
 import yargs from 'yargs/yargs';
 import {
   createVersionsUpdatePullRequest,
-  isForwardPromote,
+  ensureForwardPromote,
   runPromoteJob,
 } from './promote-job';
 
@@ -20,18 +20,12 @@ void runPromoteJob(jobName, () => {
 
     // for scheduled promotions, check that the new version is a forward promote
     if (!AMP_VERSION) {
-      if (
-        !isForwardPromote(ampVersion, [
-          currentVersions['beta-opt-in'],
-          currentVersions['beta-traffic'],
-          currentVersions.stable,
-          currentVersions.lts,
-        ])
-      ) {
-        throw new Error(
-          'The scheduled promotion is older than current versions. This is most likely due to a stale nightly branch.'
-        );
-      }
+      ensureForwardPromote(ampVersion, [
+        currentVersions['beta-opt-in'],
+        currentVersions['beta-traffic'],
+        currentVersions.stable,
+        currentVersions.lts,
+      ]);
     }
 
     return {
