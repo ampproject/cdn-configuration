@@ -31,6 +31,10 @@
     {
       "name": "story-remote-localization",
       "percentage": 1
+    },
+    {
+      "name": "amp-story-subscriptions",
+      "percentage": 1
     }
   ]
 }
