@@ -56,6 +56,8 @@ jobs:
     with:
       amp-version: ${{ github.event.inputs.amp-version }}
       shas: ${{ needs.get-missing-cherry-picks.outputs.fixes }}
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}      
 
   create-issue-on-error:
     if: failure()
