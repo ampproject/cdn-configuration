@@ -9,7 +9,7 @@
     "@typescript-eslint/parser": "5.39.0",
     "ajv": "8.11.0",
     "ajv-formats": "2.1.1",
-    "eslint": "8.24.0",
+    "eslint": "8.25.0",
     "eslint-config-prettier": "8.5.0",
     "octokit-plugin-create-pull-request": "3.13.1",
     "prettier": "2.7.1",
