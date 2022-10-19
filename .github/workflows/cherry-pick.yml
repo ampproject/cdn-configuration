@@ -11,6 +11,11 @@ on:
         description: commit sha(s) to cherry-pick with (i.e. abcdef1 abcdef2)
         required: true
         type: string
+    secrets:
+      access-token:
+        description: 'Personal access token for the bot that will create the pull requests'
+        required: true
+
   workflow_dispatch:
     inputs:
       amp-version:
