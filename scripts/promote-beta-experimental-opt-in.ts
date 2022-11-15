@@ -37,6 +37,7 @@ void runPromoteJob(jobName, () => {
       title: `⏫ Promoting release ${ampVersion} to Beta/Experimental opt-in channel`,
       body: `Promoting release ${ampVersion} from Nightly channel to Beta/Experimental opt-in channel`,
       branch: `beta-experimental-opt-in-${ampVersion}`,
+      qaNotify: true,
     };
   });
 });

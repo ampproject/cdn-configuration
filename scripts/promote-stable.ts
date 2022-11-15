@@ -37,7 +37,7 @@ void runPromoteJob(jobName, () => {
       title: `⏫ Promoting release ${ampVersion} to Stable channel`,
       body: `Promoting release ${ampVersion} from Beta/Experimental Traffic channel to Stable channel`,
       branch: `stable-${ampVersion}`,
-      qa: true,
+      qaRequire: true,
     };
   });
 });
