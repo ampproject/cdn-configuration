@@ -158,7 +158,7 @@ export async function createVersionsUpdatePullRequest(
     }
   }
 
-  if (qa) {
+  if (qaRequire) {
     const requestReviewersResponse = await octokit.rest.pulls.requestReviewers({
       ...params,
       pull_number: pullRequestResponse.data.number,
