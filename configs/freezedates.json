@@ -23,6 +23,24 @@
       "description": "Christmas and New Years",
       "start": "2022-12-18",
       "end": "2023-01-01"
+    },
+    {
+      "type": "holiday",
+      "description": "US Independence Day",
+      "start": "2023-07-02",
+      "end": "2023-07-09"
+    },
+    {
+      "type": "holiday",
+      "description": "US Thanksgiving",
+      "start": "2023-11-19",
+      "end": "2023-11-26"
+    },
+    {
+      "type": "holiday",
+      "description": "Christmas and New Years",
+      "start": "2023-12-17",
+      "end": "2024-01-07"
     }
   ]
 }
