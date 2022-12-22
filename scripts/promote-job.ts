@@ -23,7 +23,8 @@ interface VersionMutatorDef {
   title: string;
   body: string;
   branch: string;
-  qa?: boolean;
+  qaRequire?: boolean;
+  qaNotify?: boolean;
 }
 
 interface EnablePullRequestAutoMergeResponse {
@@ -45,7 +46,7 @@ const {auto_merge: autoMerge} = yargs(process.argv.slice(2))
  */
 export async function runPromoteJob(
   jobName: string,
-  workflow: () => Promise<string>
+  workflow: () => Promise<string | undefined>
 ): Promise<void> {
   console.log('Running', `${jobName}...`);
   try {
@@ -73,12 +74,15 @@ export async function createVersionsUpdatePullRequest(
     title,
     versionsChanges,
     branch,
-    qa,
+    qaRequire,
+    qaNotify,
   } = await versionsMutator(currentVersions);
 
   const footers = [];
-  if (qa) {
+  if (qaRequire) {
     footers.push(`@${qaTeam} — please approve this PR for QA`);
+  } else if (qaNotify) {
+    footers.push(`@${qaTeam} — approval not required for this PR`);
   }
   if (autoMerge) {
     footers.push(`@${releaseOnDuty} — FYI`);
@@ -154,7 +158,7 @@ export async function createVersionsUpdatePullRequest(
     }
   }
 
-  if (qa) {
+  if (qaRequire) {
     const requestReviewersResponse = await octokit.rest.pulls.requestReviewers({
       ...params,
       pull_number: pullRequestResponse.data.number,
@@ -167,4 +171,18 @@ export async function createVersionsUpdatePullRequest(
   }
 
   return ampVersion;
+}
+
+export function ensureForwardPromote(
+  newVersion: string,
+  currentRtvs: string[]
+): void {
+  for (const rtv of currentRtvs) {
+    if (rtv.slice(-13) >= newVersion) {
+      core.notice('Skipping job');
+      throw new Error(
+        'The scheduled promotion is older than current versions. This is most likely due to a lack of new commits on the nightly branch. No action is needed.'
+      );
+    }
+  }
 }

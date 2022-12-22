@@ -5,6 +5,7 @@
 import yargs from 'yargs/yargs';
 import {
   createVersionsUpdatePullRequest,
+  ensureForwardPromote,
   octokit,
   runPromoteJob,
 } from './promote-job';
@@ -71,6 +72,15 @@ void runPromoteJob(jobName, async () => {
     // We assume that the AMP version number is the same for beta-opt-in and experimental-opt-in, and only differ in their RTV prefix.
     const ampVersion = AMP_VERSION || currentVersions['beta-opt-in'].slice(2);
 
+    // for scheduled promotions, check that the new version is a forward promote
+    if (!AMP_VERSION) {
+      ensureForwardPromote(ampVersion, [
+        currentVersions['beta-traffic'],
+        currentVersions.stable,
+        currentVersions.lts,
+      ]);
+    }
+
     const activeExperiments = await fetchActiveExperiments(ampVersion);
 
     return {
@@ -85,7 +95,7 @@ void runPromoteJob(jobName, async () => {
       title: `⏫ Promoting release ${ampVersion} to Beta/Experimental traffic channel`,
       body: `Promoting release ${ampVersion} from Beta/Experimental opt-in to traffic`,
       branch: `beta-experimental-traffic-${ampVersion}`,
-      qa: true,
+      qaRequire: true,
     };
   });
 });
