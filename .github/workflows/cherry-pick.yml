@@ -60,7 +60,7 @@ jobs:
           # then the last 3 digits of the total cherry-picks
           # i.e. if there are 10 cherry-picks total, the last 3 digits would be 010
           CHERRY_PICK_BRANCH=amp-release-${AMP_VERSION:0:10}${NEW_CP_COUNT: -3}
-          echo "::set-output name=branch::${CHERRY_PICK_BRANCH}"
+          echo "branch=${CHERRY_PICK_BRANCH}" >> $GITHUB_OUTPUT
 
       - name: Set git config
         run: |

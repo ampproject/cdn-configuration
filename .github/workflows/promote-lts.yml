@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Get day of the month
         id: day
-        run: echo "::set-output name=day::$(date +%d)"
+        run: echo "day=$(date +%d)" >> $GITHUB_OUTPUT
 
   promote-lts:
     needs: get-day

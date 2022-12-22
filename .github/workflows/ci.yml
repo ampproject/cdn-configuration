@@ -31,7 +31,7 @@ jobs:
         id: get-diff
         run: |
           DIFF=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)
-          echo "::set-output name=diff::${DIFF}"
+          echo "diff=${DIFF}" >> $GITHUB_OUTPUT
 
       - name: Run Prettier
         run: npm run prettier
