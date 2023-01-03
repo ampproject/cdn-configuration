@@ -1,6 +1,10 @@
 import {fetch} from 'undici';
 import {Octokit} from '@octokit/rest';
 
+const octokit = new Octokit({
+  auth: process.env.GITHUB_TOKEN,
+});
+
 interface IndexableVersions {
   [channel: string]: string;
 }
@@ -42,8 +46,6 @@ export async function getVersionDiff(
 }
 
 export async function getSha(ampVersion: string): Promise<string | void> {
-  const octokit = new Octokit();
-
   try {
     const {data: ref} = await octokit.rest.git.getRef({
       owner: 'ampproject',
@@ -71,7 +73,6 @@ export async function getBaseAmpVersion(
   headAmpVersion: string,
   baseChannel: string
 ): Promise<string | void> {
-  const octokit = new Octokit();
   const {data: commits} = await octokit.rest.repos.listCommits({
     owner: 'ampproject',
     repo: 'cdn-configuration',
@@ -91,7 +92,6 @@ export async function getBaseAmpVersion(
 export async function getPullRequestDetails(
   pullNumber: number
 ): Promise<PullRequestDetails | void> {
-  const octokit = new Octokit();
   const {data: pr} = await octokit.rest.pulls.get({
     owner: 'ampproject',
     repo: 'cdn-configuration',
