@@ -19,7 +19,11 @@ async function setOutput() {
     ].map((rtv) => rtv.slice(-13))
   );
 
-  const commits = await getMissingCommits(new Octokit(), ampVersion, releases);
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+
+  const commits = await getMissingCommits(octokit, ampVersion, releases);
   if (commits.length > 0) {
     core.setOutput('fixes', commits.join(' '));
   }
