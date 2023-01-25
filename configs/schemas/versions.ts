@@ -71,19 +71,40 @@ const schema: JSONSchemaType<Versions> = {
       pattern: '00\\d{13}',
     },
     experimentA: {
-      type: 'string',
-      pattern: '10\\d{13}',
-      nullable: true,
+      oneOf: [
+        {
+          type: 'string',
+          pattern: '10\\d{13}',
+        },
+        {
+          type: 'null',
+          nullable: true,
+        },
+      ],
     },
     experimentB: {
-      type: 'string',
-      pattern: '11\\d{13}',
-      nullable: true,
+      oneOf: [
+        {
+          type: 'string',
+          pattern: '11\\d{13}',
+        },
+        {
+          type: 'null',
+          nullable: true,
+        },
+      ],
     },
     experimentC: {
-      type: 'string',
-      pattern: '12\\d{13}',
-      nullable: true,
+      oneOf: [
+        {
+          type: 'string',
+          pattern: '12\\d{13}',
+        },
+        {
+          type: 'null',
+          nullable: true,
+        },
+      ],
     },
     lts: {
       type: 'string',
