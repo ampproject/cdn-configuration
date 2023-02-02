@@ -35,6 +35,10 @@
     {
       "name": "amp-story-subscriptions",
       "percentage": 1
+    },
+    {
+      "name": "attribtion-reporting",
+      "percentage": 0.01
     }
   ]
 }
