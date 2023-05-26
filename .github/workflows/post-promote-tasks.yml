@@ -37,29 +37,6 @@ jobs:
         id: get-tasks
         run: npx ts-node ./scripts/post-promote-tasks-job.ts --pull_number="${{ github.event.pull_request.number }}" --override_pull_number="${{ github.event.inputs.pull_number }}"
 
-  npm-publish:
-    needs: setup
-    if: needs.setup.outputs.npm
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJson(needs.setup.outputs.npm) }}
-      fail-fast: false
-    steps:
-      - name: Trigger publish-npm-packages workflow on amphtml
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'https://api.github.com/repos/ampproject/amphtml/actions/workflows/publish-npm-packages.yml/dispatches'
-          bearerToken: ${{ secrets.ACCESS_TOKEN }}
-          data: >
-            {
-              "ref": "main",
-              "inputs":
-              {
-                "amp-version": "${{ matrix.includes.amp-version }}",
-                "tag": "${{ matrix.includes.tag }}"
-              }
-            }
-
   release-calendar:
     needs: setup
     if: needs.setup.outputs.calendar
