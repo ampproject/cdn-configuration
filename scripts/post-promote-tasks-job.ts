@@ -14,11 +14,6 @@ const {pull_number, override_pull_number} = yargs(process.argv.slice(2))
   })
   .parseSync();
 
-const PUBLISH_NPM: {[channel: string]: string} = {
-  nightly: 'nightly',
-  stable: 'latest',
-};
-
 const RELEASE_CALENDAR: {[channel: string]: string} = {
   nightly: 'nightly',
   'beta-traffic': 'beta',
@@ -44,10 +39,6 @@ const RELEASE_TAGGER: {[channel: string]: Record<string, string>} = {
     baseChannel: 'lts',
   },
 };
-interface OutputNpm {
-  'amp-version': string;
-  tag: string;
-}
 
 interface OutputCalendar {
   'amp-version': string;
@@ -81,15 +72,10 @@ async function setOutput() {
 
   const {head, base, title, time} = details;
   const versionDiff = await getVersionDiff(head, base);
-  const npm: OutputNpm[] = [];
   const calendar: OutputCalendar[] = [];
   const tagger: OutputTagger[] = [];
 
   for (const {channel, version} of versionDiff) {
-    if (PUBLISH_NPM[channel]) {
-      npm.push({'amp-version': version, tag: PUBLISH_NPM[channel]});
-    }
-
     if (RELEASE_CALENDAR[channel]) {
       calendar.push({
         'amp-version': version,
@@ -118,7 +104,6 @@ async function setOutput() {
     }
   }
 
-  core.setOutput('npm', npm.length > 0 ? {includes: npm} : null);
   core.setOutput('calendar', calendar.length > 0 ? {includes: calendar} : null);
   core.setOutput('tagger', tagger.length > 0 ? {includes: tagger} : null);
 }
