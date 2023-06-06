@@ -11,7 +11,7 @@
     "ajv-formats": "2.1.1",
     "eslint": "8.42.0",
     "eslint-config-prettier": "8.8.0",
-    "octokit-plugin-create-pull-request": "4.2.2",
+    "octokit-plugin-create-pull-request": "5.0.0",
     "prettier": "2.8.8",
     "ts-mocha": "10.0.0",
     "ts-mockito": "2.6.1",
