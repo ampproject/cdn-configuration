@@ -26,7 +26,7 @@ As a summary, promotions run on a weekly schedule:
 |           | `nightly` | `beta/experimental` | `stable` | `lts` |
 | --------- | :-------: | :-----------------: | :------: | :---: |
 | Monday    |    🌙     |                     |          | 🚀 \* |
-| Tueday    |    🌙     |     🚀 `opt-in`     |    🚀    |       |
+| Tuesday   |    🌙     |     🚀 `opt-in`     |    🚀    |       |
 | Wednesday |    🌙     |    🚀 `traffic`     |          |       |
 | Thursday  |    🌙     |                     |          |       |
 | Friday    |    🌙     |                     |          |       |
