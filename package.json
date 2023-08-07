@@ -10,7 +10,7 @@
     "ajv": "8.12.0",
     "ajv-formats": "2.1.1",
     "eslint": "8.46.0",
-    "eslint-config-prettier": "8.10.0",
+    "eslint-config-prettier": "9.0.0",
     "octokit-plugin-create-pull-request": "5.1.0",
     "prettier": "3.0.1",
     "ts-mocha": "10.0.0",
