@@ -1,7 +1,6 @@
 import assert from 'assert';
 import yargs from 'yargs/yargs';
 import versionsJson from '../configs/versions.json';
-import {fetch} from 'undici';
 
 const {diff} = yargs(process.argv.slice(2))
   .options({diff: {type: 'string', demandOption: true}})
