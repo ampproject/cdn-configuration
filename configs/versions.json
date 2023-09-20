@@ -1,11 +1,11 @@
 {
-  "beta-opt-in": "032309082229000",
+  "beta-opt-in": "032309151607000",
 
   "beta-traffic": "032309082229000",
 
-  "control": "022309011827000",
+  "control": "022309082229000",
 
-  "experimental-opt-in": "002309082229000",
+  "experimental-opt-in": "002309151607000",
 
   "experimental-traffic": "002309082229000",
 
@@ -19,7 +19,7 @@
 
   "nightly": "042309181453000",
 
-  "nightly-control": "052309011827000",
+  "nightly-control": "052309082229000",
 
-  "stable": "012309011827000"
+  "stable": "012309082229000"
 }
