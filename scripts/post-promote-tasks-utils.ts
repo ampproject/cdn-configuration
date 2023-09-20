@@ -1,4 +1,3 @@
-import {fetch} from 'undici';
 import {Octokit} from '@octokit/rest';
 
 const octokit = new Octokit({
