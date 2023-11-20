@@ -2,36 +2,6 @@
   "freezedates": [
     {
       "type": "holiday",
-      "description": "Christmas and New Years",
-      "start": "2021-12-19",
-      "end": "2022-01-08"
-    },
-    {
-      "type": "holiday",
-      "description": "US Independence Day",
-      "start": "2022-07-03",
-      "end": "2022-07-10"
-    },
-    {
-      "type": "holiday",
-      "description": "US Thanksgiving",
-      "start": "2022-11-20",
-      "end": "2022-11-27"
-    },
-    {
-      "type": "holiday",
-      "description": "Christmas and New Years",
-      "start": "2022-12-18",
-      "end": "2023-01-01"
-    },
-    {
-      "type": "holiday",
-      "description": "US Independence Day",
-      "start": "2023-07-02",
-      "end": "2023-07-09"
-    },
-    {
-      "type": "holiday",
       "description": "US Thanksgiving",
       "start": "2023-11-19",
       "end": "2023-11-26"
@@ -41,6 +11,114 @@
       "description": "Christmas and New Years",
       "start": "2023-12-17",
       "end": "2024-01-07"
+    },
+    {
+      "type": "holiday",
+      "description": "US Independence Day",
+      "start": "2024-06-30",
+      "end": "2024-07-07"
+    },
+    {
+      "type": "holiday",
+      "description": "US Thanksgiving",
+      "start": "2024-11-24",
+      "end": "2024-12-01"
+    },
+    {
+      "type": "holiday",
+      "description": "Christmas and New Years",
+      "start": "2024-12-15",
+      "end": "2025-01-05"
+    },
+    {
+      "type": "holiday",
+      "description": "US Independence Day",
+      "start": "2025-06-29",
+      "end": "2025-07-06"
+    },
+    {
+      "type": "holiday",
+      "description": "US Thanksgiving",
+      "start": "2025-11-23",
+      "end": "2025-11-30"
+    },
+    {
+      "type": "holiday",
+      "description": "Christmas and New Years",
+      "start": "2025-12-14",
+      "end": "2026-01-04"
+    },
+    {
+      "type": "holiday",
+      "description": "US Independence Day",
+      "start": "2026-06-28",
+      "end": "2026-07-05"
+    },
+    {
+      "type": "holiday",
+      "description": "US Thanksgiving",
+      "start": "2026-11-22",
+      "end": "2026-11-29"
+    },
+    {
+      "type": "holiday",
+      "description": "Christmas and New Years",
+      "start": "2026-12-13",
+      "end": "2027-01-03"
+    },
+    {
+      "type": "holiday",
+      "description": "US Independence Day",
+      "start": "2027-06-27",
+      "end": "2027-07-04"
+    },
+    {
+      "type": "holiday",
+      "description": "US Thanksgiving",
+      "start": "2027-11-21",
+      "end": "2027-11-28"
+    },
+    {
+      "type": "holiday",
+      "description": "Christmas and New Years",
+      "start": "2027-12-12",
+      "end": "2028-01-09"
+    },
+    {
+      "type": "holiday",
+      "description": "US Independence Day",
+      "start": "2028-07-02",
+      "end": "2028-07-09"
+    },
+    {
+      "type": "holiday",
+      "description": "US Thanksgiving",
+      "start": "2028-11-19",
+      "end": "2028-11-26"
+    },
+    {
+      "type": "holiday",
+      "description": "Christmas and New Years",
+      "start": "2028-12-17",
+      "end": "2029-01-07"
+    },
+    {
+      "type": "holiday",
+      "description": "US Independence Day",
+      "start": "2029-07-01",
+      "end": "2029-07-08"
+    },
+    {
+      "type": "holiday",
+      "description": "US Thanksgiving",
+      "start": "2029-11-18",
+      "end": "2029-11-25"
+    },
+    {
+      "type": "holiday",
+      "description": "Christmas and New Years",
+      "start": "2029-12-16",
+      "end": "2030-01-06"
     }
   ]
 }
