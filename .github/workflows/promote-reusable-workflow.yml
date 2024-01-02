@@ -27,6 +27,10 @@ on:
         required: false
         default: false
         type: boolean
+      day-of-month-range:
+        description: 'The range of days in the month that this promotion should occur. e.g., "1-7" this promotion will only happen in the first week of the month.'
+        required: false
+        type: string
     secrets:
       access-token:
         description: 'Personal access token for the bot that will create the pull requests'
@@ -55,8 +59,13 @@ jobs:
         if: ${{ inputs.check-freeze }}
         run: npx ts-node scripts/check-release-freeze.ts
 
+      - name: Check for day-of-month range
+        id: day-of-month-range
+        if: ${{ inputs.day-of-month-range }}
+        run: npx ts-node scripts/check-day-of-month-range.ts --day_of_month_range=${{ inputs.day-of-month-range }}
+
       - name: ⭐ Promote ${{ inputs.channel-name }} Channel ⭐
-        if: ${{ !inputs.check-freeze || steps.check-freeze.outputs.freeze == 'false' }}
+        if: ${{ (!inputs.day-of-month-range || steps.day-of-month-range.outputs.in-range == 'true') && (!inputs.check-freeze || steps.check-freeze.outputs.freeze == 'false') }}
         run: npx ts-node scripts/${{ inputs.ts-file }} --amp_version=${{ inputs.amp-version }} --auto_merge=${{ inputs.auto-merge }}
         env:
           ACCESS_TOKEN: ${{ secrets.access-token }}

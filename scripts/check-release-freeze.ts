@@ -3,7 +3,7 @@ import freezedatesJson from '../configs/freezedates.json';
 
 function main() {
   let freeze = false;
-  const today = new Date(Date.now());
+  const today = new Date();
 
   for (const freezedate of freezedatesJson.freezedates) {
     const start = new Date(freezedate.start);
