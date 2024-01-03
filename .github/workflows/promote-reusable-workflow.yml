@@ -28,7 +28,7 @@ on:
         default: false
         type: boolean
       day-of-month-range:
-        description: 'The range of days in the month that this promotion should occur. e.g., "1-7" this promotion will only happen in the first week of the month.'
+        description: 'The range of days (inclusive) in the month that this promotion should occur. e.g., "1-7" this promotion will only happen in the first week of the month.'
         required: false
         type: string
     secrets:
