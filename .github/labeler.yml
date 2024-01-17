@@ -1,2 +1,5 @@
 'needs QA':
-  - configs/versions.json
+  - any:
+      - changed-files:
+          - any-glob-to-any-file:
+              - configs/versions.json
