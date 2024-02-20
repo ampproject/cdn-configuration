@@ -1,13 +1,13 @@
 {
-  "beta-opt-in": "032402022342000",
+  "beta-opt-in": "032402080818000",
 
-  "beta-traffic": "032402022342000",
+  "beta-traffic": "032402080818000",
 
-  "control": "022401262004000",
+  "control": "022402080818000",
 
-  "experimental-opt-in": "002402022342000",
+  "experimental-opt-in": "002402080818000",
 
-  "experimental-traffic": "002402022342000",
+  "experimental-traffic": "002402080818000",
 
   "experimentA": null,
 
@@ -17,9 +17,9 @@
 
   "lts": "012401262004000",
 
-  "nightly": "042402080818000",
+  "nightly": "042402141842000",
 
-  "nightly-control": "052401262004000",
+  "nightly-control": "052402080818000",
 
-  "stable": "012401262004000"
+  "stable": "012402080818000"
 }
