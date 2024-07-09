@@ -1,6 +1,6 @@
 import {JSONSchemaType} from 'ajv';
 
-export type Versions = {
+export interface Versions {
   'beta-opt-in': string;
   'beta-traffic': string;
   control: string;
@@ -13,9 +13,9 @@ export type Versions = {
   nightly: string;
   'nightly-control': string;
   stable: string;
-};
+}
 
-export const Prefixes: {[channel: string]: string} = {
+export const Prefixes: Record<string, string> = {
   'beta-opt-in': '03',
   'beta-traffic': '03',
   control: '02',
