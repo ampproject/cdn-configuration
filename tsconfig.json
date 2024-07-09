@@ -1,15 +1,8 @@
 {
-  "include": ["configs/**/*", "test/**/*", "scripts/**/*"],
   "compilerOptions": {
     "strict": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "noImplicitReturns": false,
-    "resolveJsonModule": true,
-    "module": "CommonJS",
-    "target": "ES6",
-    "moduleResolution": "node",
-    "esModuleInterop": true
+    "module": "Preserve",
+    "target": "ESNext"
   },
-  "exclude": ["node_modules/**/*"]
+  "include": ["configs/**/*", "test/**/*", "scripts/**/*"]
 }
