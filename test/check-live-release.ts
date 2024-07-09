@@ -11,7 +11,7 @@ describe('check releases are live before promoting', function () {
   const versionChannels = new Map<string, string[]>();
   for (const [channel, version] of Object.entries(versionsJson)) {
     if (version) {
-      const x = versionChannels.get(version) || [];
+      const x = versionChannels.get(version) ?? [];
       x.push(channel);
       versionChannels.set(version, x);
     }

@@ -35,7 +35,7 @@ jobs:
 
       - name: Get tasks
         id: get-tasks
-        run: npx ts-node ./scripts/post-promote-tasks-job.ts --pull_number="${{ github.event.pull_request.number }}" --override_pull_number="${{ github.event.inputs.pull_number }}"
+        run: npx tsx ./scripts/post-promote-tasks-job.ts --pull_number="${{ github.event.pull_request.number }}" --override_pull_number="${{ github.event.inputs.pull_number }}"
 
   release-calendar:
     needs: setup

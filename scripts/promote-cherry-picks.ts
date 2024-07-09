@@ -91,7 +91,7 @@ void runPromoteJob(jobName, async () => {
     );
     const currentCherryPicksCount = currentAmpVersion.slice(-3);
     const channels = getChannels(currentAmpVersion, currentVersions);
-    const versionsChanges: {[channel: string]: string} = {};
+    const versionsChanges: Record<string, string> = {};
     for (const channel of channels) {
       versionsChanges[channel] = `${Prefixes[channel]}${ampVersion}`;
     }
