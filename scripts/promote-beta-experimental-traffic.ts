@@ -10,17 +10,17 @@ import {
   runPromoteJob,
 } from './promote-job';
 
-type ExperimentConfig = {
+interface ExperimentConfig {
   // ExperimentConfig has other fields, but here we only care about the following:
   expiration_date_utc?: string;
   define_experiment_constant?: string;
-};
+}
 
-type ExperimentsConfig = {
+interface ExperimentsConfig {
   experimentA: ExperimentConfig;
   experimentB: ExperimentConfig;
   experimentC: ExperimentConfig;
-};
+}
 
 const jobName = 'promote-beta-experimental-traffic.ts';
 const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
@@ -70,7 +70,7 @@ function maybeRtv(experiment: ExperimentConfig, rtv: string): string | null {
 void runPromoteJob(jobName, async () => {
   return createVersionsUpdatePullRequest(async (currentVersions) => {
     // We assume that the AMP version number is the same for beta-opt-in and experimental-opt-in, and only differ in their RTV prefix.
-    const ampVersion = AMP_VERSION || currentVersions['beta-opt-in'].slice(2);
+    const ampVersion = AMP_VERSION ?? currentVersions['beta-opt-in'].slice(2);
 
     // for scheduled promotions, check that the new version is a forward promote
     if (!AMP_VERSION) {

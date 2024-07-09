@@ -14,14 +14,14 @@ const {pull_number, override_pull_number} = yargs(process.argv.slice(2))
   })
   .parseSync();
 
-const RELEASE_CALENDAR: {[channel: string]: string} = {
+const RELEASE_CALENDAR: Record<string, string> = {
   nightly: 'nightly',
   'beta-traffic': 'beta',
   stable: 'stable',
   lts: 'lts',
 };
 
-const RELEASE_TAGGER: {[channel: string]: Record<string, string>} = {
+const RELEASE_TAGGER: Record<string, Record<string, string>> = {
   'beta-opt-in': {
     headChannel: 'beta-opt-in',
     baseChannel: 'stable',
