@@ -4,9 +4,7 @@ const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 });
 
-interface IndexableVersions {
-  [channel: string]: string;
-}
+type IndexableVersions = Record<string, string>;
 
 interface VersionDiff {
   channel: string;

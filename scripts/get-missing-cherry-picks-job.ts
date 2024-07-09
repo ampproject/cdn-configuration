@@ -9,7 +9,7 @@ const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
   .parseSync();
 
 async function setOutput() {
-  const ampVersion = AMP_VERSION || currentVersions.nightly.slice(2);
+  const ampVersion = AMP_VERSION ?? currentVersions.nightly.slice(2);
 
   const releases = new Set(
     [
