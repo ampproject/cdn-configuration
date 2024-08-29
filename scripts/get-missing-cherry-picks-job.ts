@@ -5,11 +5,11 @@ import {getMissingCommits} from './get-missing-cherry-picks-utils';
 import * as core from '@actions/core';
 
 const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
-  .options({amp_version: {type: 'string'}})
+  .options({amp_version: {type: 'string', default: ''}})
   .parseSync();
 
 async function setOutput() {
-  const ampVersion = AMP_VERSION ?? currentVersions.nightly.slice(2);
+  const ampVersion = AMP_VERSION || currentVersions.nightly.slice(2);
 
   const releases = new Set(
     [

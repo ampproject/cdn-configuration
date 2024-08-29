@@ -11,12 +11,12 @@ import {
 
 const jobName = 'promote-beta-experimental-opt-in.ts';
 const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
-  .options({amp_version: {type: 'string'}})
+  .options({amp_version: {type: 'string', default: ''}})
   .parseSync();
 
 void runPromoteJob(jobName, () => {
   return createVersionsUpdatePullRequest((currentVersions) => {
-    const ampVersion = AMP_VERSION ?? currentVersions.nightly.slice(2);
+    const ampVersion = AMP_VERSION || currentVersions.nightly.slice(2);
 
     // for scheduled promotions, check that the new version is a forward promote
     if (!AMP_VERSION) {
