@@ -21,8 +21,8 @@
     {
       "type": "event",
       "description": "US Elections",
-      "start": "2024-09-01",
-      "end": "2024-09-06"
+      "start": "2024-11-01",
+      "end": "2024-11-06"
     },
     {
       "type": "holiday",
