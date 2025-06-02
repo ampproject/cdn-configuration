@@ -26,7 +26,7 @@ describe('check releases are live before promoting', function () {
 
   versionChannels.forEach((channels, version) => {
     it(`${version} (${channels.sort().join(', ')})`, async () => {
-      const url = `https://ampjs.org/rtv/${version}/v0.js`;
+      const url = `https://cdn.ampproject.org/rtv/${version}/v0.js`;
       const response = await fetch(url, {method: 'GET'});
       assert.equal(
         response.status,
