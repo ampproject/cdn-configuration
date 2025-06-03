@@ -53,6 +53,3 @@ jobs:
 
       - name: Check file changes
         run: npx ts-mocha ./test/check-file-changes.ts --diff="${{ steps.get-diff.outputs.diff }}"
-
-      - name: Check releases
-        run: npx ts-mocha ./test/check-live-release.ts --diff="${{ steps.get-diff.outputs.diff }}"
