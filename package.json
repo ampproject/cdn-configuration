@@ -3,7 +3,7 @@
     "@actions/core": "1.11.1",
     "@octokit/rest": "20.1.2",
     "@types/mocha": "10.0.10",
-    "@types/node": "20.19.11",
+    "@types/node": "20.19.22",
     "@types/yargs": "17.0.33",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
@@ -15,8 +15,8 @@
     "prettier": "3.6.2",
     "ts-mocha": "10.1.0",
     "ts-mockito": "2.6.1",
-    "tsx": "4.20.5",
-    "typescript": "5.9.2",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
     "yargs": "17.7.2"
   },
   "scripts": {
