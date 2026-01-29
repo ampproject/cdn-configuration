@@ -1,23 +1,23 @@
 {
   "devDependencies": {
-    "@actions/core": "1.11.1",
-    "@octokit/rest": "20.1.2",
+    "@actions/core": "3.0.0",
+    "@octokit/rest": "22.0.1",
     "@types/mocha": "10.0.10",
-    "@types/node": "20.19.30",
+    "@types/node": "24.10.9",
     "@types/yargs": "17.0.35",
-    "@typescript-eslint/eslint-plugin": "7.18.0",
-    "@typescript-eslint/parser": "7.18.0",
+    "@typescript-eslint/eslint-plugin": "8.54.0",
+    "@typescript-eslint/parser": "8.54.0",
     "ajv": "8.17.1",
     "ajv-formats": "3.0.1",
-    "eslint": "8.57.1",
-    "eslint-config-prettier": "9.1.2",
-    "octokit-plugin-create-pull-request": "5.1.1",
+    "eslint": "9.39.2",
+    "eslint-config-prettier": "10.1.8",
+    "octokit-plugin-create-pull-request": "6.0.1",
     "prettier": "3.8.1",
-    "ts-mocha": "10.1.0",
+    "ts-mocha": "11.1.0",
     "ts-mockito": "2.6.1",
     "tsx": "4.21.0",
     "typescript": "5.9.3",
-    "yargs": "17.7.2"
+    "yargs": "18.0.0"
   },
   "scripts": {
     "lint": "eslint .",
