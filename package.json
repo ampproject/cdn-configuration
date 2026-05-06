@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "@actions/core": "1.11.1",
+    "@ianvs/prettier-plugin-sort-imports": "4.7.1",
     "@octokit/rest": "20.1.2",
     "@types/mocha": "10.0.10",
     "@types/node": "20.19.30",

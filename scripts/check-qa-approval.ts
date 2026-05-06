@@ -1,6 +1,6 @@
-import yargs from 'yargs/yargs';
-import {Octokit} from '@octokit/rest';
 import * as core from '@actions/core';
+import {Octokit} from '@octokit/rest';
+import yargs from 'yargs/yargs';
 
 const {pull_number} = yargs(process.argv.slice(2))
   .options({pull_number: {type: 'number', demandOption: true}})

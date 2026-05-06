@@ -1,10 +1,11 @@
 import * as core from '@actions/core';
 import yargs from 'yargs/yargs';
+
 import {
-  getVersionDiff,
   getBaseAmpVersion,
-  getSha,
   getPullRequestDetails,
+  getSha,
+  getVersionDiff,
 } from './post-promote-tasks-utils';
 
 const {pull_number, override_pull_number} = yargs(process.argv.slice(2))
