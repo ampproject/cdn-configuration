@@ -1,20 +1,6 @@
 import {JSONSchemaType} from 'ajv';
 
-export type ChannelNames =
-  | 'beta-opt-in'
-  | 'beta-traffic'
-  | 'control'
-  | 'experimental-opt-in'
-  | 'experimental-traffic'
-  | 'experimentA'
-  | 'experimentB'
-  | 'experimentC'
-  | 'lts'
-  | 'nightly'
-  | 'nightly-control'
-  | 'stable';
-
-export type Versions = Record<ChannelNames, unknown> & {
+export type Versions = {
   'beta-opt-in': string;
   'beta-traffic': string;
   control: string;
@@ -29,7 +15,7 @@ export type Versions = Record<ChannelNames, unknown> & {
   stable: string;
 };
 
-export const Prefixes: Record<ChannelNames, string> = {
+export const Prefixes: Record<keyof Versions, string> = {
   'beta-opt-in': '03',
   'beta-traffic': '03',
   control: '02',
