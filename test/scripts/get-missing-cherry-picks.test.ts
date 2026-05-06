@@ -1,10 +1,11 @@
 import assert from 'assert';
 
-import {Octokit, RestEndpointMethodTypes} from '@octokit/rest';
 import {after, afterEach, describe, it} from 'mocha';
 import {deepEqual, reset, resetCalls, spy, when} from 'ts-mockito';
 
 import {getMissingCommits} from '../../scripts/get-missing-cherry-picks-utils';
+
+import type {Octokit, RestEndpointMethodTypes} from '@octokit/rest';
 
 type CompareResponse =
   RestEndpointMethodTypes['repos']['compareCommitsWithBasehead']['response'];

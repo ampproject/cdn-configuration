@@ -4,13 +4,15 @@
 
 import yargs from 'yargs/yargs';
 
-import {Prefixes, Versions} from '../configs/schemas/versions';
+import {Prefixes} from '../configs/schemas/versions';
 import {getChannels} from './get-channels-utils';
 import {
   createVersionsUpdatePullRequest,
   octokit,
   runPromoteJob,
 } from './promote-job';
+
+import type {Versions} from '../configs/schemas/versions';
 
 interface Args {
   amp_version: string;

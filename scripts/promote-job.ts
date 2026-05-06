@@ -3,8 +3,9 @@ import {Octokit} from '@octokit/rest';
 import {createPullRequest} from 'octokit-plugin-create-pull-request';
 import yargs from 'yargs/yargs';
 
-import {Versions} from '../configs/schemas/versions';
 import currentVersions from '../configs/versions.json';
+
+import type {Versions} from '../configs/schemas/versions';
 
 export const octokit = new (Octokit.plugin(createPullRequest))({
   auth: process.env.ACCESS_TOKEN,

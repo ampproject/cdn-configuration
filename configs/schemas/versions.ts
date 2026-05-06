@@ -1,4 +1,4 @@
-import {JSONSchemaType} from 'ajv';
+import type {JSONSchemaType} from 'ajv';
 
 export type Versions = {
   'beta-opt-in': string;

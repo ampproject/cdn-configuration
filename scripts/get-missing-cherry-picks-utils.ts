@@ -1,5 +1,5 @@
-import {Octokit} from '@octokit/rest';
-import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
+import type {Octokit} from '@octokit/rest';
+import type {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
 type Commits = GetResponseTypeFromEndpointMethod<
   Octokit['repos']['compareCommitsWithBasehead']
