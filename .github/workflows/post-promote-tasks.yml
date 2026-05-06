@@ -46,7 +46,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Create event on release calendar
-        uses: fjogeleit/http-request-action@v1
+        uses: fjogeleit/http-request-action@v2
         with:
           url: '${{ secrets.CALENDAR_URI }}'
           customHeaders: '{"Authorization": "Basic ${{ secrets.CALENDAR_TOKEN }}"}'
@@ -73,7 +73,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Trigger release tagger workflow on amphtml
-        uses: fjogeleit/http-request-action@v1
+        uses: fjogeleit/http-request-action@v2
         with:
           url: 'https://api.github.com/repos/ampproject/amphtml/actions/workflows/release-tagger.yml/dispatches'
           bearerToken: ${{ secrets.ACCESS_TOKEN }}
