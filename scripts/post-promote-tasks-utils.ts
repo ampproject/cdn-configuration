@@ -42,7 +42,7 @@ export async function getVersionDiff(
   return results;
 }
 
-export async function getSha(ampVersion: string): Promise<string | void> {
+export async function getSha(ampVersion: string): Promise<string | undefined> {
   try {
     const {data: ref} = await octokit.rest.git.getRef({
       owner: 'ampproject',
@@ -69,7 +69,7 @@ export async function getSha(ampVersion: string): Promise<string | void> {
 export async function getBaseAmpVersion(
   headAmpVersion: string,
   baseChannel: string
-): Promise<string | void> {
+): Promise<string | undefined> {
   const {data: commits} = await octokit.rest.repos.listCommits({
     owner: 'ampproject',
     repo: 'cdn-configuration',
@@ -77,7 +77,7 @@ export async function getBaseAmpVersion(
     per_page: 100,
   });
 
-  for await (const commit of commits) {
+  for (const commit of commits) {
     const versions = await getVersions(commit.sha);
     const baseAmpVersion = versions[baseChannel].slice(-13);
     if (baseAmpVersion != headAmpVersion) {
@@ -88,7 +88,7 @@ export async function getBaseAmpVersion(
 
 export async function getPullRequestDetails(
   pullNumber: number
-): Promise<PullRequestDetails | void> {
+): Promise<PullRequestDetails | undefined> {
   const {data: pr} = await octokit.rest.pulls.get({
     owner: 'ampproject',
     repo: 'cdn-configuration',
