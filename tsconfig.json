@@ -2,7 +2,8 @@
   "compilerOptions": {
     "strict": true,
     "module": "Preserve",
-    "target": "ESNext"
+    "target": "ESNext",
+    "types": ["node"]
   },
   "include": ["configs/**/*", "test/**/*", "scripts/**/*"]
 }
