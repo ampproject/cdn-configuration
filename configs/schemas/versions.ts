@@ -1,6 +1,6 @@
 import {JSONSchemaType} from 'ajv';
 
-type ChannelNames =
+export type ChannelNames =
   | 'beta-opt-in'
   | 'beta-traffic'
   | 'control'
