@@ -3,6 +3,7 @@
  */
 
 import yargs from 'yargs/yargs';
+
 import {createVersionsUpdatePullRequest, runPromoteJob} from './promote-job';
 
 const jobName = 'promote-nightly.ts';

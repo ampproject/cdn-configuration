@@ -1,4 +1,5 @@
 import * as core from '@actions/core';
+
 import freezedatesJson from '../configs/freezedates.json';
 
 function main() {

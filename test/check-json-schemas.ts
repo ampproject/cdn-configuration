@@ -1,12 +1,15 @@
 import assert from 'assert';
+
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import versions from '../configs/versions.json';
-import versionsSchema from '../configs/schemas/versions';
+import {describe, it} from 'mocha';
+
 import clientSideExperiments from '../configs/client-side-experiments.json';
-import clientSideExperimentsSchema from '../configs/schemas/client-side-experiments';
 import freezedates from '../configs/freezedates.json';
+import clientSideExperimentsSchema from '../configs/schemas/client-side-experiments';
 import freezedatesSchema from '../configs/schemas/freezedates';
+import versionsSchema from '../configs/schemas/versions';
+import versions from '../configs/versions.json';
 
 describe('check json schemas', () => {
   const ajv = new Ajv();

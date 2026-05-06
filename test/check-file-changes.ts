@@ -1,4 +1,6 @@
 import assert from 'assert';
+
+import {describe, it} from 'mocha';
 import yargs from 'yargs/yargs';
 
 const {diff} = yargs(process.argv.slice(2))

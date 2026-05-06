@@ -1,8 +1,9 @@
-import yargs from 'yargs/yargs';
+import * as core from '@actions/core';
 import {Octokit} from '@octokit/rest';
+import yargs from 'yargs/yargs';
+
 import currentVersions from '../configs/versions.json';
 import {getMissingCommits} from './get-missing-cherry-picks-utils';
-import * as core from '@actions/core';
 
 const {amp_version: AMP_VERSION} = yargs(process.argv.slice(2))
   .options({amp_version: {type: 'string', default: ''}})

@@ -2,6 +2,8 @@ import assert from 'assert';
 import fs from 'fs';
 import path from 'path';
 
+import {describe, it} from 'mocha';
+
 const versionsFilePath = path.join(__dirname, '../configs/versions.json');
 
 describe('check versions.json whitespace', () => {

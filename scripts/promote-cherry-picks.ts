@@ -3,13 +3,14 @@
  */
 
 import yargs from 'yargs/yargs';
+
 import {Prefixes, Versions} from '../configs/schemas/versions';
+import {getChannels} from './get-channels-utils';
 import {
   createVersionsUpdatePullRequest,
   octokit,
   runPromoteJob,
 } from './promote-job';
-import {getChannels} from './get-channels-utils';
 
 interface Args {
   amp_version: string;

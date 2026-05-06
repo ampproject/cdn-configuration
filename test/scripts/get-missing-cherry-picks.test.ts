@@ -1,6 +1,9 @@
 import assert from 'assert';
+
 import {Octokit, RestEndpointMethodTypes} from '@octokit/rest';
-import {spy, when, deepEqual, resetCalls, reset} from 'ts-mockito';
+import {after, afterEach, describe, it} from 'mocha';
+import {deepEqual, reset, resetCalls, spy, when} from 'ts-mockito';
+
 import {getMissingCommits} from '../../scripts/get-missing-cherry-picks-utils';
 
 type CompareResponse =
@@ -42,10 +45,10 @@ describe('get missing cherry-picks tests', () => {
               commit: {
                 message: `\
               First PR to fix bug (#29041)
-              
+
               * update worker-dom
               * yarn lock
-              
+
               (cherry picked from commit 725595ac41082b0f9db3103143b04070b0fa7a9e)`,
               },
             },
@@ -53,7 +56,7 @@ describe('get missing cherry-picks tests', () => {
               commit: {
                 message: `\
               Second PR to fix bug (#29051)
-              
+
               (cherry picked from commit b0fd442d5abc691a3d6eea076eccb83525258b7b)`,
               },
             },
@@ -111,10 +114,10 @@ describe('get missing cherry-picks tests', () => {
               commit: {
                 message: `\
               First PR to fix bug (#29041)
-              
+
               * update worker-dom
               * yarn lock
-              
+
               (cherry picked from commit 725595ac41082b0f9db3103143b04070b0fa7a9e)`,
               },
             },
@@ -186,10 +189,10 @@ describe('get missing cherry-picks tests', () => {
               commit: {
                 message: `\
               First PR to fix bug (#29041)
-              
+
               * update worker-dom
               * yarn lock
-              
+
               (cherry picked from commit 725595ac41082b0f9db3103143b04070b0fa7a9e)`,
               },
             },
