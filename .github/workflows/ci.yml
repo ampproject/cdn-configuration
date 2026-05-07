@@ -52,4 +52,4 @@ jobs:
         run: npx ts-mocha ./test/check-versions-whitespace.ts
 
       - name: Check file changes
-        run: npx ts-mocha ./test/check-file-changes.ts --diff="${{ steps.get-diff.outputs.diff }}"
+        run: npx ts-mocha ./test/check-file-changes.ts --diff-files="${{ steps.get-diff.outputs.diff }}"

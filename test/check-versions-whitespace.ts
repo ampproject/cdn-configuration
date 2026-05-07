@@ -4,7 +4,10 @@ import path from 'path';
 
 import {describe, it} from 'mocha';
 
-const versionsFilePath = path.join(__dirname, '../configs/versions.json');
+const versionsFilePath = path.join(
+  import.meta.dirname,
+  '../configs/versions.json'
+);
 
 describe('check versions.json whitespace', () => {
   it('whitespace exists', () => {
