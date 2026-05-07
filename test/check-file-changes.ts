@@ -3,10 +3,10 @@ import assert from 'assert';
 import {describe, it} from 'mocha';
 import yargs from 'yargs/yargs';
 
-const {diff} = yargs(process.argv.slice(2))
-  .options({diff: {type: 'string', demandOption: true}})
+const {'diff-files': diffFiles} = yargs(process.argv.slice(2))
+  .options({'diff-files': {type: 'string', demandOption: true}})
   .parseSync();
-const files = diff.split(' ');
+const files = diffFiles.split(' ');
 
 describe('check file changes', () => {
   it('should not update more than one config at a time', () => {
