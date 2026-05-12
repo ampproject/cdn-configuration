@@ -7,10 +7,10 @@
     "@ianvs/prettier-plugin-sort-imports": "4.7.1",
     "@octokit/rest": "22.0.1",
     "@types/mocha": "10.0.10",
-    "@types/node": "25.6.1",
+    "@types/node": "25.7.0",
     "@types/yargs": "17.0.35",
-    "@typescript-eslint/eslint-plugin": "8.59.2",
-    "@typescript-eslint/parser": "8.59.2",
+    "@typescript-eslint/eslint-plugin": "8.59.3",
+    "@typescript-eslint/parser": "8.59.3",
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1",
     "eslint": "10.3.0",
@@ -22,7 +22,7 @@
     "ts-mockito": "2.6.1",
     "tsx": "4.21.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.59.2",
+    "typescript-eslint": "8.59.3",
     "yargs": "18.0.0"
   },
   "scripts": {
