@@ -40,16 +40,16 @@ jobs:
         run: npm run lint
 
       - name: Check TypeScript
-        run: tsc --noEmit
+        run: npx tsc --noEmit
 
       - name: Run unit tests
-        run: npx ts-mocha ./test/scripts/*.ts
+        run: npx mocha ./test/scripts/*.ts
 
       - name: Check configs
-        run: npx ts-mocha ./test/check-json-schemas.ts
+        run: npx mocha ./test/check-json-schemas.ts
 
       - name: Check versions.json whitespace
-        run: npx ts-mocha ./test/check-versions-whitespace.ts
+        run: npx mocha ./test/check-versions-whitespace.ts
 
       - name: Check file changes
-        run: npx ts-mocha ./test/check-file-changes.ts --diff-files="${{ steps.get-diff.outputs.diff }}"
+        run: npx mocha ./test/check-file-changes.ts --diff-files="${{ steps.get-diff.outputs.diff }}"
