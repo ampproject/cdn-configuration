@@ -3,7 +3,9 @@
   "commitMessagePrefix": "📦",
   "timezone": "America/Los_Angeles",
   "schedule": "after 12am on monday",
-  "dependencyDashboard": true,
+  "dependencyDashboard": {
+    "enabled": true
+  },
   "prBodyColumns": ["Package", "Update", "Type", "Change", "Package file"],
   "packageRules": [
     {
