@@ -7,7 +7,7 @@
     "@ianvs/prettier-plugin-sort-imports": "4.7.1",
     "@octokit/rest": "22.0.1",
     "@types/mocha": "10.0.10",
-    "@types/node": "26.6.6",
+    "@types/node": "26.6.7",
     "@types/yargs": "17.0.35",
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1",
