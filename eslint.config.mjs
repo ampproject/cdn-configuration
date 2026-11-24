@@ -1,7 +1,7 @@
-import {defineConfig} from '@eslint/config-helpers';
 import js from '@eslint/js';
 import json from '@eslint/json';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
+import {defineConfig} from 'eslint/config';
 import tseslint, {parser} from 'typescript-eslint';
 
 export default defineConfig(
